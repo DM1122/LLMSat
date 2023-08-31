@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "llmsat"
+version = "0.1.0"
+description = "An LLM-based autonomous agent for space exploration"
+authors = ["David Maranto <D.Maranto1122@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+agi-stk12 = {path = "agi.stk12-12.6.0-py3-none-any.whl"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
