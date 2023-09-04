@@ -1,24 +1,4 @@
 {
-    "scenario":
-    {
-        "period_start": "1 Jan 2030 00:00:00",
-        "period_end": "31 Dec 2031 00:00:00",
-    },
-    "spacecraft":
-    {
-        "name": "LLMSat-1",
-        "mass": 4,
-        "inertia_matrix": {
-            "XX": 1,
-            "XY": 0,
-            "XZ": 1,
-            "YX": 0,
-            "YY": 1,
-            "YZ": 0,
-            "ZX": 0,
-            "ZY": 0,
-            "ZZ": 1
-        },
-        "description": "LLMSat is the first Large Language Model-based CubeSatellite."
-    }
+    "period_start": "1 Jan 2030 00:00:00",
+    "period_end": "31 Dec 2031 00:00:00"
 }
