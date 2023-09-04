@@ -124,3 +124,9 @@ class SimService:
     
     def step_forward(self):
         self.stk_root.CurrentTime += self.scenario_config.timestep
+
+
+    def get_orbit_state(self):
+        
+        
+        return state
