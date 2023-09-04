@@ -1,16 +1,13 @@
 {
     "name": "LLMSat-1",
+    "description": "LLMSat is the first Large Language Model-based CubeSatellite.",
     "mass": 4,
-    "inertia_matrix": {
-        "XX": 1,
-        "XY": 0,
-        "XZ": 1,
-        "YX": 0,
-        "YY": 1,
-        "YZ": 0,
-        "ZX": 0,
-        "ZY": 0,
-        "ZZ": 1
-    },
-    "description": "LLMSat is the first Large Language Model-based CubeSatellite."
+    "inertia": {
+        "I_xx": 1,
+        "I_xy": 0,
+        "I_xz": 1,
+        "I_yy": 0,
+        "I_yz": 1,
+        "I_zz": 0
+    }
 }

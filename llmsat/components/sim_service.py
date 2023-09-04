@@ -1,8 +1,7 @@
 """Simulator service"""
 
 import json
-from dataclasses import dataclass
-from typing import TypeVar, Generic
+from pydantic import BaseModel
 
 from pathlib import Path
 from agi.stk12.stkdesktop import STKDesktop
@@ -16,28 +15,34 @@ from agi.stk12.stkobjects import (
 )
 from agi.stk12.stkutil import AgEOrbitStateType
 
-T = TypeVar("T")
 
 SPACECRAFT_PROPERTIES = Path("./spacecraft_properties.json")
 
-
-@dataclass
-class SpacecraftProperties:
-    """Basic properties of the spacecraft"""
-
-    name: str
-    mass: int
-    intertia_matrix: dict
-    description: str
-
-
-@dataclass
-class ScenarioConfig:
+class ScenarioConfig(BaseModel):
     """Scenario configuration"""
 
     name: str
     period_start: str
     period_end: str
+
+
+class IntertiaMatrixConfig(BaseModel):
+    """Inertia matrix"""
+
+    I_xx: float
+    I_xy: float
+    I_xz: float
+    I_yy: float
+    I_yz: float
+    I_zz: float
+
+class SpacecraftConfig(BaseModel):
+    """Basic properties of the spacecraft"""
+
+    name: str
+    description: str
+    mass: int
+    inertia: IntertiaMatrixConfig
 
 
 class SimService:
@@ -46,70 +51,43 @@ class SimService:
     def __init__(
         self, scenario_config_file_path: Path, spacecraft_config_file_path: Path
     ):
-        scenario_config = load_scenario_config(file_path=scenario_config_file_path)
-        spacecraft_config = load_spacecraft_properties(
-            file_path=spacecraft_config_file_path
-        )
+        
+        with open(scenario_config_file_path, "r") as f:
+            config = json.load(f)
+            print(config)
+        self.scenario_config = ScenarioConfig(**config)
 
-        print("Launching STK...")
-        stk = STKDesktop.StartApplication(visible=True, userControl=True)
+        with open(spacecraft_config_file_path, "r") as f:
+            config = json.load(f)
+        self.spacecraft_config = SpacecraftConfig(**config)
 
-        stk_root = stk.Root
+        # print("Launching STK...")
+        # stk = STKDesktop.StartApplication(visible=True, userControl=True)
 
-        print("Creating scenario...")
-        stk_root.NewScenario(scenario_config.name)
-        scenario_obj: IAgStkObject = stk_root.CurrentScenario
-        scenario: IAgScenario = scenario_obj  # type: ignore
+        # stk_root = stk.Root
 
-        scenario.SetTimePeriod(scenario_config.period_start, scenario_config.period_end)
-        stk_root.Rewind()
+        # print("Creating scenario...")
+        # stk_root.NewScenario(self.scenario_config.name)
+        # scenario_obj: IAgStkObject = stk_root.CurrentScenario
+        # scenario: IAgScenario = scenario_obj  # type: ignore
 
-        # configure satellite
-        satellite: IAgSatellite = scenario_obj.Children.New(eClassType=AgESTKObjectType.eSatellite, instName=spacecraft_config.name)  # type: ignore
-        satellite.MassProperties.Mass = spacecraft_config.mass
-        satellite.MassProperties.Inertia.Ixx = spacecraft_config.intertia_matrix.
+        # scenario.SetTimePeriod(self.scenario_config.period_start, self.scenario_config.period_end)
+        # stk_root.Rewind()
 
-
-        propagator = satellite.Propagator
-        orbitState = propagator.InitialState.Representation
-        orbitStateClassical = orbitState.ConvertTo(
-            AgEOrbitStateType.eOrbitStateClassical
-        )
-
-        input("Press any key to quit...")
-        stk.ShutDown()
-
-        print("Closed STK successfully.")
+        # # configure satellite
+        # satellite: IAgSatellite = scenario_obj.Children.New(eClassType=AgESTKObjectType.eSatellite, instName=self.spacecraft_config.name)  # type: ignore
+        # satellite.MassProperties.Mass = self.spacecraft_config.mass
+        # satellite.MassProperties.Inertia.Ixx = self.spacecraft_config.inertia
 
 
-def load_scenario_config(file_path: Path) -> ScenarioConfig:  # todo: leverage generics
-    """Loads the config"""
-    with open(file_path, "r") as f:
-        config_dict = json.load(f)
+        # propagator = satellite.Propagator
+        # orbitState = propagator.InitialState.Representation
+        # orbitStateClassical = orbitState.ConvertTo(
+        #     AgEOrbitStateType.eOrbitStateClassical
+        # )
 
-    # validate that the JSON contains all needed keys
-    for field in ScenarioConfig.__annotations__:
-        if field not in config_dict:
-            raise ValueError(f"Missing field '{field}' in config file")
+        # input("Press any key to quit...")
+        # stk.ShutDown()
 
-    return ScenarioConfig(**config_dict)
-
-
-def load_spacecraft_properties(file_path: Path) -> SpacecraftProperties:
-    """Loads the properties from disk"""
-    with open(file_path, "r") as f:
-        config_dict = json.load(f)
-
-    # validate that the JSON contains all needed keys
-    for field in SpacecraftProperties.__annotations__:
-        if field not in config_dict:
-            raise ValueError(f"Missing field '{field}' in config file")
-
-    return SpacecraftProperties(**config_dict)
-
-
-if __name__ == "__main__":
-    x = SimService(
-        scenario_config_file_path=Path("./llmsat/config/scenario.json"),
-        spacecraft_config_file_path=Path("./llmsat/config/spacecraft.json"),
-    )
+        # print("Closed STK successfully.")
+    
