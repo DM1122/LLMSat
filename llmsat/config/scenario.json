@@ -1,5 +1,13 @@
 {
     "name": "TestScenario",
     "period_start": "1 Jan 2030 00:00:00",
-    "period_end": "31 Dec 2031 00:00:00"
+    "period_end": "31 Dec 2031 00:00:00",
+    "orbit": {
+        "a": 3790,
+        "e": 0,
+        "i": 89,
+        "w": 0,
+        "omega": 0,
+        "v": 0
+    }
 }
