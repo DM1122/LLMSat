@@ -36,8 +36,8 @@ class ScenarioConfig(BaseModel):
     name: str
     period_start: str
     period_end: str
+    timestep: float
     orbit: OrbitConfig
-
 
 class IntertiaMatrixConfig(BaseModel):
     """Inertia matrix"""
@@ -77,28 +77,28 @@ class SimService:
         # create stk scenario
         print("Launching STK...")
         stk = STKDesktop.StartApplication(visible=True, userControl=True)
-        stk_root = stk.Root
+        self.stk_root = stk.Root
 
         print("Creating scenario...")
-        stk_root.NewScenario(self.scenario_config.name)
-        scenario_obj: IAgStkObject = stk_root.CurrentScenario
+        self.stk_root.NewScenario(self.scenario_config.name)
+        scenario_obj: IAgStkObject = self.stk_root.CurrentScenario
         scenario: IAgScenario = scenario_obj  # type: ignore
 
         scenario.SetTimePeriod(self.scenario_config.period_start, self.scenario_config.period_end)
-        stk_root.Rewind()
+        self.stk_root.Rewind()
 
-        satellite: IAgSatellite = scenario_obj.Children.New(eClassType=AgESTKObjectType.eSatellite, instName=self.spacecraft_config.name)  # type: ignore
-        satellite.MassProperties.Mass = self.spacecraft_config.mass
-        satellite.MassProperties.Inertia.Ixx = self.spacecraft_config.inertia.I_xx
-        satellite.MassProperties.Inertia.Ixy = self.spacecraft_config.inertia.I_xy
-        satellite.MassProperties.Inertia.Ixz = self.spacecraft_config.inertia.I_xz
-        satellite.MassProperties.Inertia.Iyy = self.spacecraft_config.inertia.I_yy
-        satellite.MassProperties.Inertia.Iyz = self.spacecraft_config.inertia.I_yz
-        satellite.MassProperties.Inertia.Izz = self.spacecraft_config.inertia.I_zz
+        self.satellite: IAgSatellite = scenario_obj.Children.New(eClassType=AgESTKObjectType.eSatellite, instName=self.spacecraft_config.name)  # type: ignore
+        self.satellite.MassProperties.Mass = self.spacecraft_config.mass
+        self.satellite.MassProperties.Inertia.Ixx = self.spacecraft_config.inertia.I_xx
+        self.satellite.MassProperties.Inertia.Ixy = self.spacecraft_config.inertia.I_xy
+        self.satellite.MassProperties.Inertia.Ixz = self.spacecraft_config.inertia.I_xz
+        self.satellite.MassProperties.Inertia.Iyy = self.spacecraft_config.inertia.I_yy
+        self.satellite.MassProperties.Inertia.Iyz = self.spacecraft_config.inertia.I_yz
+        self.satellite.MassProperties.Inertia.Izz = self.spacecraft_config.inertia.I_zz
 
         # configure init orbit
-        satellite.SetPropagatorType(AgEVePropagatorType.ePropagatorTwoBody)
-        propagator = satellite.Propagator
+        self.satellite.SetPropagatorType(AgEVePropagatorType.ePropagatorTwoBody)
+        propagator = self.satellite.Propagator
         orbitState: IAgOrbitState = propagator.InitialState.Representation # type: ignore
         orbitStateClassical: IAgOrbitState = orbitState.ConvertTo(AgEOrbitStateType.eOrbitStateClassical)
         orbitStateClassical.SizeShapeType = AgEClassicalSizeShape.eSizeShapeSemimajorAxis
@@ -122,3 +122,5 @@ class SimService:
 
         print("Closed STK successfully.")
     
+    def step_forward(self):
+        self.stk_root.CurrentTime += self.scenario_config.timestep
