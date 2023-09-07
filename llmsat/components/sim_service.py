@@ -21,7 +21,7 @@ from agi.stk12.stkobjects import (
     AgEClassicalLocation,
 )
 import astropy.units as unit
-from agi.stk12.stkutil import AgEOrbitStateType, IAgOrbitState
+from agi.stk12.stkutil import AgEOrbitStateType, IAgOrbitState, AgEEulerOrientationSequence
 
 
 SPACECRAFT_PROPERTIES = Path("./spacecraft_properties.json")
@@ -75,21 +75,28 @@ class SpatialState(BaseModel):
     velocity_inertial: unit.Quantity
     central_body: str
     current_time: str
-    # fixed_orientation: float
-    # fixed_position: float
-    # intertial_orientation: float
-    # inertial_position: float
+    fixed_orientation: unit.Quantity
+    fixed_position: float
+    intertial_orientation: unit.Quantity
+    inertial_position: float
 
     class Config:
         arbitrary_types_allowed = True
 
     @validator("velocity_fixed", "velocity_inertial", pre=True)
-    def check_velocity_shape_and_units(cls, value: unit.Quantity):
-        # units = 
-        if value.shape != (3,):
-            raise ValueError("Velocity must be a 3-element array")
-        if not value.unit.is_equivalent(unit.meter / unit.second):
-            raise ValueError("Units must be in meters per second (m/s)")
+    def validate_velocity(cls, value: unit.Quantity):
+        units = unit.meter / unit.second
+        shape = (3,)
+        if not value.unit.is_equivalent(units) or value.shape != shape:
+            raise ValueError("Quantity must be of units {units} and shape {shape}")
+        return value
+    
+    @validator("fixed_orientation", "intertial_orientation", pre=True)
+    def validate_orientation(cls, value: unit.Quantity): 
+        units = unit.degree
+        shape = (3,)
+        if not value.unit.is_equivalent(units) or value.shape != shape:
+            raise ValueError("Quantity must be of units {units} and shape {shape}")
         return value
 
 
@@ -178,15 +185,25 @@ class SimService:
             np.array(state_obj.QueryVelocityInertial()) * unit.meter / unit.second
         )
 
+        fixed_orientation: unit.Quantity = (
+            np.array(state_obj.FixedOrientation.QueryEulerAngles(sequence=AgEEulerOrientationSequence.e123)) * unit.degree
+        )
+
+        inertial_orientation: unit.Quantity = (
+            np.array(state_obj.InertialOrientation.QueryEulerAngles(sequence=AgEEulerOrientationSequence.e123)) * unit.degree
+        )
+
         state = SpatialState(
             velocity_fixed=velocity_fixed,
             velocity_inertial=velocity_inertial,
             central_body=state_obj.CentralBody,
             current_time=state_obj.CurrentTime,
-            # fixed_orientation=state_obj.FixedOrientation,
-            # fixed_position=state_obj.FixedPosition,
-            # intertial_orientation=state_obj.InertialOrientation,
-            # inertial_position=state_obj.InertialPosition,
+            fixed_orientation=fixed_orientation,
+            fixed_position=state_obj.FixedPosition,
+            intertial_orientation=inertial_orientation,
+            inertial_position=state_obj.InertialPosition,
         )
+
+        
 
         return state
