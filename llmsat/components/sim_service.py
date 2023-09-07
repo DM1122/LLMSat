@@ -1,11 +1,12 @@
 """Simulator service"""
 
 import json
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from pathlib import Path
 from agi.stk12.stkdesktop import STKDesktop
 from pathlib import Path
+import numpy as np
 from agi.stk12.stkobjects import (
     AgESTKObjectType,
     AgEVePropagatorType,
@@ -13,12 +14,18 @@ from agi.stk12.stkobjects import (
     IAgScenario,
     IAgStkObject,
     IAgSatellite,
-    AgEClassicalSizeShape
+    AgEClassicalSizeShape,
+    IAgProvideSpatialInfo,
+    IAgSpatialState,
+    AgEOrientationAscNode,
+    AgEClassicalLocation,
 )
+import astropy.units as unit
 from agi.stk12.stkutil import AgEOrbitStateType, IAgOrbitState
 
 
 SPACECRAFT_PROPERTIES = Path("./spacecraft_properties.json")
+
 
 class OrbitConfig(BaseModel):
     """Orbit config"""
@@ -30,6 +37,7 @@ class OrbitConfig(BaseModel):
     omega: float
     v: float
 
+
 class ScenarioConfig(BaseModel):
     """Scenario configuration"""
 
@@ -38,6 +46,7 @@ class ScenarioConfig(BaseModel):
     period_end: str
     timestep: float
     orbit: OrbitConfig
+
 
 class IntertiaMatrixConfig(BaseModel):
     """Inertia matrix"""
@@ -49,6 +58,7 @@ class IntertiaMatrixConfig(BaseModel):
     I_yz: float
     I_zz: float
 
+
 class SpacecraftConfig(BaseModel):
     """Basic properties of the spacecraft"""
 
@@ -56,6 +66,31 @@ class SpacecraftConfig(BaseModel):
     description: str
     mass: int
     inertia: IntertiaMatrixConfig
+
+
+class SpatialState(BaseModel):
+    """Simulated state properties"""
+
+    velocity_fixed: unit.Quantity
+    velocity_inertial: unit.Quantity
+    central_body: str
+    current_time: str
+    # fixed_orientation: float
+    # fixed_position: float
+    # intertial_orientation: float
+    # inertial_position: float
+
+    class Config:
+        arbitrary_types_allowed = True
+
+    @validator("velocity_fixed", "velocity_inertial", pre=True)
+    def check_velocity_shape_and_units(cls, value: unit.Quantity):
+        # units = 
+        if value.shape != (3,):
+            raise ValueError("Velocity must be a 3-element array")
+        if not value.unit.is_equivalent(unit.meter / unit.second):
+            raise ValueError("Units must be in meters per second (m/s)")
+        return value
 
 
 class SimService:
@@ -67,7 +102,6 @@ class SimService:
         # load config
         with open(scenario_config_file_path, "r") as f:
             config = json.load(f)
-            print(config)
         self.scenario_config = ScenarioConfig(**config)
 
         with open(spacecraft_config_file_path, "r") as f:
@@ -76,16 +110,18 @@ class SimService:
 
         # create stk scenario
         print("Launching STK...")
-        stk = STKDesktop.StartApplication(visible=True, userControl=True)
-        self.stk_root = stk.Root
+        self.stk = STKDesktop.StartApplication(visible=True, userControl=True)
 
         print("Creating scenario...")
-        self.stk_root.NewScenario(self.scenario_config.name)
-        scenario_obj: IAgStkObject = self.stk_root.CurrentScenario
+        self.stk.Root.NewScenario(self.scenario_config.name)
+        scenario_obj: IAgStkObject = self.stk.Root.CurrentScenario
         scenario: IAgScenario = scenario_obj  # type: ignore
 
-        scenario.SetTimePeriod(self.scenario_config.period_start, self.scenario_config.period_end)
-        self.stk_root.Rewind()
+        scenario.SetTimePeriod(
+            self.scenario_config.period_start, self.scenario_config.period_end
+        )
+        self.stk.Root.Rewind()
+        self.epoch = self.scenario_config.period_start
 
         self.satellite: IAgSatellite = scenario_obj.Children.New(eClassType=AgESTKObjectType.eSatellite, instName=self.spacecraft_config.name)  # type: ignore
         self.satellite.MassProperties.Mass = self.spacecraft_config.mass
@@ -99,9 +135,13 @@ class SimService:
         # configure init orbit
         self.satellite.SetPropagatorType(AgEVePropagatorType.ePropagatorTwoBody)
         propagator = self.satellite.Propagator
-        orbitState: IAgOrbitState = propagator.InitialState.Representation # type: ignore
-        orbitStateClassical: IAgOrbitState = orbitState.ConvertTo(AgEOrbitStateType.eOrbitStateClassical)
-        orbitStateClassical.SizeShapeType = AgEClassicalSizeShape.eSizeShapeSemimajorAxis
+        orbitState: IAgOrbitState = propagator.InitialState.Representation  # type: ignore
+        orbitStateClassical: IAgOrbitState = orbitState.ConvertTo(
+            AgEOrbitStateType.eOrbitStateClassical
+        )
+        orbitStateClassical.SizeShapeType = (
+            AgEClassicalSizeShape.eSizeShapeSemimajorAxis
+        )
         sizeShape = orbitStateClassical.SizeShape
         sizeShape.Eccentricity = self.scenario_config.orbit.e
         sizeShape.SemiMajorAxis = self.scenario_config.orbit.a
@@ -117,16 +157,36 @@ class SimService:
 
         orbitState.Assign(orbitStateClassical)
 
-        input("Press any key to quit...")
-        stk.ShutDown()
+    def shutdown(self):
+        """Terminate the simulation"""
+        self.stk.ShutDown()
 
-        print("Closed STK successfully.")
-    
     def step_forward(self):
-        self.stk_root.CurrentTime += self.scenario_config.timestep
+        """Step the simulation forward"""
+        self.stk.Root.CurrentTime += self.scenario_config.timestep
 
+    def get_spatial_state(self) -> SpatialState:
+        spatial_info_obj: IAgProvideSpatialInfo = self.satellite  # type: ignore
+        spatial_info = spatial_info_obj.GetSpatialInfo(recycle=False)
+        state_obj: IAgSpatialState = spatial_info.GetState(time=self.epoch)
 
-    def get_orbit_state(self):
-        
-        
+        velocity_fixed: unit.Quantity = (
+            np.array(state_obj.QueryVelocityFixed()) * unit.meter / unit.second
+        )
+
+        velocity_inertial: unit.Quantity = (
+            np.array(state_obj.QueryVelocityInertial()) * unit.meter / unit.second
+        )
+
+        state = SpatialState(
+            velocity_fixed=velocity_fixed,
+            velocity_inertial=velocity_inertial,
+            central_body=state_obj.CentralBody,
+            current_time=state_obj.CurrentTime,
+            # fixed_orientation=state_obj.FixedOrientation,
+            # fixed_position=state_obj.FixedPosition,
+            # intertial_orientation=state_obj.InertialOrientation,
+            # inertial_position=state_obj.InertialPosition,
+        )
+
         return state
