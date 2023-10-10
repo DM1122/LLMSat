@@ -15,6 +15,7 @@ pydantic = "^2.3.0"
 pytest = "^7.4.1"
 astropy = "^5.3.2"
 bump-pydantic = "^0.6.1"
+krpc = "^0.5.3"
 
 
 [build-system]
