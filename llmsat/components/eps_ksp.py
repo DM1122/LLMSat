@@ -1,19 +1,7 @@
-# import krpc
-
-# conn = krpc.connect(name="Hello World")
-# vessel = conn.space_center.active_vessel
-# print(vessel.name)
-
 import krpc
 
 
 class EPS:
-    """
-    A class that represents the Electrical Power System (EPS) of a satellite in KSP.
-
-    Attributes:
-        vessel (krpc.client.services.space_center.Vessel): The active vessel/satellite.
-    """
 
     def __init__(self, vessel):
         """
@@ -48,3 +36,15 @@ class EPS:
             float: Percentage of electric charge remaining.
         """
         return (self.get_total_electric_charge() / self.get_max_electric_charge()) * 100
+    
+    def get_solar_panel_states(self) -> bool:
+        """Returns whether all solar panels on the vessel are deployed"""
+
+        return self.vessel.control.solar_panels
+    
+    def set_solar_panel_states(self, state: bool) -> bool:
+        """Sets the deployment state of all solar panels"""
+
+        self.vessel.control.solar_panels = state
+
+        return True
