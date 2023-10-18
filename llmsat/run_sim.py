@@ -3,6 +3,9 @@ import os
 import subprocess
 from pathlib import Path
 from decouple import config
+from llmsat.components.obc import OBC
+from llmsat.components.comms import Comms
+from llmsat.components.payload import PayloadManager
 
 CHECKPOINT_NAME = "checkpoint"
 
@@ -40,12 +43,18 @@ if __name__ == "__main__":
 
     print("Connecting to KSP...")
     connection = krpc.connect(name="Simulator")
-    assert 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    # load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     science = connection.space_center.science
     print(science)
+
+    vessel = connection.space_center.active_vessel
+    obc = OBC(vessel=vessel)
+    comms = Comms(vessel=vessel)
+    payload = PayloadManager(vessel=vessel)
+
+    print(payload.get_experiments())
 
     # connect through krpc
 
