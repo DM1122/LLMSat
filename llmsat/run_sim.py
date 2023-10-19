@@ -6,6 +6,14 @@ from decouple import config
 from llmsat.components.obc import OBC
 from llmsat.components.comms import Comms
 from llmsat.components.payload import PayloadManager
+from langchain.llms import OpenAI
+from decouple import config
+from langchain.agents import load_tools
+from langchain.agents import initialize_agent
+from langchain.agents import AgentType
+from langchain.tools import tool
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
 
 CHECKPOINT_NAME = "checkpoint"
 
@@ -50,19 +58,28 @@ if __name__ == "__main__":
     print(science)
 
     vessel = connection.space_center.active_vessel
-    obc = OBC(vessel=vessel)
-    comms = Comms(vessel=vessel)
+    # obc = OBC(vessel=vessel)
+    # comms = Comms(vessel=vessel)
     payload = PayloadManager(vessel=vessel)
 
-    print(payload.get_experiments())
+    # initialize agent
+    KEY = str(config("OPENAI", cast=str))
+    llm = OpenAI(openai_api_key=KEY)
+    print(llm)
 
-    # connect through krpc
-
-    # load the given saved game
-
-    # load the given save point
-
-    # pause the game
+    system_message = SystemMessage(
+        content=f"""You are LLMSat-1. You are a Large Language Model-controlled satellite designed to conduct scientific expeditions around the moon. Your mission begins now. You must take every precaution to survive and complete the mission."""
+    )
+    tools = [payload.get_experiments]
+    agent = initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True,
+        agent_kwargs={"system_message": system_message},
+    )
+    result = agent.run("What is your name")
+    print(result)
 
     input("Simulation complete. Press any key to quit...")
     # connection.close()
