@@ -49,7 +49,6 @@ class PayloadManager:
 
 
     @staticmethod
-    @tool(handle_tool_error=True)
     def get_experiments() -> str:
         """Get information about all available experiments"""
         experiment_objs = PayloadManager._get_instance().vessel.parts.experiments
@@ -71,7 +70,6 @@ class PayloadManager:
         return json.dumps(experiments, indent=4, default=lambda o: o.dict())
     
     @staticmethod
-    @tool(handle_tool_error=True)
     def run_experiment(name) -> str:
         """Run a given experiment"""
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
