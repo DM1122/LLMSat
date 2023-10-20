@@ -41,7 +41,6 @@ def load_checkpoint(name: str, space_center):
         )
 
 
-
 if __name__ == "__main__":
     if not is_ksp_running():
         ksp_path = Path(str(config("KSP_PATH")))
@@ -59,8 +58,6 @@ if __name__ == "__main__":
     print(science)
 
     vessel = connection.space_center.active_vessel
-    # obc = OBC(vessel=vessel)
-    # comms = Comms(vessel=vessel)
     payload = PayloadManager(vessel=vessel)
 
     # initialize agent
@@ -83,4 +80,5 @@ if __name__ == "__main__":
     print(result)
 
     input("Simulation complete. Press any key to quit...")
-    # connection.close()
+    
+    connection.close()
