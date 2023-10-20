@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 from langchain.tools import tool
 import json
+from langchain.tools.base import ToolException
 
 class ExperimentProperties(BaseModel):
     """Basic properties of the spacecraft"""
