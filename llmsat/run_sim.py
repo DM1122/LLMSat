@@ -74,11 +74,11 @@ if __name__ == "__main__":
     agent = initialize_agent(
         tools=tools,
         llm=llm,
-        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,  # AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
         agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("What is your name")
+    result = agent.run("What experiments are available?")
     print(result)
 
     input("Simulation complete. Press any key to quit...")
