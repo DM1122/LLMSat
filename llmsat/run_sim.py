@@ -68,7 +68,7 @@ if __name__ == "__main__":
     system_message = SystemMessage(
         content=f"""You are LLMSat-1. You are a Large Language Model-controlled satellite designed to conduct scientific expeditions around the moon. Your mission begins now. You must take every precaution to survive and complete the mission."""
     )
-    tools = [payload.get_experiments]
+    tools = [payload.get_experiments, payload.run_experiment]
     agent = initialize_agent(
         tools=tools,
         llm=llm,
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         verbose=True,
         agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("What experiments are available?")
+    result = agent.run("Run one of your experiments")
     print(result)
 
     input("Simulation complete. Press any key to quit...")
