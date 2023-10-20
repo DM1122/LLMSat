@@ -6,6 +6,7 @@ from langchain.tools import tool
 import json
 from langchain.tools.base import ToolException
 
+
 class ExperimentProperties(BaseModel):
     """Basic properties of the spacecraft"""
 
@@ -37,7 +38,9 @@ class PayloadManager:
     def _get_instance():
         instance = PayloadManager()
         if instance.vessel is None:
-            raise ValueError("PayloadManager must be initialized with a vessel before calling its methods.")
+            raise ValueError(
+                "PayloadManager must be initialized with a vessel before calling its methods."
+            )
         return PayloadManager()
 
     def _get_experiment_obj(self, name):
@@ -47,8 +50,8 @@ class PayloadManager:
             if experiment.title == name:
                 return experiment
 
-
     @staticmethod
+    @tool(handle_tool_error=True)
     def get_experiments() -> str:
         """Get information about all available experiments"""
         experiment_objs = PayloadManager._get_instance().vessel.parts.experiments
@@ -68,13 +71,14 @@ class PayloadManager:
             experiments[obj.title] = props
 
         return json.dumps(experiments, indent=4, default=lambda o: o.dict())
-    
+
     @staticmethod
+    @tool(handle_tool_error=True)
     def run_experiment(name) -> str:
         """Run a given experiment"""
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
         if exp_obj is None:
-            raise ValueError(f"No experiment found with the name '{name}'.")
+            raise ToolException(f"No experiment found with the name '{name}'.")
         result = exp_obj.run()
         return result
 
