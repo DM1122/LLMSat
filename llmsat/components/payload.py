@@ -34,6 +34,9 @@ class PayloadManager:
 
     @staticmethod
     def _get_instance():
+        instance = PayloadManager()
+        if instance.vessel is None:
+            raise ValueError("PayloadManager must be initialized with a vessel before calling its methods.")
         return PayloadManager()
 
     def _get_experiment_obj(self, name):
