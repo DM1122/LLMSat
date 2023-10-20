@@ -74,6 +74,8 @@ class PayloadManager:
     def run_experiment(name) -> str:
         """Run a given experiment"""
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
+        if exp_obj is None:
+            raise ValueError(f"No experiment found with the name '{name}'.")
         result = exp_obj.run()
         return result
 
