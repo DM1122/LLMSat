@@ -2,7 +2,6 @@ import krpc
 
 
 class EPS:
-
     def __init__(self, vessel):
         """
         Initializes an EPS object using the kRPC connection.
@@ -36,12 +35,12 @@ class EPS:
             float: Percentage of electric charge remaining.
         """
         return (self.get_total_electric_charge() / self.get_max_electric_charge()) * 100
-    
+
     def get_solar_panel_states(self) -> bool:
         """Returns whether all solar panels on the vessel are deployed"""
 
         return self.vessel.control.solar_panels
-    
+
     def set_solar_panel_states(self, state: bool) -> bool:
         """Sets the deployment state of all solar panels"""
 

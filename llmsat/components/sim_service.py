@@ -1,28 +1,30 @@
 """Simulator service"""
 
 import json
-from pydantic import BaseModel, validator
+from pathlib import Path
 
-from pathlib import Path
-from agi.stk12.stkdesktop import STKDesktop
-from pathlib import Path
+import astropy.units as unit
 import numpy as np
+from agi.stk12.stkdesktop import STKDesktop
 from agi.stk12.stkobjects import (
+    AgEClassicalLocation,
+    AgEClassicalSizeShape,
+    AgEOrientationAscNode,
     AgESTKObjectType,
     AgEVePropagatorType,
-    IAgVeInitialState,
-    IAgScenario,
-    IAgStkObject,
-    IAgSatellite,
-    AgEClassicalSizeShape,
     IAgProvideSpatialInfo,
+    IAgSatellite,
+    IAgScenario,
     IAgSpatialState,
-    AgEOrientationAscNode,
-    AgEClassicalLocation,
+    IAgStkObject,
+    IAgVeInitialState,
 )
-import astropy.units as unit
-from agi.stk12.stkutil import AgEOrbitStateType, IAgOrbitState, AgEEulerOrientationSequence
-
+from agi.stk12.stkutil import (
+    AgEEulerOrientationSequence,
+    AgEOrbitStateType,
+    IAgOrbitState,
+)
+from pydantic import BaseModel, validator
 
 SPACECRAFT_PROPERTIES = Path("./spacecraft_properties.json")
 
@@ -90,9 +92,9 @@ class SpatialState(BaseModel):
         if not value.unit.is_equivalent(units) or value.shape != shape:
             raise ValueError("Quantity must be of units {units} and shape {shape}")
         return value
-    
+
     @validator("fixed_orientation", "intertial_orientation", pre=True)
-    def validate_orientation(cls, value: unit.Quantity): 
+    def validate_orientation(cls, value: unit.Quantity):
         units = unit.degree
         shape = (3,)
         if not value.unit.is_equivalent(units) or value.shape != shape:
@@ -186,11 +188,21 @@ class SimService:
         )
 
         fixed_orientation: unit.Quantity = (
-            np.array(state_obj.FixedOrientation.QueryEulerAngles(sequence=AgEEulerOrientationSequence.e123)) * unit.degree
+            np.array(
+                state_obj.FixedOrientation.QueryEulerAngles(
+                    sequence=AgEEulerOrientationSequence.e123
+                )
+            )
+            * unit.degree
         )
 
         inertial_orientation: unit.Quantity = (
-            np.array(state_obj.InertialOrientation.QueryEulerAngles(sequence=AgEEulerOrientationSequence.e123)) * unit.degree
+            np.array(
+                state_obj.InertialOrientation.QueryEulerAngles(
+                    sequence=AgEEulerOrientationSequence.e123
+                )
+            )
+            * unit.degree
         )
 
         state = SpatialState(
@@ -203,7 +215,5 @@ class SimService:
             intertial_orientation=inertial_orientation,
             inertial_position=state_obj.InertialPosition,
         )
-
-        
 
         return state

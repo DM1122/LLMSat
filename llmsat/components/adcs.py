@@ -1,7 +1,9 @@
 from enum import Enum, auto
+
 import astropy.units as unit
 from astropy.units import Quantity
 from pydantic import BaseModel
+
 from llmsat.components.sim_service import SimService
 
 

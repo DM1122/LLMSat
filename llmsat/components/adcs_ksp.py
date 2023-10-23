@@ -1,6 +1,6 @@
+import astropy.units as unit
 import krpc
 from pydantic import BaseModel, validator
-import astropy.units as unit
 
 # class SpatialState(BaseModel):
 #     """Simulated state properties"""

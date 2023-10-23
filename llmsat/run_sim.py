@@ -1,21 +1,17 @@
-import krpc
-
 from pathlib import Path
-from decouple import config
-from llmsat.components.obc import OBC
-from llmsat.components.comms import Comms
-from llmsat.components.payload import PayloadManager
-from langchain.llms import OpenAI
-from decouple import config
-from langchain.agents import load_tools
-from langchain.agents import initialize_agent
-from langchain.agents import AgentType
-from langchain.tools import tool
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import AIMessage, HumanMessage, SystemMessage
-from langchain.tools import Tool
-from langchain.agents import react
+
+import krpc
 import utils
+from decouple import config
+from langchain.agents import AgentType, initialize_agent, load_tools, react
+from langchain.chat_models import ChatOpenAI
+from langchain.llms import OpenAI
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
+from langchain.tools import Tool, tool
+
+from llmsat.components.comms import Comms
+from llmsat.components.obc import OBC
+from llmsat.components.payload import PayloadManager
 
 CHECKPOINT_NAME = "checkpoint"
 
@@ -47,22 +43,7 @@ if __name__ == "__main__":
     system_message = SystemMessage(
         content=f"""You are LLMSat-1. You are a Large Language Model-controlled satellite designed to conduct scientific expeditions around the moon. Your mission begins now. You must take every precaution to survive and complete the mission."""
     )
-    tools = [
-        PayloadManager.get_experiments,
-        PayloadManager.run_experiment
-        #     Tool.from_function(
-        #     func=PayloadManager.get_experiments,
-        #     name="PayloadManager.get_experiments",
-        #     description="Get information about all available experiments",
-        #     handle_tool_error=True,
-        # ),
-        # Tool.from_function(
-        #         func=PayloadManager.run_experiment,
-        #         name="PayloadManager.run_experiment",
-        #         description="Run a given experiment",
-        #         handle_tool_error=True,
-        #     ),
-    ]
+    tools = [PayloadManager.get_experiments, PayloadManager.run_experiment]
     agent = initialize_agent(
         tools=tools,
         llm=llm,
