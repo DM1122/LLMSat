@@ -1,19 +1,23 @@
-from pathlib import Path
+"""Runs simulation loop"""
 
+from pathlib import Path
 import krpc
 import utils
 from decouple import config
-from langchain.agents import AgentType, initialize_agent, load_tools, react
+from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from langchain.llms import OpenAI
-from langchain.schema import AIMessage, HumanMessage, SystemMessage
-from langchain.tools import Tool, tool
-
-from llmsat.components.comms import Comms
-from llmsat.components.obc import OBC
+from langchain.schema import SystemMessage
 from llmsat.components.payload import PayloadManager
+import json
 
 CHECKPOINT_NAME = "checkpoint"
+PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
+
+
+def load_json(filename):
+    with open(filename, "r") as file:
+        data = json.load(file)
+    return data
 
 
 if __name__ == "__main__":
@@ -26,6 +30,7 @@ if __name__ == "__main__":
 
     print("Connecting to KSP...")
     connection = krpc.connect(name="Simulator")
+
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
     utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
@@ -40,9 +45,9 @@ if __name__ == "__main__":
     llm = ChatOpenAI(openai_api_key=KEY, model="gpt-4-0613")
     print(llm)
 
-    system_message = SystemMessage(
-        content=f"""You are LLMSat-1. You are a Large Language Model-controlled satellite designed to conduct scientific expeditions around the moon. Your mission begins now. You must take every precaution to survive and complete the mission."""
-    )
+    prompts = load_json(PROMPTS_FILE_PATH)
+    prompt = prompts["default"]
+    system_message = SystemMessage(content=prompt)
     tools = [PayloadManager.get_experiments, PayloadManager.run_experiment]
     agent = initialize_agent(
         tools=tools,

@@ -80,8 +80,11 @@ class PayloadManager:
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
         if exp_obj is None:
             raise ToolException(f"No experiment found with the name '{name}'.")
-        result = exp_obj.run()
-        return result
+        exp_obj.run()
+
+        data = exp_obj.data
+
+        return data
 
     @staticmethod
     @tool
