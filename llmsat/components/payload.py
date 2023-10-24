@@ -19,6 +19,13 @@ class ExperimentProperties(BaseModel):
     has_data: bool
     available: bool
 
+class ScienceProperties(BaseModel):
+    description: str
+    data_amount: float
+    science_value: float
+    transmit_value: float
+
+
 
 class PayloadManager:
     _instance = None
@@ -82,9 +89,12 @@ class PayloadManager:
             raise ToolException(f"No experiment found with the name '{name}'.")
         exp_obj.run()
 
-        data = exp_obj.data
+        data = exp_obj.data[-1]
+        subject = exp_obj.science_subject
 
-        return data
+        result = ScienceProperties(description=subject.title, data_amount=data.data_amount, science_value=data.science_value, transmit_value=data.transmit_value)
+
+        return json.dumps(result, indent=4, default=lambda o: o.dict())
 
     @staticmethod
     @tool
