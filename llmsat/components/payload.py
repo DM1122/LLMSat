@@ -19,11 +19,9 @@ class ExperimentProperties(BaseModel):
     has_data: bool
     available: bool
 
-class ScienceProperties(BaseModel):
+class DataProperties(BaseModel):
     description: str
     data_amount: float
-    science_value: float
-    transmit_value: float
 
 
 
@@ -92,7 +90,7 @@ class PayloadManager:
         data = exp_obj.data[-1]
         subject = exp_obj.science_subject
 
-        result = ScienceProperties(description=subject.title, data_amount=data.data_amount, science_value=data.science_value, transmit_value=data.transmit_value)
+        result = DataProperties(description=subject.title, data_amount=data.data_amount)
 
         return json.dumps(result, indent=4, default=lambda o: o.dict())
 
@@ -102,6 +100,7 @@ class PayloadManager:
         """Transmit data produced by a given experiment"""
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
         result = exp_obj.transmit()
+
         return result
 
     @staticmethod
