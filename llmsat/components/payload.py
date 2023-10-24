@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-
+import time
 import krpc
 import numpy as np
 from langchain.tools import tool
@@ -19,10 +19,10 @@ class ExperimentProperties(BaseModel):
     has_data: bool
     available: bool
 
+
 class DataProperties(BaseModel):
     description: str
     data_amount: float
-
 
 
 class PayloadManager:
@@ -87,7 +87,8 @@ class PayloadManager:
             raise ToolException(f"No experiment found with the name '{name}'.")
         exp_obj.run()
 
-        data = exp_obj.data[-1]
+        time.sleep(1)
+        data = exp_obj.data[0]
         subject = exp_obj.science_subject
 
         result = DataProperties(description=subject.title, data_amount=data.data_amount)
