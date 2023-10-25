@@ -1,23 +1,19 @@
 """Runs simulation loop"""
 
 from pathlib import Path
+
 import krpc
 import utils
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
-from llmsat.components.payload import PayloadManager
-import json
+
+from llmsat.components import OBC, PayloadManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-
-
-def load_json(filename):
-    with open(filename, "r") as file:
-        data = json.load(file)
-    return data
+LLM_NAME = "gpt-3.5-turbo-0613"  # "gpt-4-0613"
 
 
 if __name__ == "__main__":
@@ -42,13 +38,18 @@ if __name__ == "__main__":
 
     # initialize agent
     KEY = str(config("OPENAI", cast=str))
-    llm = ChatOpenAI(openai_api_key=KEY, model="gpt-4-0613")
+    llm = ChatOpenAI(openai_api_key=KEY, model=LLM_NAME)
     print(llm)
 
-    prompts = load_json(PROMPTS_FILE_PATH)
+    prompts = utils.load_json(PROMPTS_FILE_PATH)
     prompt = prompts["default"]
     system_message = SystemMessage(content=prompt)
-    tools = [PayloadManager.get_experiments, PayloadManager.run_experiment]
+    tools = [
+        OBC.get_spacecraft_properties,
+        # OBC.get_parts_list,
+        # PayloadManager.get_experiments,
+        # PayloadManager.run_experiment,
+    ]
     agent = initialize_agent(
         tools=tools,
         llm=llm,
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         verbose=True,
         agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("Run a temperature experiment in orbit around the moon")
+    result = agent.run("Run the thermal experiment")
     print(result)
 
     input("Simulation complete. Press any key to quit...")

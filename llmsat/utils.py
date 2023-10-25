@@ -1,5 +1,6 @@
 """Game-related utilities"""
 
+import json
 import os
 import subprocess
 from pathlib import Path
@@ -26,3 +27,9 @@ def load_checkpoint(name: str, space_center):
         raise ValueError(
             f"No checkpoint named '{name}.sfs' was found. Please create one"
         )
+
+
+def load_json(filename):
+    with open(filename, "r") as file:
+        data = json.load(file)
+    return data
