@@ -44,8 +44,8 @@ class OBC:
     
     @staticmethod
     @tool(handle_tool_error=True)
-    def get_experiments() -> str:
-        """Get information about all available experiments"""
+    def get_spacecraft_properties() -> str:
+        """Get information about the vessel"""
         vessel = OBC._get_instance().vessel
 
         properties = SpacecraftProperties(

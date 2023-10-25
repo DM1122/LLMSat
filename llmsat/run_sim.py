@@ -28,13 +28,15 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     science = connection.space_center.science
     print(science)
 
+    # initialize systems
     vessel = connection.space_center.active_vessel
     payload = PayloadManager(vessel=vessel)
+    obc = OBC(vessel=vessel)
 
     # initialize agent
     KEY = str(config("OPENAI", cast=str))
@@ -46,9 +48,9 @@ if __name__ == "__main__":
     system_message = SystemMessage(content=prompt)
     tools = [
         OBC.get_spacecraft_properties,
-        # OBC.get_parts_list,
-        # PayloadManager.get_experiments,
-        # PayloadManager.run_experiment,
+        OBC.get_parts_list,
+        PayloadManager.get_experiments,
+        PayloadManager.run_experiment,
     ]
     agent = initialize_agent(
         tools=tools,
@@ -57,7 +59,7 @@ if __name__ == "__main__":
         verbose=True,
         agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("Run the thermal experiment")
+    result = agent.run("What is your name? What is your mission?")
     print(result)
 
     input("Simulation complete. Press any key to quit...")
