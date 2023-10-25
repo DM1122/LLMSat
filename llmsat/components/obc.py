@@ -1,8 +1,9 @@
 from pathlib import Path
 
-import krpc
-import numpy as np
-from pydantic import BaseModel, validator
+from langchain.tools import tool
+from langchain.tools.base import ToolException
+from pydantic import BaseModel
+import json
 
 
 class SpacecraftProperties(BaseModel):
@@ -17,24 +18,53 @@ class SpacecraftProperties(BaseModel):
     mass: float
     dry_mass: float
 
-
 class OBC:
-    def __init__(self, vessel):
-        self.vessel = vessel
+    _instance = None
+    _initialized = False
 
-    def get_spacecraft_properties(self) -> SpacecraftProperties:
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(OBC, cls).__new__(cls)
+        return cls._instance
+
+    def __init__(self, vessel=None):
+        if OBC._initialized:
+            return
+        self.vessel = vessel
+        OBC._initialized = True
+
+    @staticmethod
+    def _get_instance():
+        instance = OBC()
+        if instance.vessel is None:
+            raise ValueError(
+                "OBC must be initialized with a vessel before calling its methods."
+            )
+        return OBC()
+    
+    @staticmethod
+    @tool(handle_tool_error=True)
+    def get_experiments() -> str:
+        """Get information about all available experiments"""
+        vessel = OBC._get_instance().vessel
+
         properties = SpacecraftProperties(
-            name=self.vessel.name,
+            name=vessel.name,
             description="A description",
-            type=str(self.vessel.type),
-            situation=str(self.vessel.situation),
-            met=self.vessel.met,
-            biome=self.vessel.biome,
-            mass=self.vessel.mass,
-            dry_mass=self.vessel.dry_mass,
+            type=str(vessel.type),
+            situation=str(vessel.situation),
+            met=vessel.met,
+            biome=vessel.biome,
+            mass=vessel.mass,
+            dry_mass=vessel.dry_mass,
         )
 
-        return properties
+        return json.dumps(properties, indent=4, default=lambda o: o.dict())
+    
+    @staticmethod
+    @tool(handle_tool_error=True)
+    def get_parts_list() -> str:
+        """Get a tree list of all spacecraft components"""
+        vessel = OBC._get_instance().vessel
 
-    def get_parts_list(self):
-        return self.vessel.parts.all
+        return vessel.parts.all
