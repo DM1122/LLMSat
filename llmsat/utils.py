@@ -1,33 +1,13 @@
 """Game-related utilities"""
 
+import functools
+import inspect
 import json
 import os
 import subprocess
 from pathlib import Path
-import functools
-import inspect
+
 from pydantic import BaseModel
-
-
-class FunctionProperties(BaseModel):
-    name: str
-    signature: str
-    description: str
-
-
-def custom_tool(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        return func(*args, **kwargs)
-
-    wrapper.is_available = True
-    wrapper.info = FunctionProperties(
-        name=func.__name__,
-        signature=str(inspect.signature(func)),
-        description=str(func.__doc__),
-    )
-
-    return wrapper
 
 
 def is_ksp_running():
@@ -55,6 +35,8 @@ def load_checkpoint(name: str, space_center):
 
 
 def load_json(filename):
+    """Load a given JSON file"""
+
     with open(filename, "r") as file:
         data = json.load(file)
     return data

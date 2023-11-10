@@ -9,7 +9,7 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
 
-from llmsat.components import OBC, PayloadManager
+from llmsat.components import PayloadManager, SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # initialize systems
     vessel = connection.space_center.active_vessel
     payload = PayloadManager(vessel=vessel)
-    obc = OBC(vessel=vessel)
+    obc = SpacecraftManager(vessel=vessel)
 
     # initialize agent
     KEY = str(config("OPENAI", cast=str))

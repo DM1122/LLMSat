@@ -2,7 +2,7 @@ import krpc
 import pytest
 
 from llmsat import utils
-from llmsat.components import EPS, OBC
+from llmsat.components import EPS, SpacecraftManager
 
 
 @pytest.fixture(scope="session")
@@ -19,9 +19,9 @@ def ksp_connection():
 def test_get_parts_tree(ksp_connection):
     vessel = ksp_connection.space_center.active_vessel
 
-    obc = OBC(vessel=vessel)
+    obc = SpacecraftManager(vessel=vessel)
 
     obc.assign_ids_to_parts()
     print(obc.get_parts_tree())
     print(obc.get_spacecraft_properties)
-    print(OBC.get_parts_tree.info)
+    print(SpacecraftManager.get_parts_tree.info)

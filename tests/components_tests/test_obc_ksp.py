@@ -1,6 +1,6 @@
 import krpc
 
-from llmsat.components import OBC
+from llmsat.components import SpacecraftManager
 
 
 def test_get_spacecraft_properties():
@@ -8,7 +8,7 @@ def test_get_spacecraft_properties():
     vessel = conn.space_center.active_vessel
     print(vessel.name)
 
-    obc = OBC(vessel=vessel)
+    obc = SpacecraftManager(vessel=vessel)
 
     print(obc.get_spacecraft_properties())
 

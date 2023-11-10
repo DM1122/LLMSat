@@ -14,6 +14,9 @@ pydantic = "^2.3.0"
 pytest = "^7.4.1"
 astropy = "^5.3.2"
 krpc = "^0.5.3"
+cmd2 = "^2.4.3"
+argdantic = "^1.0.0"
+docopt = "^0.6.2"
 
 
 [tool.poetry.group.dev.dependencies]

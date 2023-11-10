@@ -2,38 +2,6 @@ import astropy.units as unit
 import krpc
 from pydantic import BaseModel, validator
 
-# class SpatialState(BaseModel):
-#     """Simulated state properties"""
-
-#     velocity_fixed: unit.Quantity
-#     velocity_inertial: unit.Quantity
-#     central_body: str
-#     current_time: str
-#     fixed_orientation: unit.Quantity
-#     fixed_position: float
-#     intertial_orientation: unit.Quantity
-#     inertial_position: float
-
-#     class Config:
-#         arbitrary_types_allowed = True
-
-#     @validator("velocity_fixed", "velocity_inertial", pre=True)
-#     def validate_velocity(cls, value: unit.Quantity):
-#         units = unit.meter / unit.second
-#         shape = (3,)
-#         if not value.unit.is_equivalent(units) or value.shape != shape:
-#             raise ValueError("Quantity must be of units {units} and shape {shape}")
-#         return value
-    
-#     @validator("fixed_orientation", "intertial_orientation", pre=True)
-#     def validate_orientation(cls, value: unit.Quantity): 
-#         units = unit.degree
-#         shape = (3,)
-#         if not value.unit.is_equivalent(units) or value.shape != shape:
-#             raise ValueError("Quantity must be of units {units} and shape {shape}")
-#         return value
-
-
 class OrbitProperties(BaseModel):
     """Prbit Properties"""
 
@@ -50,8 +18,6 @@ class OrbitProperties(BaseModel):
     eccentricity: float
     inclination: unit.Quantity
     epoch: unit.Quantity
-
-
 
 
 class ADCS:
