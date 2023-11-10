@@ -13,7 +13,7 @@ from llmsat.components import OBC, PayloadManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-LLM_NAME = "gpt-3.5-turbo-0613"  # "gpt-4-0613"
+LLM_NAME = "gpt-4-0613"  # "gpt-3.5-turbo-0613"
 
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     science = connection.space_center.science
     print(science)
@@ -47,8 +47,8 @@ if __name__ == "__main__":
     prompt = prompts["default"]
     system_message = SystemMessage(content=prompt)
     tools = [
-        OBC.get_spacecraft_properties,
-        OBC.get_parts_list,
+        # OBC.get_spacecraft_properties,
+        # OBC.get_parts_list,
         PayloadManager.get_experiments,
         PayloadManager.run_experiment,
     ]
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         verbose=True,
         agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("What is your name? What is your mission?")
+    result = agent.run("Run a temperature experiment")
     print(result)
 
     input("Simulation complete. Press any key to quit...")
