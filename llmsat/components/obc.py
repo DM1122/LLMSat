@@ -2,11 +2,26 @@ import json
 from enum import Enum
 from pathlib import Path
 from typing import List, Optional
-
+import inspect
 import krpc
 from langchain.tools import tool
 from langchain.tools.base import ToolException
 from pydantic import BaseModel
+
+
+def custom_tool(func):
+    # Retrieve the signature and docstring
+    signature = inspect.signature(func)
+    docstring = func.__doc__ or ""
+    func_info = f"{func.__name__}{signature} - {docstring.strip()}"
+
+    # Create a wrapper that returns the formatted string
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+
+    wrapper.is_exposed = True
+    wrapper.info = func_info
+    return wrapper
 
 
 class SpacecraftProperties(BaseModel):
@@ -95,9 +110,8 @@ class OBC:
             )
         return OBC()
 
-    @staticmethod
-    @tool(handle_tool_error=True)
-    def get_spacecraft_properties() -> str:
+    @custom_tool
+    def get_spacecraft_properties(self, a: int, b: float, c) -> str:
         """Get information about the vessel"""
         vessel = OBC._get_instance().vessel
 

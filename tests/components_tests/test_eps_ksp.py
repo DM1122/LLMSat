@@ -23,3 +23,5 @@ def test_get_parts_tree(ksp_connection):
 
     obc.assign_ids_to_parts()
     print(obc.get_parts_tree())
+    print(obc.get_spacecraft_properties)
+    print(OBC.get_parts_tree.info)
