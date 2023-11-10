@@ -1,6 +1,6 @@
 import krpc
 
-from llmsat.components.obc_ksp import OBC
+from llmsat.components import OBC
 
 
 def test_get_spacecraft_properties():

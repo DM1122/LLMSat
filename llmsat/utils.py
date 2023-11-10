@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 def is_ksp_running():
+    """Determine whether Kerbal Space Program is currently running on the system."""
     try:
         # List processes and grep for KSP
         output = subprocess.check_output("tasklist", shell=True).decode("utf-8")
