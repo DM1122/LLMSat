@@ -101,8 +101,6 @@ class PayloadManager:
         exp_obj = PayloadManager._get_instance()._get_experiment_obj(name=name)
         result = exp_obj.transmit()
 
-        
-
         return result
 
     @staticmethod

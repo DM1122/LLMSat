@@ -1,8 +1,8 @@
 import krpc
-from llmsat import utils
-from llmsat.components import EPS
-
 import pytest
+
+from llmsat import utils
+from llmsat.components import EPS, OBC
 
 
 @pytest.fixture(scope="session")
@@ -19,6 +19,7 @@ def ksp_connection():
 def test_get_parts_tree(ksp_connection):
     vessel = ksp_connection.space_center.active_vessel
 
-    
+    obc = OBC(vessel=vessel)
 
-    print(vessel.name)
+    obc.assign_ids_to_parts()
+    print(obc.get_parts_tree())

@@ -1,9 +1,10 @@
+import json
 from pathlib import Path
 
 from langchain.tools import tool
 from langchain.tools.base import ToolException
 from pydantic import BaseModel
-import json
+
 
 class AutopilotService:
     _instance = None
@@ -21,7 +22,7 @@ class AutopilotService:
         """
         if AutopilotService._initialized:
             return
-        
+
         self.connection = connection
         self.pilot = connection.mech_jeb
 
@@ -35,7 +36,7 @@ class AutopilotService:
                 "AutopilotService must be initialized with a connection before calling its methods."
             )
         return AutopilotService()
-    
+
     @staticmethod
     @tool(handle_tool_error=True)
     def plan_apoapsis_maneuver() -> str:
@@ -45,21 +46,23 @@ class AutopilotService:
         planner = pilot.maneuver_planner.operation_apoapsis
         planner.make_nodes()
 
-        #check for warnings
+        # check for warnings
         warning = planner.error_message
         if warning:
             print(warning)
 
-        #execute the nodes
+        # execute the nodes
         AutopilotService._get_instance().execute_nodes()
 
     def execute_nodes(self):
         print("Executing maneuver nodes")
         executor = self.pilot.node_executor
         executor.execute_all_nodes()
-        
+
         with self.connection.stream(getattr, executor, "enabled") as enabled:
-            enabled.rate = 1 # we don't need a high throughput rate, 1 second is more than enough
+            enabled.rate = (
+                1  # we don't need a high throughput rate, 1 second is more than enough
+            )
             with enabled.condition:
                 while enabled():
                     enabled.wait()
