@@ -1,58 +1,85 @@
-import json
-from pathlib import Path
-
-from langchain.tools import tool
-from langchain.tools.base import ToolException
-from pydantic import BaseModel
+"""Autopilot class."""
+from cmd2 import CommandSet, with_default_category
+from cmd2 import Cmd2ArgumentParser, with_argparser
+from pydantic import BaseModel, Field
 
 
-class AutopilotService:
-    _instance = None
-    _initialized = False
+class Orbit(BaseModel):
+    body: str = Field(description="The celestial body (e.g. planet or moon) around which the object is orbiting.")
+    apoapsis: float = Field(description="Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.")
+    periapsis: float = Field(description="The periapsis of the orbit, in meters, from the center of mass of the body being orbited.")
+    apoapsis_altitude: float = Field(description="The apoapsis of the orbit, in meters, above the sea level of the body being orbited.")
+    periapsis_altitude: float = Field(description="The periapsis of the orbit, in meters, above the sea level of the body being orbited.")
+    semi_major_axis: float = Field(description="The semi-major axis of the orbit, in meters.")
+    semi_minor_axis: float = Field(description="The semi-minor axis of the orbit, in meters.")
+    radius: float = Field(description="The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting.")
+    speed: float = Field(description="The orbital speed of the object in meters per second. This value will change over time if the orbit is elliptical.")
+    period: float = Field(description="The orbital period, in seconds.")
+    eccentricity: float = Field(description="The eccentricity of the orbit.")
+    inclination: float = Field(description="The inclination of the orbit, in radians.")
+    longitude_of_ascending_node: float = Field(description="The longitude of the ascending node, in radians.")
+    argument_of_periapsis: float = Field(description="The argument of periapsis, in radians.")
 
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(AutopilotService, cls).__new__(cls)
-        return cls._instance
+class Node(BaseModel):
+    "Represents a maneuver node."
 
-    def __init__(self, connection=None):
+    prograde: float = Field(description="The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second.")
+    normal: float = Field(description="The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second.")
+    radial: float = Field(description="The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second.")
+    delta_v: float = Field(description="The delta-v of the maneuver node, in meters per second. Does not change when executing the maneuver node. See remaining_delta_v.")
+    remaining_delta_v: float = Field(description="Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node is executed.")
+    ut: float = Field(description="The universal time at which the maneuver will occur, in seconds.")
+    time_to: float = Field(description="The time until the maneuver node will be encountered, in seconds.")
+    new_orbit: Orbit
+
+@with_default_category("AutopilotService")
+class AutopilotService(CommandSet):
+    def __init__(self, krpc_connection):
+        """Autopilot class."""
+        super().__init__()
+
+        self.connection = krpc_connection
+        self.pilot = self.connection.mech_jeb
+
+    plan_apoapsis_maneuver_parser = Cmd2ArgumentParser()
+    plan_apoapsis_maneuver_parser.add_argument(
+        "--new_apoapsis",
+        type=float,
+        required=True,
+        help="The new apoapsis altitude [km]",
+    )
+
+    @with_argparser(plan_apoapsis_maneuver_parser)
+    def do_plan_apoapsis_maneuver(self, args):
+        """Plan an apoapsis change."""
+        plan_apoapsis_parser = Cmd2ArgumentParser()
+        plan_apoapsis_parser.add_argument(
+            "new_apoapsis", type=float, help="The new apoapsis altitude"
+        )
+        output = self.plan_apoapsis_maneuver(args.new_apoapsis)
+
+        self._cmd.poutput(output)
+
+    def plan_apoapsis_maneuver(self, new_apoapsis: float):
+        """Create a maneuver to set a new apoapsis
+
+        new_apoapsis [km]
         """
-        Args:
-            pilot: Mechjeb autpilot instance
-        """
-        if AutopilotService._initialized:
-            return
+        print("creating new nodes")
+        planner = self.pilot.maneuver_planner.operation_apoapsis
 
-        self.connection = connection
-        self.pilot = connection.mech_jeb
+        planner.new_apoapsis = new_apoapsis * 1000
+        # planner.time_selector.time_reference.computed
+        nodes = planner.make_nodes()
 
-        AutopilotService._initialized = True
-
-    @staticmethod
-    def _get_instance():
-        instance = AutopilotService()
-        if instance.connection is None:
-            raise ValueError(
-                "AutopilotService must be initialized with a connection before calling its methods."
-            )
-        return AutopilotService()
-
-    @staticmethod
-    @tool(handle_tool_error=True)
-    def plan_apoapsis_maneuver() -> str:
-        """Create a maneuver to set a new apoapsis"""
-        pilot = AutopilotService._get_instance().pilot
-
-        planner = pilot.maneuver_planner.operation_apoapsis
-        planner.make_nodes()
-
-        # check for warnings
         warning = planner.error_message
         if warning:
             print(warning)
 
-        # execute the nodes
-        AutopilotService._get_instance().execute_nodes()
+    def do_execute_nodes(self):
+        output = self.execute_nodes()
+
+        self._cmd.poutput(output)
 
     def execute_nodes(self):
         print("Executing maneuver nodes")

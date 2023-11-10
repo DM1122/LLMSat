@@ -1,7 +1,6 @@
 """SpacecraftManager class."""
 
 from enum import Enum
-import cmd2
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
 from typing import List

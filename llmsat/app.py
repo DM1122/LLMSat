@@ -6,6 +6,7 @@ from decouple import config
 
 from llmsat import utils
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.autpilot import AutopilotService
 
 
 class App(cmd2.Cmd):
@@ -48,8 +49,7 @@ if __name__ == "__main__":
     print("Connecting to KSP...")
     connection = krpc.connect(name="Simulator")
 
-    services = [SpacecraftManager]
-
-    my_commands = SpacecraftManager(connection)
-    app = App(command_sets=[my_commands])
+    spacecraft_manager = SpacecraftManager(connection)
+    autopilot_service = AutopilotService(connection)
+    app = App(command_sets=[spacecraft_manager, autopilot_service])
     app.cmdloop()
