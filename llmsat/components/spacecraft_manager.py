@@ -1,9 +1,10 @@
 """SpacecraftManager class."""
 
 from enum import Enum
+from typing import List
+
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
-from typing import List
 
 
 class AttachmentMode(Enum):

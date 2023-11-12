@@ -1,46 +1,10 @@
 """Autopilot class."""
-from cmd2 import CommandSet, with_default_category
-from cmd2 import Cmd2ArgumentParser, with_argparser
+import json
+from typing import List
+
+import utils
+from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
-
-
-class Orbit(BaseModel):
-    body: str = Field(
-        description="The celestial body (e.g. planet or moon) around which the object is orbiting."
-    )
-    apoapsis: float = Field(
-        description="Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited."
-    )
-    periapsis: float = Field(
-        description="The periapsis of the orbit, in meters, from the center of mass of the body being orbited."
-    )
-    apoapsis_altitude: float = Field(
-        description="The apoapsis of the orbit, in meters, above the sea level of the body being orbited."
-    )
-    periapsis_altitude: float = Field(
-        description="The periapsis of the orbit, in meters, above the sea level of the body being orbited."
-    )
-    semi_major_axis: float = Field(
-        description="The semi-major axis of the orbit, in meters."
-    )
-    semi_minor_axis: float = Field(
-        description="The semi-minor axis of the orbit, in meters."
-    )
-    radius: float = Field(
-        description="The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting."
-    )
-    speed: float = Field(
-        description="The orbital speed of the object in meters per second. This value will change over time if the orbit is elliptical."
-    )
-    period: float = Field(description="The orbital period, in seconds.")
-    eccentricity: float = Field(description="The eccentricity of the orbit.")
-    inclination: float = Field(description="The inclination of the orbit, in radians.")
-    longitude_of_ascending_node: float = Field(
-        description="The longitude of the ascending node, in radians."
-    )
-    argument_of_periapsis: float = Field(
-        description="The argument of periapsis, in radians."
-    )
 
 
 class Node(BaseModel):
@@ -67,7 +31,9 @@ class Node(BaseModel):
     time_to: float = Field(
         description="The time until the maneuver node will be encountered, in seconds."
     )
-    # new_orbit: Orbit
+    new_orbit: utils.Orbit = Field(
+        description="The new orbit to be achieved after execution of the maneuver"
+    )
 
 
 @with_default_category("AutopilotService")
@@ -78,8 +44,11 @@ class AutopilotService(CommandSet):
 
         self.connection = krpc_connection
         self.pilot = self.connection.mech_jeb
+        self.vessel = self.connection.space_center.active_vessel
 
-    plan_apoapsis_maneuver_parser = Cmd2ArgumentParser()
+    plan_apoapsis_maneuver_parser = Cmd2ArgumentParser(
+        epilog=f"Returns:\nList[{Node.model_json_schema()['title']}]: {json.dumps(Node.model_json_schema()['properties'], indent=4)}"
+    )
     plan_apoapsis_maneuver_parser.add_argument(
         "--new_apoapsis",
         type=float,
@@ -89,21 +58,23 @@ class AutopilotService(CommandSet):
 
     @with_argparser(plan_apoapsis_maneuver_parser)
     def do_plan_apoapsis_maneuver(self, args):
-        """Plan an apoapsis change."""
+        """Plan an apoapsis change"""
         plan_apoapsis_parser = Cmd2ArgumentParser()
         plan_apoapsis_parser.add_argument(
-            "new_apoapsis", type=float, help="The new apoapsis altitude"
+            "new_apoapsis", type=float, help="[km] The new apoapsis altitude"
         )
-        output = self.plan_apoapsis_maneuver(args.new_apoapsis)
 
-        self._cmd.poutput(output)
+        self._cmd.poutput("Generating maneuver nodes...")
 
-    def plan_apoapsis_maneuver(self, new_apoapsis: float):
-        """Create a maneuver to set a new apoapsis
+        nodes = self.plan_apoapsis_maneuver(args.new_apoapsis)
 
-        new_apoapsis [km]
-        """
-        print("creating new nodes")
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def plan_apoapsis_maneuver(self, new_apoapsis: float) -> List[Node]:
+        """Create a maneuver to set a new apoapsis"""
+
         planner = self.pilot.maneuver_planner.operation_apoapsis
 
         planner.new_apoapsis = new_apoapsis * 1000
@@ -120,22 +91,27 @@ class AutopilotService(CommandSet):
                     remaining_delta_v=node_obj.remaining_delta_v,
                     ut=node_obj.ut,
                     time_to=node_obj.time_to,
+                    new_orbit=utils.cast_krpc_orbit(node_obj.orbit),
                 )
             )
 
         warning = planner.error_message
         if warning:
-            print(warning)
+            self._cmd.poutput(warning)
 
         return nodes
 
-    def do_execute_nodes(self):
-        output = self.execute_nodes()
+    def do_execute_maneuver(self, args):
+        """Execute a planned maneuver nodes"""
 
-        self._cmd.poutput(output)
+        self._cmd.poutput("Executing planned maneuver nodes")
+        new_orbit = self.execute_maneuver()
 
-    def execute_nodes(self):
-        print("Executing maneuver nodes")
+        self._cmd.poutput(
+            f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
+        )
+
+    def execute_maneuver(self) -> utils.Orbit:
         executor = self.pilot.node_executor
         executor.execute_all_nodes()
 
@@ -146,3 +122,13 @@ class AutopilotService(CommandSet):
             with enabled.condition:
                 while enabled():
                     enabled.wait()
+
+        return self.get_orbit()
+
+    def get_orbit(self) -> utils.Orbit:
+        """Gets the current orbit"""
+
+        obj = self.vessel.orbit
+        orbit = utils.cast_krpc_orbit(obj)
+
+        return orbit

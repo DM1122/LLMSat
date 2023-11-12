@@ -2,6 +2,7 @@ import astropy.units as unit
 import krpc
 from pydantic import BaseModel, validator
 
+
 class OrbitProperties(BaseModel):
     """Prbit Properties"""
 
