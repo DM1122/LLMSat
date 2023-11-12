@@ -107,7 +107,7 @@ class SpacecraftManager(CommandSet):
 
         self._cmd.poutput(output)  # model_dump_json(indent=4)
 
-    def get_parts_tree(self) -> str:
+    def get_parts_tree(self) -> Part:
         """Get a tree of all spacecraft parts."""
 
         def construct_part_tree(krpc_part) -> Part:
@@ -136,7 +136,7 @@ class SpacecraftManager(CommandSet):
         root_part = self.vessel.parts.root
         tree = construct_part_tree(root_part)
 
-        return tree.model_dump_json(indent=4)
+        return tree
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""

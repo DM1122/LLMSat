@@ -8,15 +8,17 @@ from llmsat import utils
 from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.autpilot import AutopilotService
 
+CHECKPOINT_NAME = "checkpoint"
+
 
 class App(cmd2.Cmd):
     """Command line interface."""
 
-    intro = "SatelliteOS V1.0"
-    prompt = "> "
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.intro = "SatelliteOS"
+        self.prompt = "> "
 
         # delete built-in commands and settings
         del cmd2.Cmd.do_alias
@@ -39,6 +41,13 @@ class App(cmd2.Cmd):
         self.remove_settable("quiet")
         self.remove_settable("timing")
 
+        self.default_category = "Built-in Commands"
+
+    def preloop(self):
+        super().preloop()
+        self.poutput("Welcome to SatelliteOS")
+        self.do_help("-v")
+
 
 if __name__ == "__main__":
     if not utils.is_ksp_running():
@@ -46,8 +55,13 @@ if __name__ == "__main__":
         print(f"Launching KSP from '{ksp_path}'...")
         utils.launch_ksp(path=ksp_path)
 
+    input("Press any key once the KSP save is loaded to continue...")
+
     print("Connecting to KSP...")
     connection = krpc.connect(name="Simulator")
+
+    print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
+    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
