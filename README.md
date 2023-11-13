@@ -13,6 +13,15 @@ Poetry install
 1. Copy `.env.example` to new file `.env` and populate keys
 1. Run tests to verify setup
 
+
+## KSP Setup
+1. Start with a fresh install
+1. Install Realism Overhaul and its dependencies through CKAN
+1. Install:
+    KRPC
+    KRPC-Mechjeb
+    Parallax (for nice planet textures)
+
 # Test
 To run tests:
 ```

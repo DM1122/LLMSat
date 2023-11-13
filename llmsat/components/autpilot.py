@@ -2,7 +2,7 @@
 import json
 from typing import List
 
-import utils
+from llmsat import utils
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
 
@@ -112,16 +112,21 @@ class AutopilotService(CommandSet):
         )
 
     def execute_maneuver(self) -> utils.Orbit:
+        """Execute a planned maneuver nodes"""
         executor = self.pilot.node_executor
+        print("Executor")
+        executor.autowarp = True
+        print("Autowarp")
         executor.execute_all_nodes()
+        print("do the ting")
 
-        with self.connection.stream(getattr, executor, "enabled") as enabled:
-            enabled.rate = (
-                1  # we don't need a high throughput rate, 1 second is more than enough
-            )
-            with enabled.condition:
-                while enabled():
-                    enabled.wait()
+        # with self.connection.stream(getattr, executor, "enabled") as enabled:
+        #     enabled.rate = (
+        #         1  # we don't need a high throughput rate, 1 second is more than enough
+        #     )
+        #     with enabled.condition:
+        #         while enabled():
+        #             enabled.wait()
 
         return self.get_orbit()
 

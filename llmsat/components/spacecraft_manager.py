@@ -85,7 +85,7 @@ class SpacecraftManager(CommandSet):
         """Get information about the spacecraft"""
         output = self.get_spacecraft_properties()
 
-        self._cmd.poutput(output)  # model_dump_json(indent=4)
+        self._cmd.poutput(f"Spacecraft properties:\n{output.model_dump_json(indent=4)}")
 
     def get_spacecraft_properties(self):
         """Get information about the spacecraft"""
@@ -106,7 +106,7 @@ class SpacecraftManager(CommandSet):
         """Get a tree of all spacecraft parts."""
         output = self.get_parts_tree()
 
-        self._cmd.poutput(output)  # model_dump_json(indent=4)
+        self._cmd.poutput(output.model_dump_json(indent=4))
 
     def get_parts_tree(self) -> Part:
         """Get a tree of all spacecraft parts."""

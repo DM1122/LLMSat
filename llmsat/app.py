@@ -7,6 +7,7 @@ from decouple import config
 from llmsat import utils
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.experiment_manager import ExperimentManager
 
 CHECKPOINT_NAME = "checkpoint"
 
@@ -45,7 +46,8 @@ class App(cmd2.Cmd):
 
     def preloop(self):
         super().preloop()
-        self.poutput("Welcome to SatelliteOS")
+        self.poutput("Welcome to SatelliteOS\n")
+        self.do_get_spacecraft_properties("")
         self.do_help("-v")
 
 
@@ -65,5 +67,6 @@ if __name__ == "__main__":
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
-    app = App(command_sets=[spacecraft_manager, autopilot_service])
+    payload_manager = ExperimentManager(connection)
+    app = App(command_sets=[spacecraft_manager, autopilot_service, payload_manager])
     app.cmdloop()

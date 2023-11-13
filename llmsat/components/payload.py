@@ -7,21 +7,7 @@ from langchain.tools.base import ToolException
 from pydantic import BaseModel
 
 
-class ExperimentProperties(BaseModel):
-    """Basic properties of the spacecraft"""
 
-    part: str
-    name: str
-    deployed: bool
-    rerunnable: bool
-    inoperable: bool
-    has_data: bool
-    available: bool
-
-
-class DataProperties(BaseModel):
-    description: str
-    data_amount: float
 
 
 class PayloadManager:
@@ -48,12 +34,7 @@ class PayloadManager:
             )
         return PayloadManager()
 
-    def _get_experiment_obj(self, name):
-        experiment_objs = self.vessel.parts.experiments
 
-        for experiment in experiment_objs:
-            if experiment.title == name:
-                return experiment
 
     @staticmethod
     @tool(handle_tool_error=True)

@@ -1,15 +1,13 @@
 import krpc
 
-from llmsat.components import AutpilotService
+from llmsat.components.autpilot import AutopilotService
 
 
-def test_get_spacecraft_properties():
-    conn = krpc.connect(name="Test")
-    vessel = conn.space_center.active_vessel
+def test_execute_maneuver():
+    connection = krpc.connect(name="Test")
 
-    
-    autopilot = AutpilotService(pilot=)
+    service = AutopilotService(connection)
 
-    print(obc.get_spacecraft_properties())
+    service.execute_maneuver()
 
-    conn.close()
+    connection.close()
