@@ -1,0 +1,44 @@
+2023-11-14 11:58:56 - Output: Welcome to SatelliteOS
+
+2023-11-14 12:00:00 - Output: Welcome to SatelliteOS
+
+2023-11-14 12:00:00 - Output: Spacecraft properties:
+{
+    "name": "LLMSat-1",
+    "description": "An advanced satellite designed to conduct autonomous interplanetary exploration leveraging a Large Language Model-based agentic controller.",
+    "type": "VesselType.relay",
+    "situation": "VesselSituation.orbiting",
+    "met": 288.9799999997372,
+    "biome": "Flatlands",
+    "mass": 2560.043701171875,
+    "dry_mass": 1370.45263671875
+}
+2023-11-14 12:00:00 - Output: 
+2023-11-14 12:00:00 - Output: Documented commands (use 'help -v' for verbose/'help <topic>' for details):
+2023-11-14 12:00:00 - Output: AutopilotService
+========================================================================================================
+execute_maneuver_nodes  Execute all planned maneuver nodes                                              
+plan_apoapsis_maneuver  Plan an apoapsis change                                                         
+
+2023-11-14 12:00:00 - Output: ExperimentManager
+======================================================================================================
+get_experiments       Get a dictionary of all onboard scientific experiments                          
+run_experiment        Run a given experiment to acquire data                                          
+
+2023-11-14 12:00:00 - Output: SpacecraftManager
+===========================================================================================================
+get_parts_tree             Get a tree of all spacecraft parts.                                             
+get_spacecraft_properties  Get information about the spacecraft                                            
+
+2023-11-14 12:00:00 - Output: Built-in Commands
+======================================================================================================
+help                  List available commands or provide detailed help for a specific command         
+history               View, run, edit, save, or clear previously entered commands                     
+set                   Set a settable parameter or show current settings of parameters                 
+
+2023-11-14 12:00:00 - Output: SatelliteOS
+2023-11-14 12:00:28 - Output: 
+2023-11-14 12:00:28 - Output: Documented commands (use 'help -v' for verbose/'help <topic>' for details):
+2023-11-14 12:00:28 - Output: AutopilotService
+2023-11-14 12:00:28 - Output: ================
+2023-11-14 12:00:28 - Output: execute_maneuver_nodes  plan_apoapsis_maneuver

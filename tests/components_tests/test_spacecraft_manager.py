@@ -7,6 +7,7 @@ from llmsat.components.spacecraft_manager import (
     SpacecraftManager,
     SpacecraftProperties,
 )
+from datetime import datetime
 
 
 @pytest.fixture(scope="session")
@@ -33,3 +34,10 @@ def test_get_parts_tree(ksp_connection):
 
     parts_tree: Part = service.get_parts_tree()
     print(parts_tree)
+
+
+def test_get_met(ksp_connection):
+    service = SpacecraftManager(ksp_connection)
+
+    output: datetime = service.get_met()
+    print(output)

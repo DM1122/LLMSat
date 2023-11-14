@@ -5,6 +5,7 @@ from typing import List
 
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
+from datetime import datetime, timedelta
 
 
 class AttachmentMode(Enum):
@@ -138,6 +139,10 @@ class SpacecraftManager(CommandSet):
         tree = construct_part_tree(root_part)
 
         return tree
+
+    def get_met(self) -> datetime:
+        met = self.vessel.met
+        return met
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""

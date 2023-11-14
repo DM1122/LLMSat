@@ -1,5 +1,6 @@
+"""Spacecraft Console App"""
 from pathlib import Path
-
+import logging
 import cmd2
 import krpc
 from decouple import config
@@ -13,7 +14,7 @@ CHECKPOINT_NAME = "checkpoint"
 
 
 class App(cmd2.Cmd):
-    """Command line interface."""
+    """Spacecraft console app"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,7 +28,7 @@ class App(cmd2.Cmd):
         del cmd2.Cmd.do_run_pyscript
         del cmd2.Cmd.do_shortcuts
         del cmd2.Cmd.do_edit
-        del cmd2.Cmd.do_history
+        # del cmd2.Cmd.do_history
         del cmd2.Cmd.do_quit
         del cmd2.Cmd.do_run_script
         del cmd2.Cmd.do_shell
@@ -43,6 +44,19 @@ class App(cmd2.Cmd):
         self.remove_settable("timing")
 
         self.default_category = "Built-in Commands"
+
+        logging.basicConfig(
+            filename="app.log",
+            level=logging.INFO,
+            format="%(asctime)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+
+    def poutput(self, message, *args, **kwargs):
+        logging.info(f"Output: {message}")
+
+        # Then call the original poutput function
+        super().poutput(message, *args, **kwargs)
 
     def preloop(self):
         super().preloop()
