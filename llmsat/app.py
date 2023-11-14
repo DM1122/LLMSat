@@ -6,8 +6,8 @@ from decouple import config
 
 from llmsat import utils
 from llmsat.components.autpilot import AutopilotService
-from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.experiment_manager import ExperimentManager
+from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
 

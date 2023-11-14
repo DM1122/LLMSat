@@ -1,11 +1,11 @@
 """Payload manager class."""
 import json
+import time
 from typing import List
 
-import utils
+from llmsat import utils
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
-import time
 
 
 class Experiment(BaseModel):
@@ -28,7 +28,7 @@ class DataProperties(BaseModel):
 @with_default_category("ExperimentManager")
 class ExperimentManager(CommandSet):
     def __init__(self, krpc_connection):
-        """Payload manager class."""
+        """Experiment manager class."""
         super().__init__()
 
         self.connection = krpc_connection

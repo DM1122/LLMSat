@@ -2,9 +2,10 @@
 import json
 from typing import List
 
-from llmsat import utils
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
+
+from llmsat import utils
 
 
 class Node(BaseModel):
@@ -101,24 +102,21 @@ class AutopilotService(CommandSet):
 
         return nodes
 
-    def do_execute_maneuver(self, args):
-        """Execute a planned maneuver nodes"""
+    def do_execute_maneuver_nodes(self, args):
+        """Execute all planned maneuver nodes"""
 
         self._cmd.poutput("Executing planned maneuver nodes")
-        new_orbit = self.execute_maneuver()
+        new_orbit = self.execute_maneuver_nodes()
 
         self._cmd.poutput(
             f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
         )
 
-    def execute_maneuver(self) -> utils.Orbit:
-        """Execute a planned maneuver nodes"""
+    def execute_maneuver_nodes(self) -> utils.Orbit:
+        """Execute all planned maneuver nodes"""
         executor = self.pilot.node_executor
-        print("Executor")
         executor.autowarp = True
-        print("Autowarp")
         executor.execute_all_nodes()
-        print("do the ting")
 
         # with self.connection.stream(getattr, executor, "enabled") as enabled:
         #     enabled.rate = (

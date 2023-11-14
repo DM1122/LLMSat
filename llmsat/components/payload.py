@@ -7,9 +7,6 @@ from langchain.tools.base import ToolException
 from pydantic import BaseModel
 
 
-
-
-
 class PayloadManager:
     _instance = None
     _initialized = False
@@ -33,8 +30,6 @@ class PayloadManager:
                 "PayloadManager must be initialized with a vessel before calling its methods."
             )
         return PayloadManager()
-
-
 
     @staticmethod
     @tool(handle_tool_error=True)
