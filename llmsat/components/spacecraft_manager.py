@@ -6,6 +6,7 @@ from typing import List
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+from llmsat import utils
 
 
 class AttachmentMode(Enum):
@@ -140,9 +141,22 @@ class SpacecraftManager(CommandSet):
 
         return tree
 
-    def get_met(self) -> datetime:
-        met = self.vessel.met
+    def do_get_met(self, statement):
+        """Get the mission elapsed time"""
+        met = self.get_met()
+
+        self._cmd.poutput(met)
+
+    def get_met(self) -> utils.MET:
+        """Gets the current mission elapsed time."""
+        met = utils.MET(self.vessel.met)
+
         return met
+    
+    def get_ut(self):
+        """Gets the current universal time"""
+        ut = self.connection.space_center.ut
+        return ut
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""

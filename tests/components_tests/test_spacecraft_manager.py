@@ -39,5 +39,12 @@ def test_get_parts_tree(ksp_connection):
 def test_get_met(ksp_connection):
     service = SpacecraftManager(ksp_connection)
 
-    output: datetime = service.get_met()
+    output = service.get_met()
+    print(output)
+
+
+def test_get_ut(ksp_connection):
+    service = SpacecraftManager(ksp_connection)
+
+    output = service.get_ut()
     print(output)

@@ -121,3 +121,25 @@ def cast_krpc_orbit(obj) -> Orbit:
     )
 
     return orbit
+
+
+class MET:
+    """Mission elapsed time object."""
+
+    def __init__(self, seconds):
+        self.seconds = int(seconds)
+
+    def __str__(self):
+        # Constants for time calculations
+        seconds_in_minute = 60
+        seconds_in_hour = 3600
+        seconds_in_day = 86400
+        seconds_in_year = 31536000  # Approximation, not accounting for leap years
+
+        # Calculate years, days, hours, minutes, and seconds
+        years, remaining_seconds = divmod(self.seconds, seconds_in_year)
+        days, remaining_seconds = divmod(remaining_seconds, seconds_in_day)
+        hours, remaining_seconds = divmod(remaining_seconds, seconds_in_hour)
+        minutes, seconds = divmod(remaining_seconds, seconds_in_minute)
+
+        return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
