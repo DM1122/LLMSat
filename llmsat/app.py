@@ -1,11 +1,13 @@
 """Spacecraft Console App"""
-from pathlib import Path
 import logging
+from pathlib import Path
+
 import cmd2
 import krpc
 from decouple import config
 
 from llmsat import utils
+from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
@@ -53,7 +55,7 @@ class App(cmd2.Cmd):
         )
 
     def poutput(self, message, *args, **kwargs):
-        logging.info(f"Output: {message}")
+        # logging.info(f"Output: {message}")
 
         # Then call the original poutput function
         super().poutput(message, *args, **kwargs)
@@ -82,5 +84,13 @@ if __name__ == "__main__":
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
-    app = App(command_sets=[spacecraft_manager, autopilot_service, payload_manager])
+    alarm_manager = AlarmManager(connection)
+    app = App(
+        command_sets=[
+            spacecraft_manager,
+            autopilot_service,
+            payload_manager,
+            alarm_manager,
+        ]
+    )
     app.cmdloop()

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import krpc
 import pytest
 
@@ -7,7 +9,6 @@ from llmsat.components.spacecraft_manager import (
     SpacecraftManager,
     SpacecraftProperties,
 )
-from datetime import datetime
 
 
 @pytest.fixture(scope="session")

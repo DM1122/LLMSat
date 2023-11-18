@@ -3,9 +3,10 @@ import json
 import time
 from typing import List
 
-from llmsat import utils
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
+
+from llmsat import utils
 
 
 class Experiment(BaseModel):
