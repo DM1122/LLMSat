@@ -8,12 +8,17 @@ from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
-
-from llmsat.components import PayloadManager, SpacecraftManager
+from llmsat import utils
+from llmsat.components.alarm_manager import AlarmManager
+from llmsat.components.autpilot import AutopilotService
+from llmsat.components.console import AgentCMDInterface, Console
+from llmsat.components.experiment_manager import ExperimentManager
+from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-LLM_NAME = "gpt-4-0613"  # "gpt-3.5-turbo-0613"
+LLM_NAME = "gpt-3.5-turbo-0613"  # "" gpt-4-0613
+CHECKPOINT_NAME = "checkpoint"
 
 
 if __name__ == "__main__":
@@ -28,38 +33,39 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
-    science = connection.space_center.science
-    print(science)
-
-    # initialize systems
-    vessel = connection.space_center.active_vessel
-    payload = PayloadManager(vessel=vessel)
-    obc = SpacecraftManager(vessel=vessel)
+    spacecraft_manager = SpacecraftManager(connection)
+    autopilot_service = AutopilotService(connection)
+    payload_manager = ExperimentManager(connection)
+    alarm_manager = AlarmManager(connection)
+    app = Console(
+        command_sets=[
+            spacecraft_manager,
+            autopilot_service,
+            payload_manager,
+            alarm_manager,
+        ]
+    )
 
     # initialize agent
     KEY = str(config("OPENAI", cast=str))
     llm = ChatOpenAI(openai_api_key=KEY, model=LLM_NAME)
-    print(llm)
+
+    agent_interface = AgentCMDInterface(app)
 
     prompts = utils.load_json(PROMPTS_FILE_PATH)
     prompt = prompts["default"]
+    print(prompt)
     system_message = SystemMessage(content=prompt)
-    tools = [
-        # OBC.get_spacecraft_properties,
-        # OBC.get_parts_list,
-        PayloadManager.get_experiments,
-        PayloadManager.run_experiment,
-    ]
+    tools = [agent_interface.run]
     agent = initialize_agent(
         tools=tools,
         llm=llm,
         agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,  # AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
-        agent_kwargs={"system_message": system_message},
     )
-    result = agent.run("Run a temperature experiment")
+    result = agent.run(prompt + "\nDetermine the number of parts on the spacecraft")
     print(result)
 
     input("Simulation complete. Press any key to quit...")

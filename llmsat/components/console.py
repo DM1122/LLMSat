@@ -1,10 +1,15 @@
 """Spacecraft Console App"""
+import json
 import logging
+import time
 from pathlib import Path
 
 import cmd2
 import krpc
 from decouple import config
+from langchain.tools import tool
+from langchain.tools.base import ToolException
+from pydantic import BaseModel
 
 from llmsat import utils
 from llmsat.components.alarm_manager import AlarmManager
@@ -12,10 +17,53 @@ from llmsat.components.autpilot import AutopilotService
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
 
-CHECKPOINT_NAME = "checkpoint"
+
+class AgentCMDInterface:
+    """Tool interface between LLM and cmd2 app"""
+
+    _instance = None
+    _initialized = False
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(AgentCMDInterface, cls).__new__(cls)
+        return cls._instance
+
+    def __init__(self, app=None):
+        if AgentCMDInterface._initialized:
+            return
+        self.app = app
+        AgentCMDInterface._initialized = True
+
+    @staticmethod
+    def _get_instance():
+        instance = AgentCMDInterface()
+        if instance.app is None:
+            raise ValueError(
+                "AgentCMDInterface must be initialized with a cmd2 app before calling its methods."
+            )
+        return AgentCMDInterface()
+
+    @staticmethod
+    @tool()
+    def run(input: str) -> str:
+        """Write a command to the console"""
+        app = AgentCMDInterface._get_instance().app
+
+        app.preloop()
+
+        app.onecmd_plus_hooks(input)
+
+        app.postloop()
+
+        # get output somehow
+
+        output = "There atr 6 parts onboard"
+
+        return output
 
 
-class App(cmd2.Cmd):
+class Console(cmd2.Cmd):
     """Spacecraft console app"""
 
     def __init__(self, *args, **kwargs):
@@ -31,7 +79,7 @@ class App(cmd2.Cmd):
         del cmd2.Cmd.do_shortcuts
         del cmd2.Cmd.do_edit
         # del cmd2.Cmd.do_history
-        del cmd2.Cmd.do_quit
+        # del cmd2.Cmd.do_quit
         del cmd2.Cmd.do_run_script
         del cmd2.Cmd.do_shell
 
@@ -65,32 +113,3 @@ class App(cmd2.Cmd):
         self.poutput("Welcome to SatelliteOS\n")
         self.do_get_spacecraft_properties("")
         self.do_help("-v")
-
-
-if __name__ == "__main__":
-    if not utils.is_ksp_running():
-        ksp_path = Path(str(config("KSP_PATH")))
-        print(f"Launching KSP from '{ksp_path}'...")
-        utils.launch_ksp(path=ksp_path)
-
-    input("Press any key once the KSP save is loaded to continue...")
-
-    print("Connecting to KSP...")
-    connection = krpc.connect(name="Simulator")
-
-    print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
-
-    spacecraft_manager = SpacecraftManager(connection)
-    autopilot_service = AutopilotService(connection)
-    payload_manager = ExperimentManager(connection)
-    alarm_manager = AlarmManager(connection)
-    app = App(
-        command_sets=[
-            spacecraft_manager,
-            autopilot_service,
-            payload_manager,
-            alarm_manager,
-        ]
-    )
-    app.cmdloop()

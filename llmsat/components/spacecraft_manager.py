@@ -153,7 +153,7 @@ class SpacecraftManager(CommandSet):
         met = utils.MET(self.vessel.met)
 
         return met
-    
+
     def get_ut(self):
         """Gets the current universal time"""
         ut = self.connection.space_center.ut
