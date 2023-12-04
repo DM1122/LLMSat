@@ -33,6 +33,7 @@ class AgentCMDInterface:
         if AgentCMDInterface._initialized:
             return
         self.app = app
+        self.app.preloop()
         AgentCMDInterface._initialized = True
 
     @staticmethod
@@ -50,15 +51,9 @@ class AgentCMDInterface:
         """Write a command to the console"""
         app = AgentCMDInterface._get_instance().app
 
-        app.preloop()
-
         app.onecmd_plus_hooks(input)
 
-        app.postloop()
-
-        # get output somehow
-
-        output = "There atr 6 parts onboard"
+        output = app.get_output()
 
         return output
 
@@ -102,14 +97,27 @@ class Console(cmd2.Cmd):
             datefmt="%Y-%m-%d %H:%M:%S",
         )
 
+        self.output_buffer = []
+
     def poutput(self, message, *args, **kwargs):
         # logging.info(f"Output: {message}")
+        self.output_buffer.append(message)
 
-        # Then call the original poutput function
         super().poutput(message, *args, **kwargs)
 
     def preloop(self):
         super().preloop()
         self.poutput("Welcome to SatelliteOS\n")
-        self.do_get_spacecraft_properties("")
+        # self.do_get_spacecraft_properties("")
         self.do_help("-v")
+
+    def get_output(self):
+        # Retrieve all output and clear the buffer
+        output = "\n".join(self.output_buffer)
+        self.output_buffer.clear()
+        return output
+
+
+if __name__ == "__main__":
+    app = Console()
+    app.cmdloop()

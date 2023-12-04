@@ -1,12 +1,17 @@
 """Game-related utilities"""
 
+import argparse
 import functools
 import inspect
 import json
 import os
 import subprocess
+import sys
+from functools import wraps
 from pathlib import Path
 
+import cmd2
+from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field
 
 
@@ -143,3 +148,15 @@ class MET:
         minutes, seconds = divmod(remaining_seconds, seconds_in_minute)
 
         return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
+
+
+class CustomCmd2ArgumentParser(Cmd2ArgumentParser):
+    def __init__(self, cmd_instance_method, *args, **kwargs):
+        """Custom parser to pipe output to poutput so the agent can process these messages."""
+        super().__init__(*args, **kwargs)
+        self.cmd_instance_method = cmd_instance_method
+
+    def _print_message(self, message, file=None):
+        if message:
+            # Use cmd2's poutput instead of writing directly to sys.stderr or sys.stdout
+            self.cmd_instance_method().poutput(message)

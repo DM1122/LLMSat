@@ -17,6 +17,9 @@ from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
+PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
+LLM_NAME = "gpt-4-0613"  # gpt-3.5-turbo-0613
+CHECKPOINT_NAME = "checkpoint"
 
 
 if __name__ == "__main__":
@@ -31,7 +34,7 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
@@ -46,7 +49,29 @@ if __name__ == "__main__":
         ]
     )
 
-    app.cmdloop()
+    # initialize agent
+    KEY = str(config("OPENAI", cast=str))
+    llm = ChatOpenAI(openai_api_key=KEY, model=LLM_NAME)
+
+    agent_interface = AgentCMDInterface(app)
+
+    prompts = utils.load_json(PROMPTS_FILE_PATH)
+    prompt = prompts["default"]
+    print(prompt)
+    system_message = SystemMessage(content=prompt)
+    tools = [agent_interface.run]
+    agent = initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,  # AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True,
+    )
+    result = agent.run(
+        prompt
+        + "Mission objective from ground control: Run a temperature experiment"
+        + app.get_output()
+    )
+    print(result)
 
     input("Simulation complete. Press any key to quit...")
 
