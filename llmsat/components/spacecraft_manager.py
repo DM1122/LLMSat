@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import List
-
+import pandas as pd
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
 
@@ -170,6 +170,29 @@ class SpacecraftManager(CommandSet):
             return next_tag
 
         assign_tag(self.vessel.parts.root, tag=0)
+
+    def do_get_resources(self, statement):
+        resources = self.get_resources()
+
+        self._cmd.poutput(resources.to_string())
+
+    def get_resources(self) -> pd.DataFrame:
+        resources = self.vessel.resources.all
+        data = []
+
+        for resource in resources:
+            resource_data = {
+                "name": resource.name,
+                "part": resource.part,
+                "amount": resource.amount,
+                "max": resource.max,
+                "density": resource.density,
+                "flow_mode": resource.flow_mode,
+                "enabled": resource.enabled,
+            }
+            data.append(resource_data)
+
+        return pd.DataFrame(data)
 
     @staticmethod
     def _determine_part_type(krpc_part) -> PartType:

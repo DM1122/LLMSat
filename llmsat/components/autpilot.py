@@ -39,16 +39,34 @@ class Node(BaseModel):
 
 @with_default_category("AutopilotService")
 class AutopilotService(CommandSet):
-    def __init__(self, krpc_connection):
+    _instance = None
+    _initialized = False
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(AutopilotService, cls).__new__(cls)
+        return cls._instance
+
+    def __init__(self, krpc_connection=None):
         """Autopilot class."""
+        if AutopilotService._initialized:
+            return
         super().__init__()
 
         self.connection = krpc_connection
         self.pilot = self.connection.mech_jeb
         self.vessel = self.connection.space_center.active_vessel
 
-    plan_apoapsis_maneuver_parser = Cmd2ArgumentParser(
-        epilog=f"Returns:\nList[{Node.model_json_schema()['title']}]: {json.dumps(Node.model_json_schema()['properties'], indent=4)}"
+        AutopilotService._initialized = True
+
+    @staticmethod
+    def _get_cmd_instance():
+        """Gets the cmd for use by argument parsers for poutput."""
+        return AutopilotService()._cmd
+
+    plan_apoapsis_maneuver_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        epilog=f"Returns:\nList[{Node.model_json_schema()['title']}]: {json.dumps(Node.model_json_schema()['properties'], indent=4)}",
     )
     plan_apoapsis_maneuver_parser.add_argument(
         "--new_apoapsis",

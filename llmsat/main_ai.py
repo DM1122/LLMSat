@@ -68,7 +68,7 @@ if __name__ == "__main__":
     )
     result = agent.run(
         prompt
-        + "Mission objective from ground control: Run a temperature experiment"
+        + "Mission objective from ground control: Check available fuel."
         + app.get_output()
     )
     print(result)

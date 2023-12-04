@@ -123,17 +123,3 @@ class ExperimentManager(CommandSet):
         result = DataProperties(description=subject.title, data_amount=data.data_amount)
 
         return result
-
-        # Create an instance of Cmd2ArgumentParser
-        # parser = utils.CustomCmd2ArgumentParser(  # doing it this way loses valuable help text
-        #     self._cmd,
-        #     epilog=f"Returns:\nList[{DataProperties.model_json_schema()['title']}]: {json.dumps(DataProperties.model_json_schema()['properties'], indent=4)}",
-        # )
-        # parser.add_argument(
-        #     "--name",
-        #     type=str,
-        #     required=True,
-        #     help="name of experiment to run",
-        # )
-
-        # args = parser.parse_args(shlex.split(argline))

@@ -105,6 +105,10 @@ class Console(cmd2.Cmd):
 
         super().poutput(message, *args, **kwargs)
 
+    def perror(self, message, *args, **kwargs):
+        self.output_buffer.append(message)
+        super().perror(message, *args, **kwargs)
+
     def preloop(self):
         super().preloop()
         self.poutput("Welcome to SatelliteOS\n")

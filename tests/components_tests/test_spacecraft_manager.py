@@ -49,3 +49,10 @@ def test_get_ut(ksp_connection):
 
     output = service.get_ut()
     print(output)
+
+
+def test_get_resources(ksp_connection):
+    service = SpacecraftManager(ksp_connection)
+
+    output = service.get_resources()
+    print(output)
