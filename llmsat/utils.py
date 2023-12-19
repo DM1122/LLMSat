@@ -9,10 +9,14 @@ import subprocess
 import sys
 from functools import wraps
 from pathlib import Path
+from datetime import datetime
 
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field
+
+
+epoch = datetime(year=1951, month=1, day=1)
 
 
 class Orbit(BaseModel):
@@ -128,11 +132,15 @@ def cast_krpc_orbit(obj) -> Orbit:
     return orbit
 
 
-class MET:
-    """Mission elapsed time object."""
-
+class MET:  # TODO: rename
     def __init__(self, seconds):
+        """Mission elapsed time object.
+
+        Args:
+            seconds: seconds since the mission began
+        """
         self.seconds = int(seconds)
+        print(self.seconds)
 
     def __str__(self):
         # Constants for time calculations
@@ -148,9 +156,6 @@ class MET:
         minutes, seconds = divmod(remaining_seconds, seconds_in_minute)
 
         return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
-
-
-
 
 
 class CustomCmd2ArgumentParser(Cmd2ArgumentParser):

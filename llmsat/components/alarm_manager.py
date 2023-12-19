@@ -15,35 +15,54 @@ class Alarm(BaseModel):
     """An alarm"""
 
     id: str = Field(description="Unique identifier of the alarm")
-    # type: str = Field(description="Type of alarm")
     name: str = Field(description="Name of the alarm")
     description: str = Field(description="Description of the alarm")
-    time: float = Field(description="Universal time at which the alarm will trigger")
-    # remaining: float = Field(description="Time until the alarm triggers")
+    time: datetime = Field(
+        description="Universal time (in seconds) at which the alarm will trigger "
+    )
+    remaining: timedelta = Field(
+        description="The number of seconds until the alarm will fire"
+    )
 
-    def __init__(self, alarm_obj, **data):
+    def __init__(self, alarm_obj, current_time: timedelta):
         super().__init__(
             id=alarm_obj.id,
-            # type=alarm_obj.type,
             name=alarm_obj.name,
             description=alarm_obj.notes,
-            time=alarm_obj.time,
-            # remaining=alarm_obj.remaining,
-            **data,
-        )
+            time=utils.epoch + timedelta(seconds=alarm_obj.time),  # universal time
+            remaining=timedelta(seconds=alarm_obj.time) - current_time,
+        ),
+
+    def formatted_time(self):
+        return self.time.strftime("%d %b %Y, %H:%M:%S")
+
+    def remaining_formatted(self):
+        return utils.MET(self.remaining.seconds)
+
+    # def get_remaining_time(self, alarm_obj) -> timedelta:
+    #     """Built-in 'remaining' property does not work"""
+    #     trigger_time_ut = utils.epoch + timedelta(seconds=alarm_obj.time)
+    #     current_time_ut = utils.epoch + timedelta(
+    #         seconds=self.connection.space_center.ut
+    #     )
+
+    #     time_remaining = trigger_time_ut - current_time_ut
+
+    #     return time_remaining
 
 
 @with_default_category("AlarmManager")
 class AlarmManager(CommandSet):
     """Functions for setting alarms."""
 
-    def __init__(self, krpc_connection):
+    def __init__(self, krpc_connection, remove_alarms_on_init=True):
         super().__init__()
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
         self.kac = self.connection.kerbal_alarm_clock
 
-        self._remove_all_alarms()
+        if remove_alarms_on_init:
+            self._remove_all_alarms()
 
     def do_get_alarms(self, statement):
         """Get all alarms"""
@@ -52,7 +71,17 @@ class AlarmManager(CommandSet):
         if not alarms:
             self._cmd.poutput("No alarms have been set")
             return
-        self._cmd.poutput(json.dumps(alarms, default=lambda o: o.__dict__, indent=4))
+
+        formatted_alarms = {}
+        for alarm_id, alarm in alarms.items():
+            alarm_dict = alarm.model_dump()
+            alarm_dict["time"] = alarm.formatted_time()
+            alarm_dict["remaining"] = str(
+                alarm.remaining_formatted()
+            )  # TODO: remove T+
+            formatted_alarms[alarm_id] = alarm_dict
+
+        self._cmd.poutput(json.dumps(formatted_alarms, indent=4))
 
     def get_alarms(self) -> Dict[int, Alarm]:
         """Get all alarms"""
@@ -60,7 +89,10 @@ class AlarmManager(CommandSet):
         alarm_objs = self.kac.alarms
         alarms = {}
         for alarm_obj in alarm_objs:
-            alarm = Alarm(alarm_obj)
+            alarm = Alarm(
+                alarm_obj,
+                current_time=timedelta(seconds=self.connection.space_center.ut),
+            )
             alarms[alarm.id] = alarm
 
         return alarms

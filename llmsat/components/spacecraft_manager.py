@@ -154,9 +154,19 @@ class SpacecraftManager(CommandSet):
 
         return met
 
-    def get_ut(self):
+    def do_get_ut(self, _):
+        """Get the universal time"""
+
+        ut = self.get_ut()
+
+        self._cmd.poutput(ut.strftime("%d %b %Y, %H:%M:%S"))
+
+    def get_ut(self) -> datetime:
         """Gets the current universal time"""
         ut = self.connection.space_center.ut
+
+        ut = utils.epoch + timedelta(seconds=ut)
+
         return ut
 
     def _assign_ids_to_parts(self):
