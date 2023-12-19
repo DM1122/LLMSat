@@ -18,7 +18,7 @@ from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-LLM_NAME = "gpt-4-0613"  # gpt-3.5-turbo-0613
+LLM_NAME = "gpt-3.5-turbo-1106"  # gpt-3.5-turbo-0613
 CHECKPOINT_NAME = "checkpoint"
 
 
@@ -41,12 +41,13 @@ if __name__ == "__main__":
     payload_manager = ExperimentManager(connection)
     alarm_manager = AlarmManager(connection)
     app = Console(
+        quiet=True,
         command_sets=[
             spacecraft_manager,
             autopilot_service,
             payload_manager,
             alarm_manager,
-        ]
+        ],
     )
 
     # initialize agent
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     )
     result = agent.run(
         prompt
-        + "Mission objective from ground control: Check available fuel."
+        + "Mission objective from ground control: Take 5 temperature measurements below 70 degrees latitude across consecutive orbits to measure the temperature of Enceladus' geysers."
         + app.get_output()
     )
     print(result)

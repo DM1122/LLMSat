@@ -61,11 +61,12 @@ class AgentCMDInterface:
 class Console(cmd2.Cmd):
     """Spacecraft console app"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, quiet=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.intro = "SatelliteOS"
         self.prompt = "> "
+        self.quiet = quiet
 
         # delete built-in commands and settings
         del cmd2.Cmd.do_alias
@@ -103,11 +104,14 @@ class Console(cmd2.Cmd):
         # logging.info(f"Output: {message}")
         self.output_buffer.append(message)
 
-        super().poutput(message, *args, **kwargs)
+        if not self.quiet:
+            super().poutput(message, *args, **kwargs)
 
     def perror(self, message, *args, **kwargs):
         self.output_buffer.append(message)
-        super().perror(message, *args, **kwargs)
+
+        if not self.quiet:
+            super().perror(message, *args, **kwargs)
 
     def preloop(self):
         super().preloop()
@@ -123,5 +127,5 @@ class Console(cmd2.Cmd):
 
 
 if __name__ == "__main__":
-    app = Console()
+    app = Console(quiet=True)
     app.cmdloop()

@@ -194,6 +194,7 @@ class SpacecraftManager(CommandSet):
 
         return pd.DataFrame(data)
 
+
     @staticmethod
     def _determine_part_type(krpc_part) -> PartType:
         """
