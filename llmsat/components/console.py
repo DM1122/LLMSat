@@ -109,7 +109,7 @@ class Console(cmd2.Cmd):
 
     def perror(self, message, *args, **kwargs):
         self.output_buffer.append(message)
-
+        print("ERRROR!")
         if not self.quiet:
             super().perror(message, *args, **kwargs)
 
@@ -127,5 +127,5 @@ class Console(cmd2.Cmd):
 
 
 if __name__ == "__main__":
-    app = Console(quiet=True)
+    app = Console()
     app.cmdloop()

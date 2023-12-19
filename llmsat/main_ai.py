@@ -34,7 +34,7 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
@@ -58,7 +58,6 @@ if __name__ == "__main__":
 
     prompts = utils.load_json(PROMPTS_FILE_PATH)
     prompt = prompts["default"]
-    print(prompt)
     system_message = SystemMessage(content=prompt)
     tools = [agent_interface.run]
     agent = initialize_agent(
@@ -69,7 +68,7 @@ if __name__ == "__main__":
     )
     result = agent.run(
         prompt
-        + "Mission objective from ground control: Take 5 temperature measurements below 70 degrees latitude across consecutive orbits to measure the temperature of Enceladus' geysers."
+        + "Mission objective from ground control: get the MET. Take 5 temperature measurements below 70 degrees latitude across consecutive orbits to measure the temperature of Enceladus' geysers"
         + app.get_output()
     )
     print(result)

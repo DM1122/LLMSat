@@ -30,6 +30,6 @@ def test_add_alarm(ksp_connection):
     service = AlarmManager(ksp_connection)
 
     output = service.add_alarm(
-        title="TestAlarm", time=60, description="Some description"
+        name="TestAlarm", time=60, description="Some description"
     )
     print(output)

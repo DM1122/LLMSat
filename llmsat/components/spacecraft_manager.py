@@ -142,11 +142,11 @@ class SpacecraftManager(CommandSet):
 
         return tree
 
-    def do_get_met(self, statement):
+    def do_get_met(self, _):
         """Get the mission elapsed time"""
         met = self.get_met()
 
-        self._cmd.poutput(met)
+        self._cmd.poutput(str(met))
 
     def get_met(self) -> utils.MET:
         """Gets the current mission elapsed time."""
@@ -193,7 +193,6 @@ class SpacecraftManager(CommandSet):
             data.append(resource_data)
 
         return pd.DataFrame(data)
-
 
     @staticmethod
     def _determine_part_type(krpc_part) -> PartType:
