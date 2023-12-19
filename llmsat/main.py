@@ -17,7 +17,7 @@ from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
-load_checkpoint = False
+load_checkpoint = True
 
 if __name__ == "__main__":
     if not utils.is_ksp_running():
@@ -32,7 +32,9 @@ if __name__ == "__main__":
 
     if load_checkpoint:
         print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-        # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+        utils.load_checkpoint(
+            name=CHECKPOINT_NAME, space_center=connection.space_center
+        )
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)

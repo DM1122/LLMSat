@@ -18,7 +18,7 @@ from llmsat.components.spacecraft_manager import SpacecraftManager
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-LLM_NAME = "gpt-3.5-turbo-1106"  # gpt-3.5-turbo-0613
+LLM_NAME = "gpt-4-1106-preview"  # gpt-3.5-turbo-1106
 CHECKPOINT_NAME = "checkpoint"
 
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    # utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)

@@ -9,7 +9,7 @@ import subprocess
 import sys
 from functools import wraps
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
@@ -156,6 +156,11 @@ class MET:  # TODO: rename
         minutes, seconds = divmod(remaining_seconds, seconds_in_minute)
 
         return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
+
+
+def get_ut_time(connection) -> datetime:
+    """Gets the current in-game universal time as a datetime object"""
+    return epoch + timedelta(seconds=connection.space_center.ut)
 
 
 class CustomCmd2ArgumentParser(Cmd2ArgumentParser):

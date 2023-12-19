@@ -14,41 +14,20 @@ from llmsat import utils
 class Alarm(BaseModel):
     """An alarm"""
 
-    id: str = Field(description="Unique identifier of the alarm")
     name: str = Field(description="Name of the alarm")
     description: str = Field(description="Description of the alarm")
-    time: datetime = Field(
-        description="Universal time (in seconds) at which the alarm will trigger "
-    )
-    remaining: timedelta = Field(
-        description="The number of seconds until the alarm will fire"
-    )
+    time: datetime = Field(description="Universal time at which the alarm will trigger")
 
-    def __init__(self, alarm_obj, current_time: timedelta):
+    def __init__(self, alarm_obj):
         super().__init__(
-            id=alarm_obj.id,
             name=alarm_obj.name,
             description=alarm_obj.notes,
-            time=utils.epoch + timedelta(seconds=alarm_obj.time),  # universal time
-            remaining=timedelta(seconds=alarm_obj.time) - current_time,
+            time=utils.epoch + timedelta(seconds=alarm_obj.time),
         ),
 
-    def formatted_time(self):
-        return self.time.strftime("%d %b %Y, %H:%M:%S")
-
-    def remaining_formatted(self):
-        return utils.MET(self.remaining.seconds)
-
-    # def get_remaining_time(self, alarm_obj) -> timedelta:
-    #     """Built-in 'remaining' property does not work"""
-    #     trigger_time_ut = utils.epoch + timedelta(seconds=alarm_obj.time)
-    #     current_time_ut = utils.epoch + timedelta(
-    #         seconds=self.connection.space_center.ut
-    #     )
-
-    #     time_remaining = trigger_time_ut - current_time_ut
-
-    #     return time_remaining
+    def get_remaining_time(self, current_time: datetime) -> timedelta:
+        """Returns the timedelta between the trigger time and the current time."""
+        return self.time - current_time
 
 
 @with_default_category("AlarmManager")
@@ -64,7 +43,7 @@ class AlarmManager(CommandSet):
         if remove_alarms_on_init:
             self._remove_all_alarms()
 
-    def do_get_alarms(self, statement):
+    def do_get_alarms(self, _):
         """Get all alarms"""
         alarms = self.get_alarms()
 
@@ -72,30 +51,40 @@ class AlarmManager(CommandSet):
             self._cmd.poutput("No alarms have been set")
             return
 
-        formatted_alarms = {}
-        for alarm_id, alarm in alarms.items():
-            alarm_dict = alarm.model_dump()
-            alarm_dict["time"] = alarm.formatted_time()
-            alarm_dict["remaining"] = str(
-                alarm.remaining_formatted()
-            )  # TODO: remove T+
-            formatted_alarms[alarm_id] = alarm_dict
+        # Calculate remaining time for each alarm and store in a list of tuples
+        alarms_with_remaining_time = [
+            (alarm, alarm.get_remaining_time(utils.get_ut_time(self.connection)))
+            for alarm in alarms.values()
+        ]
 
-        self._cmd.poutput(json.dumps(formatted_alarms, indent=4))
+        # Sort the alarms in ascending order by remaining time
+        alarms_sorted = sorted(alarms_with_remaining_time, key=lambda x: x[1])
 
-    def get_alarms(self) -> Dict[int, Alarm]:
+        # Format the sorted alarms into a dictionary of dictionaries
+        alarms_formatted = {
+            alarm.name: {
+                "time": alarm.time.isoformat(),
+                "remaining": str(remaining),
+                "description": alarm.description,
+            }
+            for alarm, remaining in alarms_sorted
+        }
+
+        self._cmd.poutput(json.dumps(alarms_formatted, indent=4))
+
+    def get_alarms(self) -> Dict[str, Alarm]:
         """Get all alarms"""
 
         alarm_objs = self.kac.alarms
         alarms = {}
         for alarm_obj in alarm_objs:
-            alarm = Alarm(
-                alarm_obj,
-                current_time=timedelta(seconds=self.connection.space_center.ut),
-            )
-            alarms[alarm.id] = alarm
+            alarm = Alarm(alarm_obj)
+            alarms[alarm.name] = alarm
 
         return alarms
+
+    def do_delete_alarm(self):
+        pass
 
     def _remove_all_alarms(self):
         """Kerbal Alarm Clock alarms do not get removed when returning to an earlier quick save,
@@ -116,12 +105,12 @@ class AlarmManager(CommandSet):
     )
     add_alarm_parser.add_argument(
         "-time",
-        type=float,
+        type=str,
         required=True,
-        help="Universal time at which the alarm will trigger",
+        help="Universal time at which the alarm will trigger in the format YYYY-MM-DDTHH:MM:SS",
     )
     add_alarm_parser.add_argument(
-        "-description",
+        "-desc",
         type=str,
         required=False,
         help="Description for the alarm",
@@ -129,22 +118,39 @@ class AlarmManager(CommandSet):
 
     @with_argparser(add_alarm_parser)
     def do_add_alarm(self, args):
-        """Create a new alarm"""
-        new_alarm = self.add_alarm(
-            name=args.name, time=args.time, description=args.description
-        )
+        """Create a new alarm to trigger at a given universal time"""
+
+        try:
+            time = datetime.strptime(args.time, "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            self._cmd.perror(
+                f"Invalid time format '{args.time}'. Must be YYYY-MM-DDTHH:MM:SS."
+            )
+            return
+
+        try:
+            new_alarm = self.add_alarm(name=args.name, time=time, description=args.desc)
+        except ValueError as e:
+            self._cmd.perror(e)
+            return
 
         self._cmd.poutput(f"New alarm created:\n{new_alarm.model_dump_json(indent=4)}")
 
-    def add_alarm(self, name, time, description) -> Alarm:
-        """Create a new alarm"""
+    def add_alarm(self, name, time: datetime, description) -> Alarm:
+        """Create a new alarm to trigger at a given universal time"""
+
+        alarms = self.get_alarms()
+        if name in alarms:
+            raise ValueError(f"An alarm with name '{name}' already exists")
+
+        ut = (time - utils.epoch).total_seconds()
 
         alarm_obj = self.kac.create_alarm(
             type=self.kac.AlarmType.raw,
             name=name,
-            ut=time,
+            ut=ut,
         )
-        alarm_obj.notes = description
+        alarm_obj.notes = description if description is not None else ""
         alarm_obj.action = (
             self.kac.AlarmAction.message_only
         )  # TODO: might need custom logic to pass message to console app
