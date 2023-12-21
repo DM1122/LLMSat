@@ -68,7 +68,7 @@ if __name__ == "__main__":
     )
     result = agent.run(
         prompt
-        + "Mission objective from ground control: get the MET. Take 5 temperature measurements below 70 degrees latitude across consecutive orbits to measure the temperature of Enceladus' geysers"
+        + "Mission objective from ground control: Set alarms to tell you once you've reached apoapsis"
         + app.get_output()
     )
     print(result)
