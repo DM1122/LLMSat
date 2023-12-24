@@ -155,19 +155,11 @@ class SpacecraftManager(CommandSet):
         return met
 
     def do_get_ut(self, _):
-        """Get the universal time"""
+        """Get the current universal time"""
 
-        ut = self.get_ut()
+        time = utils.get_ut(self.connection)
 
-        self._cmd.poutput(ut.strftime("%d %b %Y, %H:%M:%S"))
-
-    def get_ut(self) -> datetime:
-        """Gets the current universal time"""
-        ut = self.connection.space_center.ut
-
-        ut = utils.epoch + timedelta(seconds=ut)
-
-        return ut
+        self._cmd.poutput(time.isoformat())
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""

@@ -15,9 +15,10 @@ from llmsat.components.autpilot import AutopilotService
 from llmsat.components.console import AgentCMDInterface, Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.orbit_propagator import OrbitPropagator
 
 CHECKPOINT_NAME = "checkpoint"
-load_checkpoint = True
+load_checkpoint = False
 
 if __name__ == "__main__":
     if not utils.is_ksp_running():
@@ -40,12 +41,14 @@ if __name__ == "__main__":
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
     alarm_manager = AlarmManager(connection, remove_alarms_on_init=load_checkpoint)
+    orbit_propagator = OrbitPropagator(connection)
     app = Console(
         command_sets=[
             spacecraft_manager,
             autopilot_service,
             payload_manager,
             alarm_manager,
+            orbit_propagator
         ]
     )
 

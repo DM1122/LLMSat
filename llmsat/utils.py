@@ -16,7 +16,7 @@ from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field
 
 
-epoch = datetime(year=1951, month=1, day=1)
+epoch = datetime(year=1951, month=1, day=1) # starting Earth epoch in KSP RSS
 
 
 class Orbit(BaseModel):
@@ -72,6 +72,29 @@ class Orbit(BaseModel):
         description="The time until the object changes sphere of influence, in seconds. Returns NaN if the object is not going to change sphere of influence."
     )
 
+    def __init__(self, orbit_obj):
+        super().__init__(
+            body=orbit_obj.body.name,
+            apoapsis=orbit_obj.apoapsis,
+            periapsis=orbit_obj.periapsis,
+            apoapsis_altitude=orbit_obj.apoapsis_altitude,
+            periapsis_altitude=orbit_obj.periapsis_altitude,
+            semi_major_axis=orbit_obj.semi_major_axis,
+            semi_minor_axis=orbit_obj.semi_minor_axis,
+            radius=orbit_obj.radius,
+            speed=orbit_obj.speed,
+            period=orbit_obj.period,
+            time_to_apoapsis=orbit_obj.time_to_apoapsis,
+            time_to_periapsis=orbit_obj.time_to_periapsis,
+            time_to_soi_change=orbit_obj.time_to_soi_change,
+            eccentricity=orbit_obj.eccentricity,
+            inclination=orbit_obj.inclination,
+            longitude_of_ascending_node=orbit_obj.longitude_of_ascending_node,
+            argument_of_periapsis=orbit_obj.argument_of_periapsis,
+            mean_anomaly_at_epoch=orbit_obj.mean_anomaly_at_epoch,
+            epoch=orbit_obj.epoch,
+        )
+
 
 def is_ksp_running():
     """Determine whether Kerbal Space Program is currently running on the system."""
@@ -105,33 +128,6 @@ def load_json(filename):
     return data
 
 
-def cast_krpc_orbit(obj) -> Orbit:
-    """Casts a KRPC orbit object to an Orbit model"""
-    orbit = Orbit(
-        body=obj.body.name,
-        apoapsis=obj.apoapsis,
-        periapsis=obj.periapsis,
-        apoapsis_altitude=obj.apoapsis_altitude,
-        periapsis_altitude=obj.periapsis_altitude,
-        semi_major_axis=obj.semi_major_axis,
-        semi_minor_axis=obj.semi_minor_axis,
-        radius=obj.radius,
-        speed=obj.speed,
-        period=obj.period,
-        time_to_apoapsis=obj.time_to_apoapsis,
-        time_to_periapsis=obj.time_to_periapsis,
-        time_to_soi_change=obj.time_to_soi_change,
-        eccentricity=obj.eccentricity,
-        inclination=obj.inclination,
-        longitude_of_ascending_node=obj.longitude_of_ascending_node,
-        argument_of_periapsis=obj.argument_of_periapsis,
-        mean_anomaly_at_epoch=obj.mean_anomaly_at_epoch,
-        epoch=obj.epoch,
-    )
-
-    return orbit
-
-
 class MET:  # TODO: rename
     def __init__(self, seconds):
         """Mission elapsed time object.
@@ -158,8 +154,8 @@ class MET:  # TODO: rename
         return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
 
 
-def get_ut_time(connection) -> datetime:
-    """Gets the current in-game universal time as a datetime object"""
+def get_ut(connection) -> datetime:
+    """Get the current in-game universal time"""
     return epoch + timedelta(seconds=connection.space_center.ut)
 
 
