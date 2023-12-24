@@ -6,7 +6,7 @@
     "author": [
         "DMara"
     ],
-    "version": "2023.11.14.02.18.57",
+    "version": "2023.12.24.01.01.11",
     "ksp_version_min": "1.12.5",
     "ksp_version_max": "1.12.5",
     "license": [
@@ -44,6 +44,10 @@
         {
             "name": "Harmony2",
             "version": "2.2.1.0"
+        },
+        {
+            "name": "KerbalAlarmClock",
+            "version": "v3.14.0.0"
         },
         {
             "name": "KerbalChangelog",
@@ -190,6 +194,10 @@
             "version": "1:0.1.9.11"
         },
         {
+            "name": "TriggerAu-Flags",
+            "version": "v2.11.0.0"
+        },
+        {
             "name": "TweakScale-Redist",
             "version": "v2.4.7.4"
         },
@@ -198,6 +206,6 @@
             "version": "0.9.0"
         }
     ],
-    "release_date": "2023-11-14T09:18:57.5651648-05:00",
+    "release_date": "2023-12-23T20:01:11.5435622-05:00",
     "kind": "metapackage"
 }
