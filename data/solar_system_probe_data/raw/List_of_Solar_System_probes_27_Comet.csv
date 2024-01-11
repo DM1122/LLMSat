@@ -1,0 +1,27 @@
+Target,Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+21P/Giacobini-Zinner,ICE (formerly ISEE3),ICE (formerly ISEE3),NASA,11 September 1985,flyby,success,previously solar monitor ISEE3; went on to observe Halley's Comet,,1978-079A
+1P/Halley,Vega 1,Vega 1,SAS,6 March 1986,flyby,success,"minimum distance 8,890 km; previously visited Venus",,1984-125A
+1P/Halley,Suisei,Suisei,ISAS,8 March 1986,flyby,success,"151,000 km",,1985-073A
+1P/Halley,Vega 2,Vega 2,SAS,9 March 1986,flyby,success,"minimum distance 8,890 km; previously visited Venus",,1984-128A
+1P/Halley,Sakigake,Sakigake,ISAS,March 1986,distant flyby,partial success,minimum distance 6.99 million km,,1985-001A
+1P/Halley,Giotto,Giotto,ESA,14 March 1986,flyby,success,minimum distance 596 km; went on to visit comet 26P/Grigg–Skjellerup,,1985-056A
+1P/Halley,ICE  (formerly ISEE3),ICE  (formerly ISEE3),NASA,28 March 1986,distant obser-vations,success,minimum distance 32 million km; previously visited comet 21P/Giacobini–Zinner,,1978-079A
+26P/Grigg–Skjellerup,Giotto,Giotto,ESA,10 July 1992,flyby,success,previously visited Halley's Comet,,1985-056A
+45P/Honda–Mrkos–Pajdusakova,Sakigake,Sakigake,ISAS,1996,flyby,failure,contact lost; previously visited Halley's Comet,,1985-001A
+21P/Giacobini-Zinner,Sakigake,Sakigake,ISAS,1998,flyby,failure,contact lost; previously visited Halley's Comet,,1985-001A
+55P/Tempel-Tuttle,Suisei,Suisei,ISAS,1998,flyby,failure,abandoned due to lack of fuel; previously visited Halley's Comet,,1985-073A
+21P/Giacobini-Zinner,Suisei,Suisei,ISAS,1998,flyby,failure,abandoned due to lack of fuel; previously visited Halley's Comet,,1985-073A
+107P/Wilson-Harrington,Deep Space 1,Deep Space 1,NASA,January 2001,flyby,failure,"abandoned due to problems with the star tracker, but was re-tasked to fly by comet 19P/Borrelly",,1998-061A
+19P/Borrelly,Deep Space 1,Deep Space 1,NASA,22 September 2001,flyby,success,previously visited asteroid 9969 Braille,,1998-061A
+2P/Encke,CONTOUR,CONTOUR,NASA,2003,flyby,failure,contact lost shortly after launch,,2002-034A
+81P/Wild,Stardust,Stardust,NASA,2 January 2004,"flyby, sample return",success,sample returned January 2006; also visited asteroid 5535 Annefrank,,1999-003A
+9P/Tempel,Deep Impact,Deep Impact,NASA,July 2005,flyby,success,,,2005-001A
+9P/Tempel,,Impactor,NASA,4 July 2005,impactor,success,,,2005-001A
+73P/Schwassmann-Wachmann,CONTOUR,CONTOUR,NASA,2006,flyby,failure,contact lost shortly after launch,,2002-034A
+6P/d'Arrest,CONTOUR,CONTOUR,NASA,2008,flyby,failure,contact lost shortly after launch,,2002-034A
+103P/Hartley,Deep Impact (redesignated EPOXI),Deep Impact (redesignated EPOXI),NASA,4 November 2010,flyby,success,mission extension (target changed from comet Boethin),,2005-001A
+9P/Tempel,Stardust (redesignated NExT),Stardust (redesignated NExT),NASA,14 February 2011,flyby,success,mission extension,,1999-003A
+67P/Churyumov–Gerasimenko,Rosetta,Rosetta,ESA,6 August 2014 – 30 September 2016,orbiter,success,flybys of asteroids 2867 Šteins and 21 Lutetia completed; intentionally impacted at end of mission,,2004-006A
+67P/Churyumov–Gerasimenko,,Philae,ESA,12 November 2014 – 9 July 2015,lander,success,,,2004-006C
+TBD(potentially an interstellar object),Comet Interceptor,Comet Interceptor,ESA,2029 (launch),flyby,planned,"flyby of a pristine comet, will initially be parked at the Sun-Earth L2 point until a suitable destination is identified",,
+311P/PANSTARRS,Tianwen-2 (ZhengHe),Tianwen-2 (ZhengHe),CNSA,2025 (launch)  2034 (orbit),"orbiter, lander",planned,study of an asteroid/main-belt comet,,

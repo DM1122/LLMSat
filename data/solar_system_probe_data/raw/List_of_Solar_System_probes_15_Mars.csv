@@ -1,0 +1,11 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Emirates Mars Mission,Emirates Mars Mission,MBRSC,9 February 2021 –,orbiter,in orbit,conduct studies of Martian atmosphere,,2020-047A
+Tianwen-1 orbiter,Tianwen-1 orbiter,CNSA,10 February 2021 -,orbiter,in orbit,"orbital studies of Martian surface morphology, soil, and atmosphere",,2020-049A
+,Tianwen-1 Deployable Camera 1,CNSA,~10 February 2021,flyby (post mission),success,imaged Tianwen-1 in deep space,,2020-049A
+,Tianwen-1 Deployable Camera 2,CNSA,10 February 2021 (released on 31 December 2021),orbiter,success,imaged Tianwen-1 orbiter and Northern Mars Ice Caps from Mars orbit.,,2020-049A
+,Tianwen-1 lander,CNSA,14 May 2021,lander,landed,Reaches end of designed lifespan after successful soft landing.,,2020-049A
+,Zhurong,CNSA,22 May 2021 -,rover,deployed,"in-situ studies of Martian surface morphology, soil, and atmosphere",,2020-049A
+,Tianwen-1 Remote Camera,CNSA,1 June 2021,lander,success,imaged Tianwen-1 lander and Zhurong rover on Mars,,2020-049A
+Mars 2020 Perseverance,Mars 2020 Perseverance,NASA,18 February 2021 -,rover,landed,"investigate past and present habitability, climate, and geology; produce O2 from CO2; collect samples for Mars Sample Return Mission",,2020-052A
+,Mars Helicopter Ingenuity,NASA,3 April 2021 -,autonomous UAV helicopter,deployed,experimental scout for the Perseverance rover. Took 1st flight successfully from takeoff to landing.,,2020-052A
+Psyche,Psyche,NASA,13 October 2023 (launch)May 2026 (flyby),flyby,enroute,gravity assist en route to Psyche,,

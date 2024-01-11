@@ -1,0 +1,19 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Venera 13,Venera 13,SAS,,,,,,
+,bus,,1 March 1982,flyby,success,deployed lander and then acted as communications relay,,1981-106A
+,descent craft,,1 March 1982,lander,success,survived on surface for 127 minutes,,1981-106D
+Venera 14,Venera 14,SAS,,,,identical to Venera 13,,
+,bus,,5 March 1982,flyby,success,deployed lander and then acted as communications relay,,1981-110A
+,descent craft,,5 March 1982,lander,success,survived on surface for 57 minutes,,1981-110D
+Venera 15,Venera 15,SAS,1983–1984,orbiter,success,radar mapping,,1983-053A
+Venera 16,Venera 16,SAS,1983–1984,orbiter,success,radar mapping; identical to Venera 15,,1983-054A
+Vega 1,Vega 1,SAS,11 June 1985,flyby,success,went on to fly by Halley's comet,,1984-125A
+Vega 1,Vega 1,SAS,11 June 1985,lander,failure,instruments deployed prematurely,,1984-125E
+Vega 1,Vega 1,SAS,11 June 1985,atmospheric balloon,success,floated at an altitude of about 54 km and transmitted for around 46 hours,,1984-125F
+Vega 2,Vega 2,SAS,15 June 1985,flyby,success,went on to fly by Halley's comet,,1984-128A
+Vega 2,Vega 2,SAS,15 June 1985,lander,success,transmitted from surface for 56 minutes,,1984-128E
+Vega 2,Vega 2,SAS,15 June 1985,atmospheric balloon,success,floated at an altitude of about 54 km and transmitted for around 46 hours,,1984-128F
+Galileo,Galileo,NASA,10 February 1990,flyby,success,"gravity assist en route to Jupiter; minimum distance 16,000 km",,1989-084B
+Magellan,Magellan,NASA,10 August 1990 –12 October 1994,orbiter,success,global radar mapping,,1989-033B
+Cassini,Cassini,NASA/  ESA/ ASI,26 April 1998,flyby,success,gravity assist en route to Saturn,,1997-061A
+Cassini,Cassini,NASA/  ESA/ ASI,24 June 1999,flyby,success,gravity assist en route to Saturn,,1997-061A

@@ -1,0 +1,16 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Mariner 10,Mariner 10,NASA,29 March 1974,flyby,success,minimum distance 704 km,,1973-085A
+Mariner 10,Mariner 10,NASA,21 September 1974,flyby,success,"48,069 km",,1973-085A
+Mariner 10,Mariner 10,NASA,16 March 1975,flyby,success,327 km,,1973-085A
+MESSENGER,MESSENGER,NASA,14 January 2008,flyby,success,minimum distance 200 km,,2004-030A
+MESSENGER,MESSENGER,NASA,6 October 2008,flyby,success,minimum distance 200 km,,2004-030A
+MESSENGER,MESSENGER,NASA,29 September 2009,flyby,success,minimum distance 228 km,,2004-030A
+MESSENGER,MESSENGER,NASA,18 March 2011 –30 April 2015,orbiter,success,first spacecraft to orbit Mercury; unavoidable impact on the surface at end of mission,,2004-030A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,1 October 2021,flyby,success,,,2018-080A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,23 June 2022,flyby,success,,,2018-080A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,19 June 2023,flyby,success,,,2018-080A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,September 2024,flyby,en route,,,2018-080A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,December 2024,flyby,en route,,,2018-080A
+BepiColombo(Mercury Cruise System),BepiColombo(Mercury Cruise System),ESA/ JAXA,January 2025,flyby,en route,,,2018-080A
+,MercuryPlanetary Orbiter,ESA,5 December 2025 (orbital insertion)  14 March 2026 (final MPO orbit),orbiter,en route (attached to Mercury Cruise System),,,2018-080A
+,Mio(MercuryMagnetospheric Orbiter),JAXA,5 December 2025 (orbital insertion),orbiter,en route (attached to Mercury Cruise System),,,2018-080A

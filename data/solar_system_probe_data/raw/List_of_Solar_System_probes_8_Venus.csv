@@ -1,0 +1,17 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Venus Express,Venus Express,ESA,11 April 2006 – 18 January 2015,orbiter,success,atmospheric studies; planetary imaging; magnetic observations,,2005-045A
+MESSENGER,MESSENGER,NASA,24 October 2006,flyby,success,gravity assist only; minimum distance 2990 km,,2004-030A
+MESSENGER,MESSENGER,NASA,6 June 2007,flyby,success,minimum distance 300 km; en route to Mercury,,2004-030A
+Akatsuki(PLANET-C),Akatsuki(PLANET-C),JAXA,6 December 2010 (Venus flyby),orbiter,failure,failed orbital insertion in 2010; success in 2015science mission ongoing since May 2016,,2010-020D
+Akatsuki(PLANET-C),Akatsuki(PLANET-C),JAXA,7 December 2015 (orbital insertion) –,orbiter,success,failed orbital insertion in 2010; success in 2015science mission ongoing since May 2016,,2010-020D
+IKAROS,IKAROS,JAXA,8 December 2010,flyby,success,solar sail technology development / interplanetary space exploration,,2010-020E
+Shin'en(UNITEC-1),Shin'en(UNITEC-1),UNISEC,December 2010?,flyby,failure,contact lost shortly after launch,,2010-020F
+Parker Solar Probe,Parker Solar Probe,NASA,October 2018 – November 2024,flyby (approach 7 times),en route,gravity assist en route to solar corona,,2018-065A
+BepiColombo(first pass),BepiColombo(first pass),ESA/ JAXA,15 October 2020,flyby,success,"gravity assist en route to Mercury; minimum approach distance was about 10,720 km",,2018-080A
+Solar Orbiter,Solar Orbiter,ESA,27 December 2020,flyby,success,gravity assist en route to inclined heliocentric orbit for solar polar observations,,2020-010A
+Solar Orbiter,Solar Orbiter,ESA,9 August 2021,flyby,success,gravity assist en route to inclined heliocentric orbit for solar polar observations,,2020-010A
+BepiColombo(second pass),BepiColombo(second pass),ESA/ JAXA,10 August 2021,flyby,success,"gravity assist en route to Mercury, during which it may study Venus' atmosphere and solar environment",,2018-080A
+Solar Orbiter,Solar Orbiter,ESA,September 2022,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A
+Solar Orbiter,Solar Orbiter,ESA,February 2025,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A
+JUICE,JUICE,ESA,August 2025,flyby,Enroute,gravity assist en route to Jupiter,,
+Solar Orbiter,Solar Orbiter,ESA,December 2026,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A

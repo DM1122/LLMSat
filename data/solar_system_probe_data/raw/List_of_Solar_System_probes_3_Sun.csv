@@ -1,0 +1,13 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Ulysses(second pass),Ulysses(second pass),ESA/ NASA,2000,orbiter,success,south polar observations,,1990-090B
+Ulysses(second pass),Ulysses(second pass),ESA/ NASA,2001,orbiter,success,north polar observations,,1990-090B
+Genesis,Genesis,NASA,2001–2004,orbiter/sample return,success,"solar wind sample return; crash landed on return to Earth, much data salvaged",,2001-034A
+STEREO A,STEREO A,NASA,December 2006 – still active as of September 2021,orbiter,success,stereoscopic imaging of coronal mass ejections and other solar phenomena,,2006-047A
+STEREO B,STEREO B,NASA,"December 2006 – October 2014.  August 2016 – October 2018  (communication lost between 1 October 2014 and 21 August 2016)  NASA directed that periodic recovery operations of Stereo-B cease with last support on October 17, 2018.",orbiter,success,stereoscopic imaging of coronal mass ejections and other solar phenomena,,2006-047B
+Ulysses(third pass),Ulysses(third pass),ESA/ NASA,2007,orbiter,success,south polar observations,,1990-090B
+Ulysses(third pass),Ulysses(third pass),ESA/ NASA,2008,orbiter,partial success,north polar observations; some data returned despite failing power and reduced transmission capacity,,1990-090B
+DSCOVR,DSCOVR,NOAA,February 2015 –,orbiter,success,"solar wind and coronal mass ejection monitoring, as well as Earth climate monitoring",,2015-007A
+Parker Solar Probe,Parker Solar Probe,NASA,November 2018 – December 2025,orbiter/flyby(approach 26 times),en route,close-range solar coronal study,,2018-065A
+Solar Orbiter,Solar Orbiter,ESA,10 February 2020 (launch),orbiter,en route,solar and heliospheric physics,,2020-010A
+CuSP,CuSP,NASA,16 November 2022,orbiter,success,study particles and magnetic fields.,,CUSP
+Aditya-L1,Aditya-L1,ISRO,2 September 2023 (launch),orbiter,success,Solar corona observation,,2023-132A

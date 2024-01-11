@@ -1,0 +1,11 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Fobos-Grunt,Fobos-Grunt,RKA,8 November 2011 (launch),orbiter and Phobos sample return,failure,failed to escape Earth orbit,,2011-065A
+,Yinghuo-1,CNSA,8 November 2011 (launch),orbiter,failure,failed to escape Earth orbit,,YINGHUO-1
+Mars Science Laboratory Curiosity,Mars Science Laboratory Curiosity,NASA,6 August 2012 –,rover,success,"investigation of past and present habitability, climate and geology",,2011-070A
+Mangalyaan / Mars Orbiter Mission,Mangalyaan / Mars Orbiter Mission,ISRO,24 September 2014 – 27 September 2022,orbiter,success,"first Indian spacecraft to orbit another planet, studying Martian atmosphere; mineralogical mapping.",,2013-060A
+MAVEN,MAVEN,NASA,25 September 2014 –,orbiter,success,studying Martian atmosphere,,2013-063A
+ExoMars Trace Gas Orbiter (ExoMars 2016),ExoMars Trace Gas Orbiter (ExoMars 2016),ESA/  RKA,19 October 2016 –,orbiter,success,atmospheric gas analysis; communication relay for surface probes,,2016-017A
+,Schiaparelli EDM lander,ESA,19 October 2016,lander,crashed upon landing,"landing test, meteorological observation",,2016-017A
+InSight,InSight,NASA,26 November 2018 – 21 December 2022,lander,success,"studied the deep interior of Mars, with a seismometer and a heat-flow probe.",,2018-042A
+,"MarCO A ""WALL-E""",NASA,26 November 2018,flyby,success,"relaying data from InSight during its entry, descent, and landing",,2018-042B
+,"MarCO B ""EVE""",NASA,26 November 2018,flyby,success,"relaying data from InSight during its entry, descent, and landing",,2018-042C

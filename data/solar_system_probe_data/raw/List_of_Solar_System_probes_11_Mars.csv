@@ -1,0 +1,18 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Mariner 8,Mariner 8,NASA,9 May 1971 (launch),orbiter,failure,launch vehicle failure,,MARINH
+Kosmos 419,Kosmos 419,USSR,10 May 1971 (launch),orbiter,failure,failed to escape Earth orbit,,1971-042A
+Mariner 9,Mariner 9,NASA,14 November 1971 –27 October 1972,orbiter,success,first spacecraft to orbit another planet,,1971-051A
+Mars 2,Mars 2,USSR,27 November 1971 –22 August 1972,orbiter,success,first Soviet spacecraft to orbit another planet,,1971-045A
+,Mars 2 Lander,USSR,27 November 1971,lander and short range rover,failure,crashed; first manmade object to reach surface of Mars,,1971-045D
+Mars 3,Mars 3,USSR,2 December 1971 –22 August 1972,orbiter,partial success,attained a different orbit than intended due to insufficient fuel,,1971-049A
+,Mars 3 Lander,USSR,2 December 1971,lander and short range rover,partial success,"first soft landing on Mars; contact lost 110 sec after soft landing, first picture from surface",,1971-049F
+Mars 4,Mars 4,USSR,10 February 1974,orbiter,failure,"orbit insertion failed, became flyby",,1973-047A
+Mars 5,Mars 5,USSR,12 February 1974 –28 February 1974,orbiter,success,,,1973-049A
+Mars 6,Mars 6,USSR,12 March 1974,flyby,success,,,1973-052A
+,Mars 6 Lander,USSR,12 March 1974,lander,failure,contact lost 148 sec after parachute deployment (returned 224 seconds of atmospheric data),,1973-052A
+Mars 7,Mars 7,USSR,9 March 1974,flyby,success,,,1973-053A
+,Mars 7 Lander,USSR,9 March 1974,lander,failure,missed Mars,,1973-053A
+Viking 1 Orbiter,Viking 1 Orbiter,NASA,19 June 1976 –17 August 1980,orbiter,success,,,1975-075A
+,Viking 1 Lander,NASA,20 July 1976 –13 November 1982,lander,success,,,1975-075C
+Viking 2 Orbiter,Viking 2 Orbiter,NASA,7 August 1976 –25 July 1978,orbiter,success,,,1975-083A
+,Viking 2 Lander,NASA,3 September 1976 –11 April 1980,lander,success,,,1975-083C
