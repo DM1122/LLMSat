@@ -1,0 +1,13 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Mars 1M No.1,Mars 1M No.1,USSR,10 October 1960,flyby,failure,failed to reach Earth orbit,,MARSNK1
+Mars 1M No.2,Mars 1M No.2,USSR,14 October 1960,flyby,failure,failed to reach Earth orbit,,MARSNK2
+Mars 1962A,Mars 1962A,USSR,24 October 1962,flyby,failure,exploded in or en route to Earth orbit,,1962-057A
+Mars 1962B,Mars 1962B,USSR,11 November 1962 (launch),lander,failure,broke up during transfer to Mars trajectory,,1962-062A
+Mars 1,Mars 1,USSR,19 June 1963,flyby,failure,"contact lost en route; flew within approximately 193,000 km of Mars",,1962-061A
+Mariner 3,Mariner 3,NASA,5 November 1964,flyby,failure,"protective shield failed to eject, preventing craft from attaining correct trajectory",,1964-073A
+Mariner 4,Mariner 4,NASA,15 July 1965,flyby,success,first close-up images of Mars,,1964-077A
+Zond 2,Zond 2,USSR,6 August 1965,flyby,failure,"contact lost en route; flew within 1,500 km of Mars",,1964-078C
+Mariner 6,Mariner 6,NASA,31 July 1969,flyby,success,,,1969-014A
+Mariner 7,Mariner 7,NASA,5 August 1969,flyby,success,,,1969-030A
+Mars 1969A,Mars 1969A,USSR,27 March 1969 (launch),orbiter,failure,launch failure,,MARS69A
+Mars 1969B,Mars 1969B,USSR,2 April 1969 (launch),orbiter,failure,launch failure,,MARS69B

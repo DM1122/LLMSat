@@ -1,0 +1,23 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Cosmos 359,Cosmos 359,(USSR),22 August 1970,lander?,failure,failed to escape Earth orbit,,1970-065A
+Venera 7,Venera 7,(USSR),15 December 1970,lander,success,first successful landing on another planet; signals returned from surface for 23 minutes,,1970-060A
+Cosmos 482,Cosmos 482,(USSR),31 March 1972,lander?,failure,failed to escape Earth orbit,,1972-023A
+Venera 8,Venera 8,(USSR),22 July 1972,lander,success,signals returned from surface for 50 minutes,,1972-021A
+Mariner 10,Mariner 10,NASA,5 February 1974,flyby,success,"minimum distance 5768 km, en route to Mercury; first use of gravity assist by an interplanetary spacecraft",,1973-085A
+Venera 9,Venera 9,(USSR),1975,orbiter,success,first spacecraft to orbit Venus; communications relay for lander; atmospheric and magnetic studies,,1975-050A
+Venera 9,Venera 9,(USSR),22 October 1975,lander,success,first images from the surface; operated on surface for 53 minutes,,1975-050D
+Venera 10,Venera 10,(USSR),1975,orbiter,success,communications relay for lander; atmospheric and magnetic studies,,1975-054A
+Venera 10,Venera 10,(USSR),23 October 1975,lander,success,transmitted from surface for 65 minutes,,1975-054D
+Pioneer Venus Orbiter,Pioneer Venus Orbiter,NASA,4 December 1978 –1992,orbiter,success,atmospheric and magnetic studies,,1978-051A
+Pioneer Venus Multiprobe,Pioneer Venus Multiprobe,NASA,9 December 1978,,,,,
+,bus,,,probe transporter,success,"deployed four atmospheric probes, then burnt up in Venusian atmosphere, continuing to transmit to 110 km altitude",,1978-078A
+,large probe,,,atmospheric probe,success,,,1978-078D
+,north probe,,,atmospheric probe,success,,,1978-078E
+,day probe,,,atmospheric probe,success,survived impact and continued to transmit from surface for over an hour,,1978-078G
+,night probe,,,atmospheric probe,success,,,1978-078F
+Venera 12,Venera 12,SAS,,,,,,
+,flight platform,,21 December 1978,flyby,success,"minimum distance 34,000 km; deployed lander and then acted as communications relay",,1978-086A
+,descent craft,,21 December 1978,lander,partial success,soft landing; transmissions returned for 110 minutes; failure of some instruments,,1978-086C
+Venera 11,Venera 11,SAS,,,,identical to Venera 12,,
+,flight platform,,25 December 1978,flyby,success,"minimum distance 34,000 km; deployed lander and then acted as communications relay",,1978-084A
+,descent craft,,25 December 1978,lander,partial success,soft landing; transmissions returned for 95 minutes; failure of some instruments,,1978-084D

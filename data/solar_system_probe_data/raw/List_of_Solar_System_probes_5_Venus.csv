@@ -1,0 +1,22 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Tyazhely Sputnik,Tyazhely Sputnik,(USSR),4 February 1961,lander,failure,failed to escape from Earth orbit,,1961-002A
+Venera 1,Venera 1,(USSR),19 May 1961 –20 May 1961,flyby,failure,contact lost 7 days after launch; first spacecraft to fly by another planet,,1961-003A
+Mariner 1,Mariner 1,NASA,22 July 1962,flyby,failure,guidance failure shortly after launch,,MARIN1
+Sputnik 19,Sputnik 19,(USSR),25 August 1962,lander,failure,failed to escape Earth orbit,,1962-040A
+Sputnik 20,Sputnik 20,(USSR),1 September 1962,lander,failure,failed to escape Earth orbit,,1962-043A
+Sputnik 21,Sputnik 21,(USSR),12 September 1962,flyby,failure,third stage exploded,,1962-045A
+Mariner 2,Mariner 2,NASA,14 December 1962,flyby,success,"first successful Venus flyby; minimum distance 34,773 km",,1962-041A
+Cosmos 21†,Cosmos 21†,(USSR),11 November 1963,flyby?,failure,failed to escape Earth orbit,,1963-044A
+Venera 1964A†,Venera 1964A†,(USSR),19 February 1964,flyby,failure,failed to reach Earth orbit,,
+Venera 1964B†,Venera 1964B†,(USSR),1 March 1964,flyby,failure,failed to reach Earth orbit,,
+Cosmos 27,Cosmos 27,(USSR),27 March 1964,flyby,failure,failed to escape Earth orbit,,1964-014A
+Zond 1,Zond 1,(USSR),1964,flyby and possible lander,failure,contact lost en route,,1964-016D
+Cosmos 96,Cosmos 96,(USSR),23 November 1965,lander,failure,did not depart low Earth orbit due to a launch failure,,1965-094A
+Venera 1965A†,Venera 1965A†,(USSR),26 November 1965,flyby,failure,launch vehicle failure?,,
+Venera 2,Venera 2,(USSR),27 February 1966,flyby,failure,ceased to operate en route,,1965-091A
+Venera 3,Venera 3,(USSR),1 March 1966,lander,failure,contact lost before arrival; first spacecraft to impact on the surface of another planet,,1965-092A
+Kosmos 167,Kosmos 167,(USSR),17 June 1967,lander,failure,failed to escape Earth orbit,,1967-063A
+Venera 4,Venera 4,(USSR),18 October 1967,atmospheric probe,success,continued to transmit to an altitude of 25 km,,1967-058A
+Mariner 5,Mariner 5,NASA,19 October 1967,flyby,success,"minimum distance 5,000 km",,1967-060A
+Venera 5,Venera 5,(USSR),16 May 1969,atmospheric probe,success,"transmitted atmospheric data for 53 minutes, to an altitude of about 26 km",,1969-001A
+Venera 6,Venera 6,(USSR),17 May 1969,atmospheric probe,success,"transmitted atmospheric data for 51 minutes, to an altitude of perhaps 10–12 km",,1969-002A

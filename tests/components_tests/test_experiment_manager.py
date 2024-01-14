@@ -1,10 +1,14 @@
-from datetime import datetime
+from typing import List
 
 import krpc
 import pytest
 
 from llmsat import utils
-from llmsat.components.alarm_manager import AlarmManager
+from llmsat.components.experiment_manager import (
+    DataProperties,
+    Experiment,
+    ExperimentManager,
+)
 
 
 @pytest.fixture(scope="session")
@@ -19,17 +23,15 @@ def ksp_connection():
     connection.close()
 
 
-def test_get_alarms(ksp_connection):
-    service = AlarmManager(ksp_connection)
+def test_get_experiments(ksp_connection):
+    service = ExperimentManager(ksp_connection)
 
-    output = service.get_alarms()
+    output: dict[str, Experiment] = service.get_experiments()
     print(output)
 
 
-def test_add_alarm(ksp_connection):
-    service = AlarmManager(ksp_connection)
+def test_run_experiment(ksp_connection):
+    service = ExperimentManager(ksp_connection)
 
-    output = service.add_alarm(
-        name="TestAlarm", time=60, description="Some description"
-    )
+    output: DataProperties = service.run_experiment("Temperature Scan")
     print(output)

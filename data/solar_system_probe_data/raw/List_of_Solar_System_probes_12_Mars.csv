@@ -1,0 +1,16 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+Phobos 1,Phobos 1,USSR,7 July 1988 (launch),orbiter,failure,contact lost en route to Mars,,1988-058A
+Phobos 2,Phobos 2,USSR,29 January 1989 –27 March 1989,orbiter,partial success,"Mars orbit acquired, but contact lost shortly before Phobos approach phase and deployment of Phobos landers",,1988-059A
+Mars Observer,Mars Observer,NASA,25 September 1992 (launch),orbiter,failure,contact lost shortly before Mars orbit insertion,,1992-063A
+Mars 96,Mars 96,RKA,16 November 1996 (launch),orbiter,failure,failed to escape Earth orbit,,1996-064A
+Mars 96,Mars 96,RKA,16 November 1996 (launch),lander,failure,failed to escape Earth orbit,,MARS96B
+Mars 96,Mars 96,RKA,16 November 1996 (launch),lander,failure,failed to escape Earth orbit,,MARS96C
+Mars 96,Mars 96,RKA,16 November 1996 (launch),penetrator,failure,failed to escape Earth orbit,,MARS96D
+Mars 96,Mars 96,RKA,16 November 1996 (launch),penetrator,failure,failed to escape Earth orbit,,MARS96E
+Mars Pathfinder,Mars Pathfinder,NASA,4 July 1997 –27 September 1997,lander,success,,,1996-068A
+,Sojourner,NASA,6 July 1997 –27 September 1997,rover,success,first Mars rover,,MESURPR
+Mars Global Surveyor,Mars Global Surveyor,NASA,12 September 1997 –2 November 2006,orbiter,success,,,1996-062A
+Mars Climate Orbiter,Mars Climate Orbiter,NASA,23 September 1999,orbiter,failure,Mars orbit insertion failed due to navigation error. Part of Mars Surveyor '98.,,1998-073A
+Mars Polar Lander,Mars Polar Lander,NASA,3 December 1999,lander,failure,Contact lost just prior to entering Martian atmosphere. Part of Mars Surveyor '98.,,1999-001A
+,"Deep Space 2 ""Amundsen""",NASA,3 December 1999,penetrator,failure,Contact lost just prior to entering Martian atmosphere. Part of Mars Surveyor '98.,,DEEPSP2
+,"Deep Space 2 ""Scott""",NASA,3 December 1999,penetrator,failure,Contact lost just prior to entering Martian atmosphere. Part of Mars Surveyor '98.,,DEEPSP2

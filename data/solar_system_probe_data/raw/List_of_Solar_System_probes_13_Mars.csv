@@ -1,0 +1,11 @@
+Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+2001 Mars Odyssey,2001 Mars Odyssey,NASA,24 October 2001 –,orbiter,success,studying climate and geology; communications relay for Spirit and Opportunity rovers  longest surviving spacecraft in orbit around a planet other than Earth,,2001-014A
+Nozomi,Nozomi,ISAS,14 December 2003,orbiter,failure,"failed to attain Mars orbit, became flyby",,1998-041A
+Mars Express,Mars Express,ESA,25 December 2003 –,orbiter,success,surface imaging and mapping; first European probe in Martian orbit,,2003-022A
+,Beagle 2,UK,25 December 2003,lander,failure,Deployed by the Mars Express; lost for 11 years and imaged by NASA's MRO in 2015,,2003-022C
+"Mars Exploration Rover-A ""Spirit""","Mars Exploration Rover-A ""Spirit""",NASA,4 January 2004 – 22 March 2010,rover,success,became stuck in May 2009; then operating as a static science station until contact lost in March 2010,,2003-027A
+"Mars Exploration Rover-B ""Opportunity""","Mars Exploration Rover-B ""Opportunity""",NASA,25 January 2004 – 10 June 2018,rover,success,lost contact 10 June 2018 due to 2018 global dust storm. NASA concluded mission on 13 February 2019 after failed communication attempts since August 2018.,,2003-032A
+Mars Reconnaissance Orbiter,Mars Reconnaissance Orbiter,NASA,10 March 2006 –,orbiter,success,surface imaging and surveying,,2005-029A
+Rosetta,Rosetta,ESA,25 February 2007,flyby,success,gravity assist en route to asteroid and comet encounters,,2004-006A
+Phoenix,Phoenix,NASA,25 May 2008 –10 November 2008,lander,success,collection of soil samples near the northern pole to search for water and investigate Mars' geological history and biological potential,,2007-034A
+Dawn,Dawn,NASA,17 February 2009,flyby,success,gravity assist en route to Vesta and Ceres,,2007-043A

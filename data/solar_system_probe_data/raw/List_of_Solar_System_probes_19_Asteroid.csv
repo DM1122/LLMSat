@@ -1,0 +1,51 @@
+Target,Spacecraft,Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref
+951 Gaspra,Galileo,Galileo,NASA,29 October 1991,flyby,success,en route to Jupiter; minimum distance 1900 km,,1989-084B
+243 Ida,Galileo,Galileo,NASA,28 August 1993,flyby,success,en route to Jupiter; minimum distance 2400 km; discovery of the first asteroid satellite Dactyl,,1989-084B
+1620 Geographos,Clementine,Clementine,BMDO/ NASA,1994,flyby,failure,flyby cancelled due to equipment malfunction,,1994-004A
+253 Mathilde,NEARShoemaker,NEARShoemaker,NASA,27 June 1997,flyby,success,flew within 1200 km of 253 Mathilde en route to 433 Eros,,1996-008A
+433 Eros,NEARShoemaker,NEARShoemaker,NASA,January 1999,orbiter,failure,became flyby due to software and communications problems (later attempt at orbit insertion succeeded; see below),,1996-008A
+9969 Braille,Deep Space 1,Deep Space 1,NASA,29 July 1999,flyby,partial success,no close-up images due to camera pointing error; went on to visit comet 19P/Borrelly,,1998-061A
+2685 Masursky,Cassini,Cassini,NASA/ ESA/ ASI,23 January 2000,distant flyby,success,en route to Saturn,,1997-061A
+433 Eros,NEARShoemaker,NEARShoemaker,NASA,February 2000 –February 2001,"orbiter, became lander",success,improvised landing by orbiter at end of mission,,1996-008A
+5535 Annefrank,Stardust,Stardust,NASA,2 November 2002,distant flyby,success,went on to visit comet 81P/Wild,,1999-003A
+25143 Itokawa,Hayabusa,Hayabusa,ISAS,2005–07,sample return,success,2005: landed and collected dust grains.2010: sample returned.,,2003-019A
+25143 Itokawa,,MINERVA,ISAS,12 November 2005,hopper,failure,missed target,,2003-019A
+132524 APL,New Horizons,New Horizons,NASA,June 2006,distant flyby,success,flew past Pluto successfully,,2006-001A
+2867 Šteins,Rosetta,Rosetta,ESA,5 September 2008,flyby,success,en route to comet 67P/Churyumov–Gerasimenko,,2004-006A
+21 Lutetia,Rosetta,Rosetta,ESA,11 July 2010,flyby,success,en route to comet 67P/Churyumov–Gerasimenko,,2004-006A
+4 Vesta,Dawn,Dawn,NASA,16 July 2011 – 5 September 2012,orbiter,success,first spacecraft to orbit two different celestial bodies; now orbiting Ceres,,2007-043A
+4179 Toutatis,Chang'e 2,Chang'e 2,CNSA,13 December 2012,flyby,success,came within 3.2 km (2.0 mi) to Toutatis,,2010-050A
+2000 DP107,PROCYON,PROCYON,University of Tokyo / JAXA,12 May 2016,flyby,failure,launched with Hayabusa2 in 2014; mission abandoned after ion thruster failure,,2014-076D
+162173 Ryugu,Hayabusa2,Hayabusa2,JAXA,27 June 2018 – 13 November 2019,sample return,success,"asteroid rendezvous in June 2018, sample capture in 2019; returned sample to Earth on 5 December 2020",,2014-076A
+162173 Ryugu,,Minerva II-1A,JAXA,21 September 2018,hopper,success,,,2014-076A
+162173 Ryugu,,Minerva II-1B,JAXA,21 September 2018,hopper,success,,,2014-076A
+162173 Ryugu,,MASCOT,DLR/ CNES,3 October 2018,mobile lander,success,,,2014-076A
+162173 Ryugu,,SCI,JAXA,5 April 2019,impactor,success,,,2014-076A
+162173 Ryugu,,DCAM-3,JAXA,5 April 2019,orbiter,success,"observing SCI's impact, and the ejecta created by the impact",,2014-076A
+162173 Ryugu,,Minerva II-2,JAXA,2 October 2019,hopper,failure,"Rover failed before deployment, it was deployed in orbit around the asteroid to perform gravitational measurements before it impacted on 8 October 2019.",,2014-076A
+101955 Bennu,OSIRIS-REx,OSIRIS-REx,NASA,August 2018,sample return,orbiter/sample return/ flyby,"orbital insertion in 2018, sample capture in 2020, a flyby in 2021, return to Earth in 2023",,2016-055A
+2002 GT,Deep Impact,Deep Impact,NASA,January 2020,flyby,failure,contact lost; previously visited comet 103P/Hartley,,2005-001A
+65803 Didymos,DART,DART,NASA,26 September 2022,flyby/impactor,success,kinetic impactor of Dimorphos to test planetary defense,,2021-110A
+65803 Didymos,,LICIACube,ASI,26 September 2022,flyby,success,observe DART's impact,,2021-110A
+2020 GE (tentative),Near-Earth Asteroid Scout,Near-Earth Asteroid Scout,NASA,16 November 2022 (launch),flyby,failure,Small spacecraft asteroid flyby technology demonstration. Communication failure,,NEA-SCOUT
+152830 Dinkinesh,Lucy,Lucy,NASA,1 November 2023,flyby,success,main-belt asteroid flyby en route to Jupiter Trojans; minimum distance 425 km; discovered a natural satellite of the asteroid,,2021-093A
+52246 Donaldjohanson,Lucy,Lucy,NASA,April 2025,flyby,enroute,main-belt asteroid flyby en route to Jupiter Trojans,,2021-093A
+16 Psyche,Psyche,Psyche,NASA,13 October 2023 (launch)  April 2029 (arrival),orbiter,enroute,Selected for mission #14 of NASA's Discovery Program to explore a metallic asteroid.,,
+469219 Kamoʻoalewa,Tianwen-2 (ZhengHe),Tianwen-2 (ZhengHe),CNSA,May 2025 (launch)  2026 (orbit),sample return,planned,orbit then return sample from an Apollo NEA,,
+2019 VL5,China Asteroid deflection probe,China Asteroid deflection probe,CNSA,2025 (launch),flyby/impactor,planned,probes to observe/impact an Aten NEA,,
+2001 CC21,Hayabusa2,Hayabusa2,JAXA,2026,flyby,en route,,,2014-076A
+3548 Eurybates,Lucy,Lucy,NASA,August 2027,flyby,enroute,First flyby of a Jupiter trojan,,2021-093A
+15094 Polymele,Lucy,Lucy,NASA,September 2027,flyby,enroute,,,2021-093A
+65803 Didymos,Hera,Hera,ESA,2027,orbiter,planned,studying effects of DART's impact on the asteroid,,
+65803 Didymos,,APEX,ESA,2027,orbiter,planned,to be deployed from Hera,,
+65803 Didymos,,Juventas,ESA,2027,orbiter,planned,to be deployed from Hera,,
+(65803) Dimorphos,APEX,APEX,ESA,,lander,planned,,,
+(65803) Dimorphos,Juventas,Juventas,ESA,,lander,planned,,,
+11351 Leucus,Lucy,Lucy,NASA,April 2028,flyby,enroute,,,2021-093A
+21900 Orus,Lucy,Lucy,NASA,November 2028,flyby,enroute,,,2021-093A
+3200 Phaethon,DESTINY+,DESTINY+,JAXA,2024 (launch)  2028 (flyby),flyby,planned,First flyby of a rock comet,,
+223 Rosa,JUICE,JUICE,ESA,14 April 2023 (launch)  2028 (flyby),Flyby,enroute,en route to Jupiter and it's moons,,
+99942 Apophis,OSIRIS-APEX (formerly OSIRIS-REx),OSIRIS-APEX (formerly OSIRIS-REx),NASA,2029,orbiter,planned after Bennu sample return,study of a C-type asteroid in 2029,,2016-055A
+1998 KY26,Hayabusa2,Hayabusa2,JAXA,2030,flyby,en route,flyby of a fast rotator asteroid,,2014-076A
+P/2013 P5,Tianwen-2 (ZhengHe),Tianwen-2 (ZhengHe),CNSA,May 2025 (launch)  2034 (orbit),"orbiter, lander",planned,study of an asteroid/main-belt comet,,
+Patroclus and Menoetius,Lucy,Lucy,NASA,March 2033,flyby,enroute,First flyby of a Trojan Camp Jupiter Trojan,,2021-093A

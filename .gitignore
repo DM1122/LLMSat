@@ -2,3 +2,4 @@
 *.env
 *.sa
 __pycache__/
+*.lnk

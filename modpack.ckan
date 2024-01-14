@@ -1,0 +1,211 @@
+{
+    "spec_version": "v1.18",
+    "identifier": "installed-portable",
+    "name": "installed-portable",
+    "abstract": "A list of modules installed on the portable KSP instance",
+    "author": [
+        "DMara"
+    ],
+    "version": "2023.12.24.01.01.11",
+    "ksp_version_min": "1.12.5",
+    "ksp_version_max": "1.12.5",
+    "license": [
+        "unknown"
+    ],
+    "depends": [
+        {
+            "name": "AdvancedJetEngine",
+            "version": "v2.20.0"
+        },
+        {
+            "name": "B9-PWings-Fork",
+            "version": "3:0.44.0"
+        },
+        {
+            "name": "ClickThroughBlocker",
+            "version": "1:2.1.10.21"
+        },
+        {
+            "name": "CommunityResourcePack",
+            "version": "v112.0.1"
+        },
+        {
+            "name": "EnvironmentalVisualEnhancements",
+            "version": "3:1.11.7.1"
+        },
+        {
+            "name": "FerramAerospaceResearchContinued",
+            "version": "3:0.16.1.2"
+        },
+        {
+            "name": "HangerExtenderExtended",
+            "version": "3.6.0.2"
+        },
+        {
+            "name": "Harmony2",
+            "version": "2.2.1.0"
+        },
+        {
+            "name": "KerbalAlarmClock",
+            "version": "v3.14.0.0"
+        },
+        {
+            "name": "KerbalChangelog",
+            "version": "v1.4.2"
+        },
+        {
+            "name": "Kerbalism",
+            "version": "3.18"
+        },
+        {
+            "name": "Kerbalism-Config-RO",
+            "version": "v1.2.17.0"
+        },
+        {
+            "name": "KerbalJointReinforcementContinued",
+            "version": "v3.7.2.0"
+        },
+        {
+            "name": "Kopernicus",
+            "version": "2:release-1.12.1-191"
+        },
+        {
+            "name": "kRPC",
+            "version": "v0.5.2"
+        },
+        {
+            "name": "kRPC-MechJeb",
+            "version": "v0.7.0"
+        },
+        {
+            "name": "KSCSwitcher",
+            "version": "v2.1.0.0"
+        },
+        {
+            "name": "KSPBurst",
+            "version": "v1.5.5.1"
+        },
+        {
+            "name": "KSPCommunityFixes",
+            "version": "1.31.1"
+        },
+        {
+            "name": "MechJeb2",
+            "version": "2.14.3.0"
+        },
+        {
+            "name": "ModularFlightIntegrator",
+            "version": "1.2.10.0"
+        },
+        {
+            "name": "ModuleManager",
+            "version": "4.2.3"
+        },
+        {
+            "name": "Parallax",
+            "version": "2.0.6"
+        },
+        {
+            "name": "Parallax-StockScatterTextures",
+            "version": "2.0.1"
+        },
+        {
+            "name": "Parallax-StockTextures",
+            "version": "2.0.0"
+        },
+        {
+            "name": "ProceduralFairings",
+            "version": "1:v6.5.0.0"
+        },
+        {
+            "name": "ProceduralParts",
+            "version": "v2.5.8.0"
+        },
+        {
+            "name": "RCSBuildAid",
+            "version": "v1.0.6"
+        },
+        {
+            "name": "RealAntennas",
+            "version": "v2.1.1"
+        },
+        {
+            "name": "RealChute",
+            "version": "v1.4.8.3"
+        },
+        {
+            "name": "RealFuels",
+            "version": "1:v15.8.1.0"
+        },
+        {
+            "name": "RealHeat",
+            "version": "v5.1"
+        },
+        {
+            "name": "RealismOverhaul",
+            "version": "v17.6.0.1"
+        },
+        {
+            "name": "RealPlume",
+            "version": "2:v13.3.2"
+        },
+        {
+            "name": "RealSolarSystem",
+            "version": "v20.1.1.0"
+        },
+        {
+            "name": "ROLoadingImages",
+            "version": "v1.0.0.0"
+        },
+        {
+            "name": "RSSTextures16K",
+            "version": "v18.6.1"
+        },
+        {
+            "name": "RSSVE-HR",
+            "version": "2.1.6"
+        },
+        {
+            "name": "Scatterer",
+            "version": "3:v0.0838"
+        },
+        {
+            "name": "Scatterer-config",
+            "version": "3:v0.0838"
+        },
+        {
+            "name": "Scatterer-sunflare",
+            "version": "3:v0.0838"
+        },
+        {
+            "name": "SmokeScreen",
+            "version": "2.8.14.0"
+        },
+        {
+            "name": "SolverEngines",
+            "version": "v3.14.0"
+        },
+        {
+            "name": "TexturesUnlimited",
+            "version": "1.5.10.25"
+        },
+        {
+            "name": "ToolbarController",
+            "version": "1:0.1.9.11"
+        },
+        {
+            "name": "TriggerAu-Flags",
+            "version": "v2.11.0.0"
+        },
+        {
+            "name": "TweakScale-Redist",
+            "version": "v2.4.7.4"
+        },
+        {
+            "name": "Waterfall",
+            "version": "0.9.0"
+        }
+    ],
+    "release_date": "2023-12-23T20:01:11.5435622-05:00",
+    "kind": "metapackage"
+}

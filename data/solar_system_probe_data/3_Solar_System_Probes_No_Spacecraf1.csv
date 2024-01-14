@@ -1,0 +1,284 @@
+Spacecraft,Organization,Date,Type,Status,Notes,Image,Ref,Destination,Target
+Pioneer 5,NASA/ DOD,March–April 1960,orbiter,success,"measured magnetic field phenomena, solar flare particles, and ionization in the interplanetary region",,1960-001A,Sun,
+Pioneer 6(A),NASA,December 1965 – still contactable in 2000,orbiter,success,"network of solar-orbiting ""space weather"" monitors, observing solar wind, cosmic rays, and magnetic fields",,1965-105A,Sun,
+Pioneer 7(B),NASA,August 1966 – still contactable in 1995,orbiter,success,"network of solar-orbiting ""space weather"" monitors, observing solar wind, cosmic rays, and magnetic fields",,1966-075A,Sun,
+Pioneer 8(C),NASA,December 1967 – still contactable in 2001,orbiter,success,"network of solar-orbiting ""space weather"" monitors, observing solar wind, cosmic rays, and magnetic fields",,1967-123A,Sun,
+Pioneer 9(D),NASA,November 1968 – May 1983,orbiter,success,"network of solar-orbiting ""space weather"" monitors, observing solar wind, cosmic rays, and magnetic fields",,1968-100A,Sun,
+Pioneer-E,NASA,27 August 1969,orbiter,failure,intended as part of the Pioneer 6–9 network; failed to reach orbit,,PIONE,Sun,
+Helios A,DFVLR/ NASA,November 1974 – 1982,orbiter,success,"observations of solar wind, magnetic and electric fields, cosmic rays and cosmic dust between Earth and Sun",,1974-097A,Sun,
+Helios B,DFVLR/ NASA,January 1976 – 1985?,orbiter,success,"observations of solar wind, magnetic and electric fields, cosmic rays and cosmic dust between Earth and Sun",,1976-003A,Sun,
+ISEE-3,NASA,1978–1982,orbiter,success,observed solar phenomena in conjunction with earth-orbiting ISEE-1 and ISEE-2; later renamed International Cometary Explorer (ICE) and directed to Comet Giacobini-Zinner,,1976-003A,Sun,
+Ulysses(first pass),ESA/ NASA,1994,orbiter,success,south polar observations,,1990-090B,Sun,
+Ulysses(first pass),ESA/ NASA,1995,orbiter,success,north polar observations,,1990-090B,Sun,
+WIND,NASA,November 1994 – still active as of February 2020,orbiter,success,solar wind measurements,,1994-071A,Sun,
+SOHO,ESA/ NASA,May 1996 – extended to December 2025,orbiter,success,"investigation of Sun's core, corona, and solar wind; comet discoveries",,1995-065A,Sun,
+ACE,NASA,August 1997 – projected until 2024,orbiter,success,solar wind observations,,1997-045A,Sun,
+Ulysses(second pass),ESA/ NASA,2000,orbiter,success,south polar observations,,1990-090B,Sun,
+Ulysses(second pass),ESA/ NASA,2001,orbiter,success,north polar observations,,1990-090B,Sun,
+Genesis,NASA,2001–2004,orbiter/sample return,success,"solar wind sample return; crash landed on return to Earth, much data salvaged",,2001-034A,Sun,
+STEREO A,NASA,December 2006 – still active as of September 2021,orbiter,success,stereoscopic imaging of coronal mass ejections and other solar phenomena,,2006-047A,Sun,
+STEREO B,NASA,"December 2006 – October 2014.  August 2016 – October 2018  (communication lost between 1 October 2014 and 21 August 2016)  NASA directed that periodic recovery operations of Stereo-B cease with last support on October 17, 2018.",orbiter,success,stereoscopic imaging of coronal mass ejections and other solar phenomena,,2006-047B,Sun,
+Ulysses(third pass),ESA/ NASA,2007,orbiter,success,south polar observations,,1990-090B,Sun,
+Ulysses(third pass),ESA/ NASA,2008,orbiter,partial success,north polar observations; some data returned despite failing power and reduced transmission capacity,,1990-090B,Sun,
+DSCOVR,NOAA,February 2015 –,orbiter,success,"solar wind and coronal mass ejection monitoring, as well as Earth climate monitoring",,2015-007A,Sun,
+Parker Solar Probe,NASA,November 2018 – December 2025,orbiter/flyby(approach 26 times),en route,close-range solar coronal study,,2018-065A,Sun,
+Solar Orbiter,ESA,10 February 2020 (launch),orbiter,en route,solar and heliospheric physics,,2020-010A,Sun,
+CuSP,NASA,16 November 2022,orbiter,success,study particles and magnetic fields.,,CUSP,Sun,
+Aditya-L1,ISRO,2 September 2023 (launch),orbiter,success,Solar corona observation,,2023-132A,Sun,
+Mariner 10,NASA,29 March 1974,flyby,success,minimum distance 704 km,,1973-085A,Mercury,
+Mariner 10,NASA,21 September 1974,flyby,success,"48,069 km",,1973-085A,Mercury,
+Mariner 10,NASA,16 March 1975,flyby,success,327 km,,1973-085A,Mercury,
+MESSENGER,NASA,14 January 2008,flyby,success,minimum distance 200 km,,2004-030A,Mercury,
+MESSENGER,NASA,6 October 2008,flyby,success,minimum distance 200 km,,2004-030A,Mercury,
+MESSENGER,NASA,29 September 2009,flyby,success,minimum distance 228 km,,2004-030A,Mercury,
+MESSENGER,NASA,18 March 2011 –30 April 2015,orbiter,success,first spacecraft to orbit Mercury; unavoidable impact on the surface at end of mission,,2004-030A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,1 October 2021,flyby,success,,,2018-080A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,23 June 2022,flyby,success,,,2018-080A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,19 June 2023,flyby,success,,,2018-080A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,September 2024,flyby,en route,,,2018-080A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,December 2024,flyby,en route,,,2018-080A,Mercury,
+BepiColombo(Mercury Cruise System),ESA/ JAXA,January 2025,flyby,en route,,,2018-080A,Mercury,
+Tyazhely Sputnik,(USSR),4 February 1961,lander,failure,failed to escape from Earth orbit,,1961-002A,Venus,
+Venera 1,(USSR),19 May 1961 –20 May 1961,flyby,failure,contact lost 7 days after launch; first spacecraft to fly by another planet,,1961-003A,Venus,
+Mariner 1,NASA,22 July 1962,flyby,failure,guidance failure shortly after launch,,MARIN1,Venus,
+Sputnik 19,(USSR),25 August 1962,lander,failure,failed to escape Earth orbit,,1962-040A,Venus,
+Sputnik 20,(USSR),1 September 1962,lander,failure,failed to escape Earth orbit,,1962-043A,Venus,
+Sputnik 21,(USSR),12 September 1962,flyby,failure,third stage exploded,,1962-045A,Venus,
+Mariner 2,NASA,14 December 1962,flyby,success,"first successful Venus flyby; minimum distance 34,773 km",,1962-041A,Venus,
+Cosmos 21†,(USSR),11 November 1963,flyby?,failure,failed to escape Earth orbit,,1963-044A,Venus,
+Venera 1964A†,(USSR),19 February 1964,flyby,failure,failed to reach Earth orbit,,,Venus,
+Venera 1964B†,(USSR),1 March 1964,flyby,failure,failed to reach Earth orbit,,,Venus,
+Cosmos 27,(USSR),27 March 1964,flyby,failure,failed to escape Earth orbit,,1964-014A,Venus,
+Zond 1,(USSR),1964,flyby and possible lander,failure,contact lost en route,,1964-016D,Venus,
+Cosmos 96,(USSR),23 November 1965,lander,failure,did not depart low Earth orbit due to a launch failure,,1965-094A,Venus,
+Venera 1965A†,(USSR),26 November 1965,flyby,failure,launch vehicle failure?,,,Venus,
+Venera 2,(USSR),27 February 1966,flyby,failure,ceased to operate en route,,1965-091A,Venus,
+Venera 3,(USSR),1 March 1966,lander,failure,contact lost before arrival; first spacecraft to impact on the surface of another planet,,1965-092A,Venus,
+Kosmos 167,(USSR),17 June 1967,lander,failure,failed to escape Earth orbit,,1967-063A,Venus,
+Venera 4,(USSR),18 October 1967,atmospheric probe,success,continued to transmit to an altitude of 25 km,,1967-058A,Venus,
+Mariner 5,NASA,19 October 1967,flyby,success,"minimum distance 5,000 km",,1967-060A,Venus,
+Venera 5,(USSR),16 May 1969,atmospheric probe,success,"transmitted atmospheric data for 53 minutes, to an altitude of about 26 km",,1969-001A,Venus,
+Venera 6,(USSR),17 May 1969,atmospheric probe,success,"transmitted atmospheric data for 51 minutes, to an altitude of perhaps 10–12 km",,1969-002A,Venus,
+Cosmos 359,(USSR),22 August 1970,lander?,failure,failed to escape Earth orbit,,1970-065A,Venus,
+Venera 7,(USSR),15 December 1970,lander,success,first successful landing on another planet; signals returned from surface for 23 minutes,,1970-060A,Venus,
+Cosmos 482,(USSR),31 March 1972,lander?,failure,failed to escape Earth orbit,,1972-023A,Venus,
+Venera 8,(USSR),22 July 1972,lander,success,signals returned from surface for 50 minutes,,1972-021A,Venus,
+Mariner 10,NASA,5 February 1974,flyby,success,"minimum distance 5768 km, en route to Mercury; first use of gravity assist by an interplanetary spacecraft",,1973-085A,Venus,
+Venera 9,(USSR),1975,orbiter,success,first spacecraft to orbit Venus; communications relay for lander; atmospheric and magnetic studies,,1975-050A,Venus,
+Venera 9,(USSR),22 October 1975,lander,success,first images from the surface; operated on surface for 53 minutes,,1975-050D,Venus,
+Venera 10,(USSR),1975,orbiter,success,communications relay for lander; atmospheric and magnetic studies,,1975-054A,Venus,
+Venera 10,(USSR),23 October 1975,lander,success,transmitted from surface for 65 minutes,,1975-054D,Venus,
+Pioneer Venus Orbiter,NASA,4 December 1978 –1992,orbiter,success,atmospheric and magnetic studies,,1978-051A,Venus,
+Pioneer Venus Multiprobe,NASA,9 December 1978,,,,,,Venus,
+Venera 12,SAS,,,,,,,Venus,
+Venera 11,SAS,,,,identical to Venera 12,,,Venus,
+Venera 13,SAS,,,,,,,Venus,
+Venera 14,SAS,,,,identical to Venera 13,,,Venus,
+Venera 15,SAS,1983–1984,orbiter,success,radar mapping,,1983-053A,Venus,
+Venera 16,SAS,1983–1984,orbiter,success,radar mapping; identical to Venera 15,,1983-054A,Venus,
+Vega 1,SAS,11 June 1985,flyby,success,went on to fly by Halley's comet,,1984-125A,Venus,
+Vega 1,SAS,11 June 1985,lander,failure,instruments deployed prematurely,,1984-125E,Venus,
+Vega 1,SAS,11 June 1985,atmospheric balloon,success,floated at an altitude of about 54 km and transmitted for around 46 hours,,1984-125F,Venus,
+Vega 2,SAS,15 June 1985,flyby,success,went on to fly by Halley's comet,,1984-128A,Venus,
+Vega 2,SAS,15 June 1985,lander,success,transmitted from surface for 56 minutes,,1984-128E,Venus,
+Vega 2,SAS,15 June 1985,atmospheric balloon,success,floated at an altitude of about 54 km and transmitted for around 46 hours,,1984-128F,Venus,
+Galileo,NASA,10 February 1990,flyby,success,"gravity assist en route to Jupiter; minimum distance 16,000 km",,1989-084B,Venus,
+Magellan,NASA,10 August 1990 –12 October 1994,orbiter,success,global radar mapping,,1989-033B,Venus,
+Cassini,NASA/  ESA/ ASI,26 April 1998,flyby,success,gravity assist en route to Saturn,,1997-061A,Venus,
+Cassini,NASA/  ESA/ ASI,24 June 1999,flyby,success,gravity assist en route to Saturn,,1997-061A,Venus,
+Venus Express,ESA,11 April 2006 – 18 January 2015,orbiter,success,atmospheric studies; planetary imaging; magnetic observations,,2005-045A,Venus,
+MESSENGER,NASA,24 October 2006,flyby,success,gravity assist only; minimum distance 2990 km,,2004-030A,Venus,
+MESSENGER,NASA,6 June 2007,flyby,success,minimum distance 300 km; en route to Mercury,,2004-030A,Venus,
+Akatsuki(PLANET-C),JAXA,6 December 2010 (Venus flyby),orbiter,failure,failed orbital insertion in 2010; success in 2015science mission ongoing since May 2016,,2010-020D,Venus,
+Akatsuki(PLANET-C),JAXA,7 December 2015 (orbital insertion) –,orbiter,success,failed orbital insertion in 2010; success in 2015science mission ongoing since May 2016,,2010-020D,Venus,
+IKAROS,JAXA,8 December 2010,flyby,success,solar sail technology development / interplanetary space exploration,,2010-020E,Venus,
+Shin'en(UNITEC-1),UNISEC,December 2010?,flyby,failure,contact lost shortly after launch,,2010-020F,Venus,
+Parker Solar Probe,NASA,October 2018 – November 2024,flyby (approach 7 times),en route,gravity assist en route to solar corona,,2018-065A,Venus,
+BepiColombo(first pass),ESA/ JAXA,15 October 2020,flyby,success,"gravity assist en route to Mercury; minimum approach distance was about 10,720 km",,2018-080A,Venus,
+Solar Orbiter,ESA,27 December 2020,flyby,success,gravity assist en route to inclined heliocentric orbit for solar polar observations,,2020-010A,Venus,
+Solar Orbiter,ESA,9 August 2021,flyby,success,gravity assist en route to inclined heliocentric orbit for solar polar observations,,2020-010A,Venus,
+BepiColombo(second pass),ESA/ JAXA,10 August 2021,flyby,success,"gravity assist en route to Mercury, during which it may study Venus' atmosphere and solar environment",,2018-080A,Venus,
+Solar Orbiter,ESA,September 2022,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A,Venus,
+Solar Orbiter,ESA,February 2025,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A,Venus,
+JUICE,ESA,August 2025,flyby,Enroute,gravity assist en route to Jupiter,,,Venus,
+Solar Orbiter,ESA,December 2026,flyby,en route,gravity assist en route to inclined heliocentric orbit,,2020-010A,Venus,
+Rocket Lab's Venus probe,MIT/Rocket Lab,30 December 2024,atmospheric probe,under development,To search for organic molecules in the Venusian cloud particles and constrain the particle composition.,,,Venus,
+Venus Orbiter Mission,ISRO,December 2024,"orbiter, atmospheric balloon",under development,To study the Venusian atmosphere and conduct geological mapping.,,,Venus,
+Venera-D,RKA,2029,"orbiter, lander",proposed,,,,Venus,
+Dragonfly,NASA,2027,flyby,planned,gravity assist en route to Titan,,,Venus,
+Solar Orbiter,ESA,March 2028,flyby,proposed,mission extension,,2020-010A,Venus,
+Solar Orbiter,ESA,June 2029,flyby,proposed,mission extension,,2020-010A,Venus,
+Solar Orbiter,ESA,September 2030,flyby,proposed,mission extension,,2020-010A,Venus,
+DAVINCI+,NASA,2028-2030,atmospheric probe,planned,,,,Venus,
+Tianwen-4,CNSA,April 2030,flyby,proposed,gravity assist en route to Jupiter,,,Venus,
+VERITAS,NASA,NET 2031,orbiter,planned,,,,Venus,
+EnVision,ESA,2034,orbiter,planned,,,,Venus,
+Venus In Situ Explorer,NASA,TBD,lander or airplane,proposed,,,,Venus,
+Mars 1M No.1,USSR,10 October 1960,flyby,failure,failed to reach Earth orbit,,MARSNK1,Mars,
+Mars 1M No.2,USSR,14 October 1960,flyby,failure,failed to reach Earth orbit,,MARSNK2,Mars,
+Mars 1962A,USSR,24 October 1962,flyby,failure,exploded in or en route to Earth orbit,,1962-057A,Mars,
+Mars 1962B,USSR,11 November 1962 (launch),lander,failure,broke up during transfer to Mars trajectory,,1962-062A,Mars,
+Mars 1,USSR,19 June 1963,flyby,failure,"contact lost en route; flew within approximately 193,000 km of Mars",,1962-061A,Mars,
+Mariner 3,NASA,5 November 1964,flyby,failure,"protective shield failed to eject, preventing craft from attaining correct trajectory",,1964-073A,Mars,
+Mariner 4,NASA,15 July 1965,flyby,success,first close-up images of Mars,,1964-077A,Mars,
+Zond 2,USSR,6 August 1965,flyby,failure,"contact lost en route; flew within 1,500 km of Mars",,1964-078C,Mars,
+Mariner 6,NASA,31 July 1969,flyby,success,,,1969-014A,Mars,
+Mariner 7,NASA,5 August 1969,flyby,success,,,1969-030A,Mars,
+Mars 1969A,USSR,27 March 1969 (launch),orbiter,failure,launch failure,,MARS69A,Mars,
+Mars 1969B,USSR,2 April 1969 (launch),orbiter,failure,launch failure,,MARS69B,Mars,
+Mariner 8,NASA,9 May 1971 (launch),orbiter,failure,launch vehicle failure,,MARINH,Mars,
+Kosmos 419,USSR,10 May 1971 (launch),orbiter,failure,failed to escape Earth orbit,,1971-042A,Mars,
+Mariner 9,NASA,14 November 1971 –27 October 1972,orbiter,success,first spacecraft to orbit another planet,,1971-051A,Mars,
+Mars 2,USSR,27 November 1971 –22 August 1972,orbiter,success,first Soviet spacecraft to orbit another planet,,1971-045A,Mars,
+Mars 3,USSR,2 December 1971 –22 August 1972,orbiter,partial success,attained a different orbit than intended due to insufficient fuel,,1971-049A,Mars,
+Mars 4,USSR,10 February 1974,orbiter,failure,"orbit insertion failed, became flyby",,1973-047A,Mars,
+Mars 5,USSR,12 February 1974 –28 February 1974,orbiter,success,,,1973-049A,Mars,
+Mars 6,USSR,12 March 1974,flyby,success,,,1973-052A,Mars,
+Mars 7,USSR,9 March 1974,flyby,success,,,1973-053A,Mars,
+Viking 1 Orbiter,NASA,19 June 1976 –17 August 1980,orbiter,success,,,1975-075A,Mars,
+Viking 2 Orbiter,NASA,7 August 1976 –25 July 1978,orbiter,success,,,1975-083A,Mars,
+Phobos 1,USSR,7 July 1988 (launch),orbiter,failure,contact lost en route to Mars,,1988-058A,Mars,
+Phobos 2,USSR,29 January 1989 –27 March 1989,orbiter,partial success,"Mars orbit acquired, but contact lost shortly before Phobos approach phase and deployment of Phobos landers",,1988-059A,Mars,
+Mars Observer,NASA,25 September 1992 (launch),orbiter,failure,contact lost shortly before Mars orbit insertion,,1992-063A,Mars,
+Mars 96,RKA,16 November 1996 (launch),orbiter,failure,failed to escape Earth orbit,,1996-064A,Mars,
+Mars 96,RKA,16 November 1996 (launch),lander,failure,failed to escape Earth orbit,,MARS96B,Mars,
+Mars 96,RKA,16 November 1996 (launch),lander,failure,failed to escape Earth orbit,,MARS96C,Mars,
+Mars 96,RKA,16 November 1996 (launch),penetrator,failure,failed to escape Earth orbit,,MARS96D,Mars,
+Mars 96,RKA,16 November 1996 (launch),penetrator,failure,failed to escape Earth orbit,,MARS96E,Mars,
+Mars Pathfinder,NASA,4 July 1997 –27 September 1997,lander,success,,,1996-068A,Mars,
+Mars Global Surveyor,NASA,12 September 1997 –2 November 2006,orbiter,success,,,1996-062A,Mars,
+Mars Climate Orbiter,NASA,23 September 1999,orbiter,failure,Mars orbit insertion failed due to navigation error. Part of Mars Surveyor '98.,,1998-073A,Mars,
+Mars Polar Lander,NASA,3 December 1999,lander,failure,Contact lost just prior to entering Martian atmosphere. Part of Mars Surveyor '98.,,1999-001A,Mars,
+2001 Mars Odyssey,NASA,24 October 2001 –,orbiter,success,studying climate and geology; communications relay for Spirit and Opportunity rovers  longest surviving spacecraft in orbit around a planet other than Earth,,2001-014A,Mars,
+Nozomi,ISAS,14 December 2003,orbiter,failure,"failed to attain Mars orbit, became flyby",,1998-041A,Mars,
+Mars Express,ESA,25 December 2003 –,orbiter,success,surface imaging and mapping; first European probe in Martian orbit,,2003-022A,Mars,
+"Mars Exploration Rover-A ""Spirit""",NASA,4 January 2004 – 22 March 2010,rover,success,became stuck in May 2009; then operating as a static science station until contact lost in March 2010,,2003-027A,Mars,
+"Mars Exploration Rover-B ""Opportunity""",NASA,25 January 2004 – 10 June 2018,rover,success,lost contact 10 June 2018 due to 2018 global dust storm. NASA concluded mission on 13 February 2019 after failed communication attempts since August 2018.,,2003-032A,Mars,
+Mars Reconnaissance Orbiter,NASA,10 March 2006 –,orbiter,success,surface imaging and surveying,,2005-029A,Mars,
+Rosetta,ESA,25 February 2007,flyby,success,gravity assist en route to asteroid and comet encounters,,2004-006A,Mars,
+Phoenix,NASA,25 May 2008 –10 November 2008,lander,success,collection of soil samples near the northern pole to search for water and investigate Mars' geological history and biological potential,,2007-034A,Mars,
+Dawn,NASA,17 February 2009,flyby,success,gravity assist en route to Vesta and Ceres,,2007-043A,Mars,
+Fobos-Grunt,RKA,8 November 2011 (launch),orbiter and Phobos sample return,failure,failed to escape Earth orbit,,2011-065A,Mars,
+Mars Science Laboratory Curiosity,NASA,6 August 2012 –,rover,success,"investigation of past and present habitability, climate and geology",,2011-070A,Mars,
+Mangalyaan / Mars Orbiter Mission,ISRO,24 September 2014 – 27 September 2022,orbiter,success,"first Indian spacecraft to orbit another planet, studying Martian atmosphere; mineralogical mapping.",,2013-060A,Mars,
+MAVEN,NASA,25 September 2014 –,orbiter,success,studying Martian atmosphere,,2013-063A,Mars,
+ExoMars Trace Gas Orbiter (ExoMars 2016),ESA/  RKA,19 October 2016 –,orbiter,success,atmospheric gas analysis; communication relay for surface probes,,2016-017A,Mars,
+InSight,NASA,26 November 2018 – 21 December 2022,lander,success,"studied the deep interior of Mars, with a seismometer and a heat-flow probe.",,2018-042A,Mars,
+Emirates Mars Mission,MBRSC,9 February 2021 –,orbiter,in orbit,conduct studies of Martian atmosphere,,2020-047A,Mars,
+Tianwen-1 orbiter,CNSA,10 February 2021 -,orbiter,in orbit,"orbital studies of Martian surface morphology, soil, and atmosphere",,2020-049A,Mars,
+Mars 2020 Perseverance,NASA,18 February 2021 -,rover,landed,"investigate past and present habitability, climate, and geology; produce O2 from CO2; collect samples for Mars Sample Return Mission",,2020-052A,Mars,
+Psyche,NASA,13 October 2023 (launch)May 2026 (flyby),flyby,enroute,gravity assist en route to Psyche,,,Mars,
+Martian Moons Exploration (MMX),JAXA,2024 (launch)  Mid-2025 (arrival),orbiter,planned,monitoring Martian climate,,,Mars,
+Tianwen-2 (ZhengHe),CNSA,May 2025 (launch)  2028 (flyby),flyby,planned,gravity assist en route to 311P/PANSTARRS,,,Mars,
+ExoMars Kazachok (ExoMars),RKA /  ESA,NET 2026,lander,suspended,This mission is currently suspended due to sanctions against Russia during the 2022 Russian invasion of Ukraine.,,,Mars,
+Mars Orbiter Mission 2,ISRO,NET 2024,orbiter,planned,Orbital studies of Mars including Mars' ionosphere,,,Mars,
+Mars 2026,NASA,July 2026 (launch),rover,under study,,,,Mars,
+Tianwen-3,CNSA,2028 (orbiter/return module)2028 (lander/ascent module)2031 (samples to earth),"orbiter/return module,lander/ascent module",planned,"Two spacecrafts: one consists of orbiter and return module, the other of lander, ascent module and a mobile sampling robot.",,,Mars,
+NASA-ESA Mars Sample Return,NASA /  ESA,2027 (orbiter)2028 (lander)2033 (samples to earth),"orbiter, lander,ascent vehicle,2 autonomous UAV helicopters",planned,"lander carries ascent vehicle;  and 2 Ingenuity class helicopters, that fetch Perseverance samples",,,Mars,
+Next Mars Orbiter (NeMO),NASA,Late 2020s,orbiter,under study,"Laser communications relay, high-resolution mapping",,,Mars,
+Phobos 1,USSR,7 July 1988 (launch),flyby,failure,contact lost en route to Mars,,1988-058A,Phobos,
+Phobos 2,USSR,27 March 1989 (contact lost),flyby,failure,attained Mars orbit; contact lost prior to deployment of lander,,1988-059A,Phobos,
+Fobos-Grunt,RKA,8 November 2011 (launch),sample return,failure,failed to escape Earth orbit; launched with Yinghuo-1 Mars orbiter,,2011-065A,Phobos,
+MMX,JAXA,2024 (launch)  2025 (arrival),sample return,planned,orbital insertion in 2025,,,Phobos,
+Dawn,NASA,6 March 2015 – 1 November 2018,orbiter,success,first spacecraft to orbit two different celestial bodies; previously visited Vesta,,2007-043A,Ceres,
+Galileo,NASA,29 October 1991,flyby,success,en route to Jupiter; minimum distance 1900 km,,1989-084B,Asteroid,951 Gaspra
+Galileo,NASA,28 August 1993,flyby,success,en route to Jupiter; minimum distance 2400 km; discovery of the first asteroid satellite Dactyl,,1989-084B,Asteroid,243 Ida
+Clementine,BMDO/ NASA,1994,flyby,failure,flyby cancelled due to equipment malfunction,,1994-004A,Asteroid,1620 Geographos
+NEARShoemaker,NASA,27 June 1997,flyby,success,flew within 1200 km of 253 Mathilde en route to 433 Eros,,1996-008A,Asteroid,253 Mathilde
+NEARShoemaker,NASA,January 1999,orbiter,failure,became flyby due to software and communications problems (later attempt at orbit insertion succeeded; see below),,1996-008A,Asteroid,433 Eros
+Deep Space 1,NASA,29 July 1999,flyby,partial success,no close-up images due to camera pointing error; went on to visit comet 19P/Borrelly,,1998-061A,Asteroid,9969 Braille
+Cassini,NASA/ ESA/ ASI,23 January 2000,distant flyby,success,en route to Saturn,,1997-061A,Asteroid,2685 Masursky
+NEARShoemaker,NASA,February 2000 –February 2001,"orbiter, became lander",success,improvised landing by orbiter at end of mission,,1996-008A,Asteroid,433 Eros
+Stardust,NASA,2 November 2002,distant flyby,success,went on to visit comet 81P/Wild,,1999-003A,Asteroid,5535 Annefrank
+Hayabusa,ISAS,2005–07,sample return,success,2005: landed and collected dust grains.2010: sample returned.,,2003-019A,Asteroid,25143 Itokawa
+New Horizons,NASA,June 2006,distant flyby,success,flew past Pluto successfully,,2006-001A,Asteroid,132524 APL
+Rosetta,ESA,5 September 2008,flyby,success,en route to comet 67P/Churyumov–Gerasimenko,,2004-006A,Asteroid,2867 Šteins
+Rosetta,ESA,11 July 2010,flyby,success,en route to comet 67P/Churyumov–Gerasimenko,,2004-006A,Asteroid,21 Lutetia
+Dawn,NASA,16 July 2011 – 5 September 2012,orbiter,success,first spacecraft to orbit two different celestial bodies; now orbiting Ceres,,2007-043A,Asteroid,4 Vesta
+Chang'e 2,CNSA,13 December 2012,flyby,success,came within 3.2 km (2.0 mi) to Toutatis,,2010-050A,Asteroid,4179 Toutatis
+PROCYON,University of Tokyo / JAXA,12 May 2016,flyby,failure,launched with Hayabusa2 in 2014; mission abandoned after ion thruster failure,,2014-076D,Asteroid,2000 DP107
+Hayabusa2,JAXA,27 June 2018 – 13 November 2019,sample return,success,"asteroid rendezvous in June 2018, sample capture in 2019; returned sample to Earth on 5 December 2020",,2014-076A,Asteroid,162173 Ryugu
+OSIRIS-REx,NASA,August 2018,sample return,orbiter/sample return/ flyby,"orbital insertion in 2018, sample capture in 2020, a flyby in 2021, return to Earth in 2023",,2016-055A,Asteroid,101955 Bennu
+Deep Impact,NASA,January 2020,flyby,failure,contact lost; previously visited comet 103P/Hartley,,2005-001A,Asteroid,2002 GT
+DART,NASA,26 September 2022,flyby/impactor,success,kinetic impactor of Dimorphos to test planetary defense,,2021-110A,Asteroid,65803 Didymos
+Near-Earth Asteroid Scout,NASA,16 November 2022 (launch),flyby,failure,Small spacecraft asteroid flyby technology demonstration. Communication failure,,NEA-SCOUT,Asteroid,2020 GE (tentative)
+Lucy,NASA,1 November 2023,flyby,success,main-belt asteroid flyby en route to Jupiter Trojans; minimum distance 425 km; discovered a natural satellite of the asteroid,,2021-093A,Asteroid,152830 Dinkinesh
+Lucy,NASA,April 2025,flyby,enroute,main-belt asteroid flyby en route to Jupiter Trojans,,2021-093A,Asteroid,52246 Donaldjohanson
+Psyche,NASA,13 October 2023 (launch)  April 2029 (arrival),orbiter,enroute,Selected for mission #14 of NASA's Discovery Program to explore a metallic asteroid.,,,Asteroid,16 Psyche
+Tianwen-2 (ZhengHe),CNSA,May 2025 (launch)  2026 (orbit),sample return,planned,orbit then return sample from an Apollo NEA,,,Asteroid,469219 Kamoʻoalewa
+China Asteroid deflection probe,CNSA,2025 (launch),flyby/impactor,planned,probes to observe/impact an Aten NEA,,,Asteroid,2019 VL5
+Hayabusa2,JAXA,2026,flyby,en route,,,2014-076A,Asteroid,2001 CC21
+Lucy,NASA,August 2027,flyby,enroute,First flyby of a Jupiter trojan,,2021-093A,Asteroid,3548 Eurybates
+Lucy,NASA,September 2027,flyby,enroute,,,2021-093A,Asteroid,15094 Polymele
+Hera,ESA,2027,orbiter,planned,studying effects of DART's impact on the asteroid,,,Asteroid,65803 Didymos
+APEX,ESA,,lander,planned,,,,Asteroid,(65803) Dimorphos
+Juventas,ESA,,lander,planned,,,,Asteroid,(65803) Dimorphos
+Lucy,NASA,April 2028,flyby,enroute,,,2021-093A,Asteroid,11351 Leucus
+Lucy,NASA,November 2028,flyby,enroute,,,2021-093A,Asteroid,21900 Orus
+DESTINY+,JAXA,2024 (launch)  2028 (flyby),flyby,planned,First flyby of a rock comet,,,Asteroid,3200 Phaethon
+JUICE,ESA,14 April 2023 (launch)  2028 (flyby),Flyby,enroute,en route to Jupiter and it's moons,,,Asteroid,223 Rosa
+OSIRIS-APEX (formerly OSIRIS-REx),NASA,2029,orbiter,planned after Bennu sample return,study of a C-type asteroid in 2029,,2016-055A,Asteroid,99942 Apophis
+Hayabusa2,JAXA,2030,flyby,en route,flyby of a fast rotator asteroid,,2014-076A,Asteroid,1998 KY26
+Tianwen-2 (ZhengHe),CNSA,May 2025 (launch)  2034 (orbit),"orbiter, lander",planned,study of an asteroid/main-belt comet,,,Asteroid,P/2013 P5
+Lucy,NASA,March 2033,flyby,enroute,First flyby of a Trojan Camp Jupiter Trojan,,2021-093A,Asteroid,Patroclus and Menoetius
+Pioneer 10,NASA,3 December 1973,flyby,success,first probe to cross the asteroid belt; first Jupiter probe; first man-made object on an interstellar trajectory; now in the outer regions of the Solar System but no longer contactable,,1972-012A,Jupiter,
+Pioneer 11,NASA,4 December 1974,flyby,success,went on to visit Saturn,,1973-019A,Jupiter,
+Voyager 1,NASA,5 March 1979,flyby,success,went on to visit Saturn,,1977-084A,Jupiter,
+Voyager 2,NASA,9 July 1979,flyby,success,"went on to visit Saturn, Uranus and Neptune",,1977-076A,Jupiter,
+Ulysses(first pass),ESA/ NASA,February 1992,flyby,success,gravity assist en route to inclined heliocentric orbit for solar polar observations,,1990-090B,Jupiter,
+Galileo Orbiter,NASA/ West Germany,7 December 1995 –21 September 2003,orbiter,success,also flew by various of Jupiter's moons; intentionally flown into Jupiter at end of mission; first spacecraft to orbit Jupiter; first spacecraft to flyby an asteroid,,1989-084B,Jupiter,
+Cassini,NASA/ ESA/ ASI,December 2000,flyby,success,gravity assist en route to Saturn,,1997-061A,Jupiter,
+Ulysses(second pass),ESA/ NASA,2003–04,distant flyby,success,,,1990-090B,Jupiter,
+New Horizons,NASA,28 February 2007,flyby,success,gravity assist en route to Pluto,,2006-001A,Jupiter,
+Juno,NASA,"5 July 2016 – July 2018, extended to July 2021 and then September 2025",orbiter,success,"First solar-powered Jupiter orbiter, first mission to achieve a polar orbit of Jupiter.",,2011-040A,Jupiter,
+JUICE,ESA,14 April 2023 (launch),orbiter,enroute,"mission to study Jupiter's three icy moons Callisto, Europa and Ganymede, eventually orbiting Ganymede as the first spacecraft to orbit a satellite of another planet.",,,Jupiter,
+Europa Clipper,NASA,2024,orbiter,planned,planned to orbit Jupiter and fly by Europa multiple times,,,Jupiter,
+IHP-1,CNSA,"2024 (launch), 2029 (Jupiter closest approach)",flyby,under study,Proposed Interstellar Heliosphere Probe with Jovian gravity assist,,,Jupiter,
+IHP-2,CNSA,"2025 (launch), 2033 (Jupiter closest approach)",flyby,under study,Proposed Interstellar Heliosphere Probe with Jovian gravity assist (and later Neptune and KBO flybys),,,Jupiter,
+Tianwen-4,CNSA,September 2029,orbiter,planned,Planned Jupiter orbiter with attached Uranus probe,,,Jupiter,
+JUICE,ESA,14 April 2023 (launch),orbiter,enroute,"mission to study Jupiter's three icy moons Callisto, Europa and Ganymede, eventually orbiting Ganymede as the first spacecraft to orbit a satellite of another planet.",,,Ganymede,
+Pioneer 11,NASA,1 September 1979,flyby,success,previously visited Jupiter,,1973-019A,Saturn,
+Voyager 1,NASA,12 November 1980,flyby,success,previously visited Jupiter,,1977-084A,Saturn,
+Voyager 2,NASA,5 August 1981,flyby,success,"previously visited Jupiter, went on to visit Uranus and Neptune",,1977-076A,Saturn,
+Cassini,NASA/ ESA/ ASI,1 July 2004 – 15 September 2017,orbiter,success,"also performed flybys of a number of Saturn's moons, and deployed the Huygens Titan lander; first spacecraft to orbit Saturn",,1997-061A,Saturn,
+Huygens,ESA,14 January 2005,"atmospheric probe, lander",success,deployed by Cassini; first probe to land on a satellite of another planet,,1997-061C,Titan,
+Dragonfly,NASA,July 2028,rotorcraft lander,planned,"planned lander and aircraft, study prebiotic chemistry and extraterrestrial habitability.",,,Titan,
+Voyager 2,NASA,24 January 1986,flyby,success,previously visited Jupiter and Saturn; went on to visit Neptune,,1977-076A,Uranus,
+Tianwen-4,CNSA,2029 or early 2030s,flyby,planned,Planned Jupiter orbiter with attached Uranus probe,,,Uranus,
+Uranus Orbiter and Probe,NASA,2031,Orbiter and Probe,under study,highest priority Flagship-class mission by the 2023–2032 Planetary Science Decadal Survey,,,Uranus,
+Voyager 2,NASA,25 August 1989,flyby,success,"previously visited Jupiter, Saturn and Uranus",,1977-076A,Neptune,
+IHP-2,CNSA,"2024 (launch), 2038 (Neptune closest approach)",flyby,under study,Proposed heliosphere probe with Neptunian flyby and possible atmospheric probe,,,Neptune,
+New Horizons,NASA,14 July 2015,flyby,success,later flew by Kuiper belt object 486958 Arrokoth when it was 43.4 AU from the Sun.,,2006-001A,Pluto,
+ICE (formerly ISEE3),NASA,11 September 1985,flyby,success,previously solar monitor ISEE3; went on to observe Halley's Comet,,1978-079A,Comet,21P/Giacobini-Zinner
+Vega 1,SAS,6 March 1986,flyby,success,"minimum distance 8,890 km; previously visited Venus",,1984-125A,Comet,1P/Halley
+Suisei,ISAS,8 March 1986,flyby,success,"151,000 km",,1985-073A,Comet,1P/Halley
+Vega 2,SAS,9 March 1986,flyby,success,"minimum distance 8,890 km; previously visited Venus",,1984-128A,Comet,1P/Halley
+Sakigake,ISAS,March 1986,distant flyby,partial success,minimum distance 6.99 million km,,1985-001A,Comet,1P/Halley
+Giotto,ESA,14 March 1986,flyby,success,minimum distance 596 km; went on to visit comet 26P/Grigg–Skjellerup,,1985-056A,Comet,1P/Halley
+ICE  (formerly ISEE3),NASA,28 March 1986,distant obser-vations,success,minimum distance 32 million km; previously visited comet 21P/Giacobini–Zinner,,1978-079A,Comet,1P/Halley
+Giotto,ESA,10 July 1992,flyby,success,previously visited Halley's Comet,,1985-056A,Comet,26P/Grigg–Skjellerup
+Sakigake,ISAS,1996,flyby,failure,contact lost; previously visited Halley's Comet,,1985-001A,Comet,45P/Honda–Mrkos–Pajdusakova
+Sakigake,ISAS,1998,flyby,failure,contact lost; previously visited Halley's Comet,,1985-001A,Comet,21P/Giacobini-Zinner
+Suisei,ISAS,1998,flyby,failure,abandoned due to lack of fuel; previously visited Halley's Comet,,1985-073A,Comet,55P/Tempel-Tuttle
+Suisei,ISAS,1998,flyby,failure,abandoned due to lack of fuel; previously visited Halley's Comet,,1985-073A,Comet,21P/Giacobini-Zinner
+Deep Space 1,NASA,January 2001,flyby,failure,"abandoned due to problems with the star tracker, but was re-tasked to fly by comet 19P/Borrelly",,1998-061A,Comet,107P/Wilson-Harrington
+Deep Space 1,NASA,22 September 2001,flyby,success,previously visited asteroid 9969 Braille,,1998-061A,Comet,19P/Borrelly
+CONTOUR,NASA,2003,flyby,failure,contact lost shortly after launch,,2002-034A,Comet,2P/Encke
+Stardust,NASA,2 January 2004,"flyby, sample return",success,sample returned January 2006; also visited asteroid 5535 Annefrank,,1999-003A,Comet,81P/Wild
+Deep Impact,NASA,July 2005,flyby,success,,,2005-001A,Comet,9P/Tempel
+CONTOUR,NASA,2006,flyby,failure,contact lost shortly after launch,,2002-034A,Comet,73P/Schwassmann-Wachmann
+CONTOUR,NASA,2008,flyby,failure,contact lost shortly after launch,,2002-034A,Comet,6P/d'Arrest
+Deep Impact (redesignated EPOXI),NASA,4 November 2010,flyby,success,mission extension (target changed from comet Boethin),,2005-001A,Comet,103P/Hartley
+Stardust (redesignated NExT),NASA,14 February 2011,flyby,success,mission extension,,1999-003A,Comet,9P/Tempel
+Rosetta,ESA,6 August 2014 – 30 September 2016,orbiter,success,flybys of asteroids 2867 Šteins and 21 Lutetia completed; intentionally impacted at end of mission,,2004-006A,Comet,67P/Churyumov–Gerasimenko
+Comet Interceptor,ESA,2029 (launch),flyby,planned,"flyby of a pristine comet, will initially be parked at the Sun-Earth L2 point until a suitable destination is identified",,,Comet,TBD(potentially an interstellar object)
+Tianwen-2 (ZhengHe),CNSA,2025 (launch)  2034 (orbit),"orbiter, lander",planned,study of an asteroid/main-belt comet,,,Comet,311P/PANSTARRS
+New Horizons,NASA,1 January 2019,flyby,success,"extended mission after Pluto, currently sending data from flyby; may flyby another object in 2020s.",,2006-001A,Belt,486958 Arrokoth
+IHP-2,CNSA,"2024 (launch,) after 2038 (KBO flyby)",flyby,under study,Proposed Interstellar Heliosphere Probe with potential KBO target,,,Belt,To Be Determined
+Pioneer 10,NASA,,,success,Left Jupiter in December 1973. Mission ended March 1997. Last contact 23 January 2003. Craft now presumed dead; no further contact attempts planned.,,1972-012A,Interstellar,
+Pioneer 11,NASA,,,success,"Left Saturn in September 1979. Last contact September 1995. The craft's antenna cannot be maneuvered to point to Earth, and it is not known if it is still transmitting. No further contact attempts are planned.",,1973-019A,Interstellar,
+Voyager 1,NASA,,,success,Left Saturn in November 1980. Still in regular contact and transmitting scientific data.,,1977-084A,Interstellar,
+Voyager 2,NASA,,,success,Left Neptune in August 1989. Still in regular contact and transmitting scientific data.,,1977-076A,Interstellar,
+New Horizons,NASA,,,success,Left Pluto 14 July 2015; flew by Kuiper belt object 486958 Arrokoth on 1 January 2019 when it was 43.4 AU from the Sun.,,2006-001A,Interstellar,
+IHP-1,CNSA,,,under study,Proposed Interstellar Heliosphere Probe with a 2024 launch date. Anticipated to reach a distance of at least 85 AU from Earth by 2049,,,Interstellar,
+IHP-2,CNSA,,,under study,Proposed Interstellar Heliosphere Probe with a 2024 launch date. Anticipated to reach a distance of at least 83 AU from Earth by 2049,,,Interstellar,
