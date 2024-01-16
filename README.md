@@ -1,5 +1,5 @@
 # LLMSat
-Implementation of the proposd spacecraft controller in LLMSat: An Large Lanuge Model-Based Goal-Oriented Autonomous Agent for Space Exploration (WIP).
+Implementation of the proposd spacecraft controller in LLMSat: An Large Language Model-Based Goal-Oriented Autonomous Agent for Space Exploration (WIP).
 
 As spacecraft journey further from Earth with more complex missions, systems of greater autonomy and onboard intelligence are called for. Reducing reliance on human-based mission control becomes increasingly critical if we are to increase our rate of solar-system-wide exploration. This work explores the application of LLMs as the high-level control system of a spacecraft. Using a simulated space mission as a case study, the proposed architecture's efficacy is evaluated based on key performance indicators. The popular game engine Kerbal Space Program is leveraged as the simulation environment. This research evaluates the potential of LLMs in augmenting autonomous decision-making systems for future safety-critical space applications.
 

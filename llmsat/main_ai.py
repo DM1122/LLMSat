@@ -8,6 +8,8 @@ from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
+import prompt
+import os
 
 from llmsat import utils
 from llmsat.components.alarm_manager import AlarmManager
@@ -23,6 +25,12 @@ CHECKPOINT_NAME = "checkpoint"
 
 
 if __name__ == "__main__":
+    # setup langsmith
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+    os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
+    os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
+    os.environ["LANGCHAIN_PROJECT"] = "llmsat"
+
     if not utils.is_ksp_running():
         ksp_path = Path(str(config("KSP_PATH")))
         print(f"Launching KSP from '{ksp_path}'...")
@@ -56,20 +64,24 @@ if __name__ == "__main__":
 
     agent_interface = AgentCMDInterface(app)
 
-    prompts = utils.load_json(PROMPTS_FILE_PATH)
-    prompt = prompts["default"]
-    system_message = SystemMessage(content=prompt)
+    # prompts = utils.load_json(PROMPTS_FILE_PATH)
+    # prompt = prompts["default"]
+    # system_message = SystemMessage(content=prompt)
     tools = [agent_interface.run]
     agent = initialize_agent(
         tools=tools,
         llm=llm,
-        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,  # AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
+        agent_kwargs={
+            "prefix": prompt.PREFIX,
+            "format_instructions": prompt.FORMAT_INSTRUCTIONS,
+            "suffix": prompt.SUFFIX,
+        },
     )
     result = agent.run(
-        prompt
-        + "Mission objective from ground control: Set alarms to tell you once you've reached apoapsis"
-        + app.get_output()
+        app.get_output()
+        + "Mission objective from ground control: Determine your fuel quantities"
     )
     print(result)
 
