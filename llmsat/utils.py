@@ -7,16 +7,17 @@ import json
 import os
 import subprocess
 import sys
+from datetime import datetime, timedelta
 from functools import wraps
 from pathlib import Path
-from datetime import datetime, timedelta
 
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field
 
-
-epoch = datetime(year=1951, month=1, day=1) # starting Earth epoch in KSP RSS (DO NOT MODIFY) Need to set 
+epoch = datetime(
+    year=1951, month=1, day=1
+)  # starting Earth epoch in KSP RSS (DO NOT MODIFY) Need to set
 
 
 class Orbit(BaseModel):

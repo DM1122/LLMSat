@@ -1,10 +1,11 @@
 """Payload manager class."""
+import argparse
 import json
 import time
 
 from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel
-import argparse
+
 from llmsat import utils
 
 

@@ -3,7 +3,7 @@
 import json
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import List, Dict
+from typing import Dict, List
 
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field

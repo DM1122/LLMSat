@@ -2,11 +2,12 @@
 
 from datetime import datetime, timedelta
 from enum import Enum
+from pathlib import Path
 from typing import List
+
 import pandas as pd
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
-from pathlib import Path
 
 from llmsat import utils
 

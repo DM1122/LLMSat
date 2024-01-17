@@ -14,8 +14,9 @@ from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.console import AgentCMDInterface, Console
 from llmsat.components.experiment_manager import ExperimentManager
-from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.orbit_propagator import OrbitPropagator
+from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.task_manager import TaskManager
 
 CHECKPOINT_NAME = "checkpoint"
 load_checkpoint = False
@@ -40,6 +41,7 @@ if __name__ == "__main__":
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
+    task_manager = TaskManager(connection)
     alarm_manager = AlarmManager(connection, remove_alarms_on_init=load_checkpoint)
     orbit_propagator = OrbitPropagator(connection)
     app = Console(
@@ -48,7 +50,7 @@ if __name__ == "__main__":
             autopilot_service,
             payload_manager,
             alarm_manager,
-            orbit_propagator
+            orbit_propagator,
         ]
     )
 
