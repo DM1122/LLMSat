@@ -64,9 +64,6 @@ if __name__ == "__main__":
 
     agent_interface = AgentCMDInterface(app)
 
-    # prompts = utils.load_json(PROMPTS_FILE_PATH)
-    # prompt = prompts["default"]
-    # system_message = SystemMessage(content=prompt)
     tools = [agent_interface.run]
     agent = initialize_agent(
         tools=tools,

@@ -6,8 +6,11 @@ from typing import List
 import pandas as pd
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
+from pathlib import Path
 
 from llmsat import utils
+
+MISSION_BRIEF = Path("llmsat/mission_brief.md")
 
 
 class AttachmentMode(Enum):
@@ -84,7 +87,7 @@ class SpacecraftManager(CommandSet):
 
         self._assign_ids_to_parts()
 
-    def do_get_spacecraft_properties(self, statement):
+    def do_get_spacecraft_properties(self, _=None):
         """Get information about the spacecraft"""
         output = self.get_spacecraft_properties()
 
@@ -105,7 +108,7 @@ class SpacecraftManager(CommandSet):
 
         return properties
 
-    def do_get_parts_tree(self, statement):
+    def do_get_parts_tree(self, _=None):
         """Get a tree of all spacecraft parts."""
         output = self.get_parts_tree()
 
@@ -142,7 +145,7 @@ class SpacecraftManager(CommandSet):
 
         return tree
 
-    def do_get_met(self, _):
+    def do_get_met(self, _=None):
         """Get the mission elapsed time"""
         met = self.get_met()
 
@@ -154,12 +157,14 @@ class SpacecraftManager(CommandSet):
 
         return met
 
-    def do_get_ut(self, _):
+    def do_get_ut(self, _=None):
         """Get the current universal time"""
+        ut = self.get_ut()
 
-        time = utils.get_ut(self.connection)
+        self._cmd.poutput(ut.isoformat())
 
-        self._cmd.poutput(time.isoformat())
+    def get_ut(self) -> datetime:
+        return utils.get_ut(self.connection)
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""
@@ -173,7 +178,7 @@ class SpacecraftManager(CommandSet):
 
         assign_tag(self.vessel.parts.root, tag=0)
 
-    def do_get_resources(self, statement):
+    def do_get_resources(self, _=None):
         resources = self.get_resources()
 
         self._cmd.poutput(resources.to_string())
@@ -195,6 +200,15 @@ class SpacecraftManager(CommandSet):
             data.append(resource_data)
 
         return pd.DataFrame(data)
+
+    def do_read_mission_brief(self, _=None):
+        """Read the mission briefing"""
+        self._cmd.poutput(self.read_mission_brief())
+
+    def read_mission_brief(self) -> str:
+        with open(MISSION_BRIEF, "r") as file:
+            text = file.read()
+        return text
 
     @staticmethod
     def _determine_part_type(krpc_part) -> PartType:

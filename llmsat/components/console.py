@@ -114,8 +114,20 @@ class Console(cmd2.Cmd):
 
     def preloop(self):
         super().preloop()
-        self.poutput("Welcome to SatelliteOS\n")
-        # self.do_get_spacecraft_properties("")
+        self.display_dashboard()
+
+    def display_dashboard(self):
+        spacecraft_manager = self.find_commandsets(SpacecraftManager)[0]
+        ut = spacecraft_manager.get_ut()
+        met = spacecraft_manager.get_met()
+
+        self.poutput(f"SatelliteOS")
+        self.poutput(f"UT: {ut.isoformat()} | MET: {met}")
+        self.poutput("\n")
+        spacecraft_manager.do_read_mission_brief()
+        spacecraft_manager.do_get_spacecraft_properties()
+        spacecraft_manager.do_get_resources()
+
         self.do_help("-v")
 
     def get_output(self):
@@ -125,6 +137,6 @@ class Console(cmd2.Cmd):
         return output
 
 
-if __name__ == "__main__":
-    app = Console()
-    app.cmdloop()
+# if __name__ == "__main__":
+#     app = Console()
+#     app.cmdloop()
