@@ -6,24 +6,9 @@ import time
 from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel
 
-from llmsat import utils
+from llmsat.libs import utils
 
 
-class Experiment(BaseModel):
-    """Experiment properties"""
-
-    part: str
-    name: str
-    deployed: bool
-    rerunnable: bool
-    inoperable: bool
-    has_data: bool
-    available: bool
-
-
-class DataProperties(BaseModel):
-    description: str
-    data_amount: float
 
 
 @with_default_category("ExperimentManager")

@@ -3,9 +3,9 @@ from typing import List
 import krpc
 import pytest
 
-from llmsat import utils
+from llmsat.libs import utils
 from llmsat.components.autpilot import AutopilotService, Node
-from llmsat.utils import Orbit
+from llmsat.libs.utils import Orbit
 
 
 @pytest.fixture(scope="session")
@@ -32,3 +32,14 @@ def test_execute_maneuver_nodes(ksp_connection):
 
     new_orbit: Orbit = service.execute_maneuver_nodes()
     print(new_orbit)
+
+def test_launch(krpc_connection):
+    service = AutopilotService(ksp_connection)
+
+    output = service.launch()
+
+
+def test_landing(krpc_connection):
+    service = AutopilotService(ksp_connection)
+
+    output = service.land()

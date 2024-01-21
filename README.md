@@ -23,6 +23,7 @@ Poetry install
     KRPC
     KRPC-Mechjeb
     Parallax (for nice planet textures)
+1. (optional) Disable limited ignitions by navigating to <KSP folder>\GameData\RealFuels\RealSettings.cfg and setting `limitedIgnitions=false`
 
 # Test
 To run tests:

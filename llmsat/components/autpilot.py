@@ -5,36 +5,7 @@ from typing import List
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
 
-from llmsat import utils
-
-
-class Node(BaseModel):
-    "Represents a maneuver node."
-
-    prograde: float = Field(
-        description="The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second."
-    )
-    normal: float = Field(
-        description="The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second."
-    )
-    radial: float = Field(
-        description="The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second."
-    )
-    delta_v: float = Field(
-        description="The delta-v of the maneuver node, in meters per second. Does not change when executing the maneuver node. See remaining_delta_v."
-    )
-    remaining_delta_v: float = Field(
-        description="Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node is executed."
-    )
-    ut: float = Field(
-        description="The universal time at which the maneuver will occur, in seconds."
-    )
-    time_to: float = Field(
-        description="The time until the maneuver node will be encountered, in seconds."
-    )
-    new_orbit: utils.Orbit = Field(
-        description="The new orbit to be achieved after execution of the maneuver"
-    )
+from llmsat.libs import utils
 
 
 @with_default_category("AutopilotService")
@@ -76,23 +47,17 @@ class AutopilotService(CommandSet):
     )
 
     @with_argparser(plan_apoapsis_maneuver_parser)
-    def do_plan_apoapsis_maneuver(self, args):
-        """Plan an apoapsis change"""
-        plan_apoapsis_parser = Cmd2ArgumentParser()
-        plan_apoapsis_parser.add_argument(
-            "new_apoapsis", type=float, help="[km] The new apoapsis altitude"
-        )
+    def do_apoapsis(self, args):
+        """Plan an apoapsis maneuver"""
 
-        self._cmd.poutput("Generating maneuver nodes...")
-
-        nodes = self.plan_apoapsis_maneuver(args.new_apoapsis)
+        nodes = self.apoapsis(args.new_apoapsis)
 
         self._cmd.poutput("The following nodes were generated:")
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
-    def plan_apoapsis_maneuver(self, new_apoapsis: float) -> List[Node]:
-        """Create a maneuver to set a new apoapsis"""
+    def apoapsis(self, new_apoapsis: float) -> List[Node]:
+        """Plan an apoapsis maneuver"""
 
         planner = self.pilot.maneuver_planner.operation_apoapsis
 
@@ -101,18 +66,7 @@ class AutopilotService(CommandSet):
         node_objs = planner.make_nodes()
         nodes = []
         for node_obj in node_objs:
-            nodes.append(
-                Node(
-                    prograde=node_obj.prograde,
-                    normal=node_obj.normal,
-                    radial=node_obj.radial,
-                    delta_v=node_obj.delta_v,
-                    remaining_delta_v=node_obj.remaining_delta_v,
-                    ut=node_obj.ut,
-                    time_to=node_obj.time_to,
-                    new_orbit=utils.cast_krpc_orbit(node_obj.orbit),
-                )
-            )
+            nodes.append()
 
         warning = planner.error_message
         if warning:
@@ -153,3 +107,39 @@ class AutopilotService(CommandSet):
         orbit = utils.cast_krpc_orbit(obj)
 
         return orbit
+
+    def do_launch(self, args):
+        """Launch into orbit"""
+
+        self.launch()
+
+        self._cmd.poutput()
+
+    def launch(self):
+        """Launch into orbit"""
+        pilot_ascent = self.pilot.ascent_autopilot
+
+        pilot_ascent.desired_orbit_altitude = 100000
+        pilot_ascent.desired_inclination = 6
+        pilot_ascent.autostage = True
+        pilot_ascent.enabled = True
+
+    def do_land(self, _=None):
+        """Land"""
+
+        output = self.land()
+
+        self._cmd.poutput(output)
+
+    def land(self):
+        """land"""
+        pilot_landing = self.pilot.landing_autopilot
+
+        pilot_landing.deploy_gears = True
+        pilot_landing.rcs_adjustment = True
+        pilot_landing.touchdown_speed = 0.6  # m/s
+        pilot_landing.land_at_position_target()
+
+        # pilot_landing.enabled = True
+
+        return pilot_landing.status

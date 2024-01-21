@@ -8,7 +8,7 @@ import pandas as pd
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
 
-from llmsat import utils
+from llmsat.libs import utils
 
 
 @with_default_category("OrbitPropagator")

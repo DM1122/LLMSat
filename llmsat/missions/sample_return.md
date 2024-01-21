@@ -1,6 +1,4 @@
-# Dreamcatcher Mission Briefing
-
-## Summary
+# Mission Brief
 Return 50g of surface sample from Enceladus' south pole geysers to assist in the discovery of life beyond Earth.
 
 ## Mission Phases
@@ -15,7 +13,7 @@ Return 50g of surface sample from Enceladus' south pole geysers to assist in the
 9. Transit to Earth
 10. LEO insertion
 
-## Success Criteria
+## Requirements
 - >=50g of Enceladus surface material have been brought back to LEO at an altitude between 400-500km and inclination <10deg
 - Samples have been returned to Earth before 2052-12-25
 - Communication sent to mission control providing location in LEO

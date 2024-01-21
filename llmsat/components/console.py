@@ -11,7 +11,7 @@ from langchain.tools import tool
 from langchain.tools.base import ToolException
 from pydantic import BaseModel
 
-from llmsat import utils
+from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.experiment_manager import ExperimentManager

@@ -9,71 +9,9 @@ import pandas as pd
 from cmd2 import CommandSet, with_default_category
 from pydantic import BaseModel
 
-from llmsat import utils
+from llmsat.libs import utils
 
 MISSION_BRIEF = Path("llmsat/mission_brief.md")
-
-
-class AttachmentMode(Enum):
-    RADIAL = "radial"
-    AXIAL = "axial"
-
-
-class PartType(Enum):
-    NONE = "none"
-    ANTENNA = "antenna"
-    CARGO_BAY = "cargo_bay"
-    CONTROL_SURFACE = "control_surface"
-    DECOUPLER = "decoupler"
-    DOCKING_PORT = "docking_port"
-    ENGINE = "engine"
-    EXPERIMENT = "experiment"
-    EXPERIMENTS = "experiements"
-    FAIRING = "fairing"
-    INTAKE = "intake"
-    LEG = "leg"
-    LAUNCH_CLAMP = "launch_clamp"
-    LIGHT = "light"
-    PARACHUTE = "parachute"
-    RADIATOR = "radiator"
-    RESOURCE_DRAIN = "resource_drain"
-    RCS = "rcs"
-    REACTION_WHEEL = "reaction_wheel"
-    RESOURCE_CONVERTER = "resource_converter"
-    RESOURCE_HARVESTER = "resource_harvester"
-    ROBOTIC_CONTROLLER = "robotic_controller"
-    ROBOTIC_HINGE = "robotic_hinge"
-    ROBOTIC_PISTON = "robotic_piston"
-    ROBOTIC_ROTATION = "robotic_rotation"
-    ROBOTIC_ROTOR = "robotic_rotor"
-    SENSOR = "sensor"
-    SOLAR_PANEL = "solar_panel"
-    WHEEL = "wheel"
-
-
-class SpacecraftProperties(BaseModel):
-    """Basic properties of the spacecraft"""
-
-    name: str
-    description: str
-    type: str
-    situation: str
-    met: float
-    biome: str
-    mass: float
-    dry_mass: float
-
-
-class Part(BaseModel):
-    id: str
-    name: str
-    title: str
-    type: PartType
-    mass: float
-    temperature: float
-    max_temperature: float
-    attachment: AttachmentMode
-    children: List["Part"]
 
 
 @with_default_category("SpacecraftManager")

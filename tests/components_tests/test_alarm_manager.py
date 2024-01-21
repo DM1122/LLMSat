@@ -3,7 +3,7 @@ from datetime import datetime
 import krpc
 import pytest
 
-from llmsat import utils
+from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
 
 

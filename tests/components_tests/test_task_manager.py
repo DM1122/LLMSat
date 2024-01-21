@@ -3,7 +3,7 @@ from typing import List
 import krpc
 import pytest
 
-from llmsat import utils
+from llmsat.libs import utils
 from llmsat.components.task_manager import TaskManager
 
 

@@ -8,7 +8,7 @@ from typing import Dict, List
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
 
-from llmsat import utils
+from llmsat.libs import utils
 
 
 class Alarm(BaseModel):

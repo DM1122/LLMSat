@@ -1,17 +1,17 @@
 """Runs simulation loop"""
 
+import os
 from pathlib import Path
 
 import krpc
+import prompt
 import utils
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
-import prompt
-import os
 
-from llmsat import utils
+from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.console import AgentCMDInterface, Console
@@ -31,10 +31,10 @@ if __name__ == "__main__":
     os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
     os.environ["LANGCHAIN_PROJECT"] = "llmsat"
 
-    if not utils.is_ksp_running():
+    if not llmsat.libs.utils.is_ksp_running():
         ksp_path = Path(str(config("KSP_PATH")))
         print(f"Launching KSP from '{ksp_path}'...")
-        utils.launch_ksp(path=ksp_path)
+        llmsat.libs.utils.launch_ksp(path=ksp_path)
 
     input("Press any key once the KSP save is loaded to continue...")
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     connection = krpc.connect(name="Simulator")
 
     print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    llmsat.libs.utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)

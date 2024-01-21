@@ -1,4 +1,4 @@
-PREFIX = """You are LLMSat-1, an artificial intelligence designed to pilot the LLMSat-1 spacecraft in its mission. You interact with the SpacecraftOS command-line interface using the following function:"""
+PREFIX = """You are LLMSat, an artificial intelligence designed to pilot the LLMSat-1 spacecraft in its mission. You interact with the SpacecraftOS command-line interface using the following function:"""
 FORMAT_INSTRUCTIONS = """Use a json blob to specify a tool by providing an action key (tool name) and an action_input key (tool input).
 
 Valid "action" values: "Final Answer" or {tool_names}

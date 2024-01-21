@@ -1,27 +1,12 @@
-"""Game-related utilities"""
+"""KRPC Types"""
 
-import argparse
-import functools
-import inspect
-import json
-import os
-import subprocess
-import sys
-from datetime import datetime, timedelta
-from functools import wraps
-from pathlib import Path
-
-import cmd2
-from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field
-
-epoch = datetime(
-    year=1951, month=1, day=1
-)  # starting Earth epoch in KSP RSS (DO NOT MODIFY) Need to set
+from datetime import datetime
+from llmsat.libs import utils
 
 
 class Orbit(BaseModel):
-    """Orbit parameters"""
+    """An orbit"""
 
     body: str = Field(
         description="The celestial body (e.g. planet or moon) around which the object is orbiting."
@@ -97,76 +82,124 @@ class Orbit(BaseModel):
         )
 
 
-def is_ksp_running():
-    """Determine whether Kerbal Space Program is currently running on the system."""
-    try:
-        # List processes and grep for KSP
-        output = subprocess.check_output("tasklist", shell=True).decode("utf-8")
-        return "KSP" in output
-    except:
-        return False
+class Node(BaseModel):
+    """A maneuver node
 
+    URL: https://krpc.github.io/krpc/python/api/space-center/node.html
+    """
 
-def launch_ksp(path: Path):
-    subprocess.Popen([path], cwd=os.path.dirname(path))
+    prograde: float = Field(
+        description="The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second."
+    )
+    normal: float = Field(
+        description="The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second."
+    )
+    radial: float = Field(
+        description="The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second."
+    )
+    delta_v: float = Field(
+        description="The delta-v of the maneuver node, in meters per second. Does not change when executing the maneuver node. See remaining_delta_v."
+    )
+    remaining_delta_v: float = Field(
+        description="Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node is executed."
+    )
+    ut: datetime = Field(
+        description="The universal time at which the maneuver will occur, in seconds."
+    )
+    time_to: float = Field(
+        description="The time until the maneuver node will be encountered, in seconds."
+    )
+    orbit: Orbit = Field(
+        description="The new orbit to be achieved after execution of the maneuver"
+    )
 
-
-def load_checkpoint(name: str, space_center):
-    """Load the given game save state"""
-    try:
-        space_center.load(name)
-    except ValueError as e:
-        raise ValueError(
-            f"No checkpoint named '{name}.sfs' was found. Please create one"
+    def __init__(self, node_obj):
+        super().__init__(
+            prograde=node_obj.prograde,
+            normal=node_obj.normal,
+            radial=node_obj.radial,
+            delta_v=node_obj.delta_v,
+            remaining_delta_v=node_obj.remaining_delta_v,
+            ut=node_obj.ut,
+            time_to=node_obj.time_to,
+            orbit=Orbit(node_obj.orbit),
         )
 
 
-def load_json(filename):
-    """Load a given JSON file"""
+class Experiment(BaseModel):
+    """Experiment properties"""
 
-    with open(filename, "r") as file:
-        data = json.load(file)
-    return data
-
-
-class MET:  # TODO: rename
-    def __init__(self, seconds):
-        """Mission elapsed time object.
-
-        Args:
-            seconds: seconds since the mission began
-        """
-        self.seconds = int(seconds)
-        print(self.seconds)
-
-    def __str__(self):
-        # Constants for time calculations
-        seconds_in_minute = 60
-        seconds_in_hour = 3600
-        seconds_in_day = 86400
-        seconds_in_year = 31536000  # Approximation, not accounting for leap years
-
-        # Calculate years, days, hours, minutes, and seconds
-        years, remaining_seconds = divmod(self.seconds, seconds_in_year)
-        days, remaining_seconds = divmod(remaining_seconds, seconds_in_day)
-        hours, remaining_seconds = divmod(remaining_seconds, seconds_in_hour)
-        minutes, seconds = divmod(remaining_seconds, seconds_in_minute)
-
-        return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
+    part: str
+    name: str
+    deployed: bool
+    rerunnable: bool
+    inoperable: bool
+    has_data: bool
+    available: bool
 
 
-def get_ut(connection) -> datetime:
-    """Get the current in-game universal time"""
-    return epoch + timedelta(seconds=connection.space_center.ut)
+class DataProperties(BaseModel):
+    description: str
+    data_amount: float
 
 
-class CustomCmd2ArgumentParser(Cmd2ArgumentParser):
-    def __init__(self, cmd_instance_method, *args, **kwargs):
-        """Custom parser to pipe output to poutput so the agent can process these messages."""
-        super().__init__(*args, **kwargs)
-        self.cmd_instance_method = cmd_instance_method
+class AttachmentMode(Enum):
+    RADIAL = "radial"
+    AXIAL = "axial"
 
-    def _print_message(self, message, file=None):
-        if message:
-            # Use cmd2's poutput instead of writing directly to sys.stderr or sys.stdout
-            self.cmd_instance_method().poutput(message)
+
+class PartType(Enum):
+    NONE = "none"
+    ANTENNA = "antenna"
+    CARGO_BAY = "cargo_bay"
+    CONTROL_SURFACE = "control_surface"
+    DECOUPLER = "decoupler"
+    DOCKING_PORT = "docking_port"
+    ENGINE = "engine"
+    EXPERIMENT = "experiment"
+    EXPERIMENTS = "experiements"
+    FAIRING = "fairing"
+    INTAKE = "intake"
+    LEG = "leg"
+    LAUNCH_CLAMP = "launch_clamp"
+    LIGHT = "light"
+    PARACHUTE = "parachute"
+    RADIATOR = "radiator"
+    RESOURCE_DRAIN = "resource_drain"
+    RCS = "rcs"
+    REACTION_WHEEL = "reaction_wheel"
+    RESOURCE_CONVERTER = "resource_converter"
+    RESOURCE_HARVESTER = "resource_harvester"
+    ROBOTIC_CONTROLLER = "robotic_controller"
+    ROBOTIC_HINGE = "robotic_hinge"
+    ROBOTIC_PISTON = "robotic_piston"
+    ROBOTIC_ROTATION = "robotic_rotation"
+    ROBOTIC_ROTOR = "robotic_rotor"
+    SENSOR = "sensor"
+    SOLAR_PANEL = "solar_panel"
+    WHEEL = "wheel"
+
+
+class SpacecraftProperties(BaseModel):
+    """Basic properties of the spacecraft"""
+
+    name: str
+    description: str
+    type: str
+    situation: str
+    met: float
+    biome: str
+    mass: float
+    dry_mass: float
+
+
+class Part(BaseModel):
+    id: str
+    name: str
+    title: str
+    type: PartType
+    mass: float
+    temperature: float
+    max_temperature: float
+    attachment: AttachmentMode
+    children: List["Part"]

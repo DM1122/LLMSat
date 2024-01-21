@@ -4,11 +4,7 @@ import krpc
 import pytest
 
 from llmsat.libs import utils
-from llmsat.components.experiment_manager import (
-    DataProperties,
-    Experiment,
-    ExperimentManager,
-)
+from llmsat.components.remote_sensing_manager import RemoteSensingManager
 
 
 @pytest.fixture(scope="session")
@@ -23,15 +19,8 @@ def ksp_connection():
     connection.close()
 
 
-def test_get_experiments(ksp_connection):
-    service = ExperimentManager(ksp_connection)
+def test_run_scanner(ksp_connection):
+    service = RemoteSensingManager(ksp_connection)
 
-    output: dict[str, Experiment] = service.get_experiments()
-    print(output)
-
-
-def test_run_experiment(ksp_connection):
-    service = ExperimentManager(ksp_connection)
-
-    output: DataProperties = service.run_experiment("Temperature Scan")
+    output = service.get_module()
     print(output)

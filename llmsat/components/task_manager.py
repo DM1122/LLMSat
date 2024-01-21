@@ -10,7 +10,7 @@ from typing import Optional
 from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field
 
-from llmsat import utils
+from llmsat.libs import utils
 
 TASK_FILE = Path("llmsat/tasks_file.json")
 
