@@ -87,7 +87,7 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
         json_schema = super().generate(schema, mode=mode)
         reduced_schema = json_schema["$defs"]
 
-        primary_key = reduced_schema.keys()[0]
+        primary_key = list(reduced_schema.keys())[0]
         del reduced_schema[primary_key]["required"]
         del reduced_schema[primary_key]["title"]
 
