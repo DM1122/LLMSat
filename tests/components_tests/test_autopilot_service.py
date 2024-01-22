@@ -5,7 +5,6 @@ import pytest
 
 from llmsat.components.autpilot import AutopilotService, Node
 from llmsat.libs import utils
-from llmsat.libs.utils import Orbit
 
 
 @pytest.fixture(scope="session")
@@ -38,6 +37,14 @@ def test_get_nodes(ksp_connection):
     service = AutopilotService(ksp_connection)
 
     output = service.get_nodes()
+
+    print(output)
+
+
+def test_remove_nodes(ksp_connection):
+    service = AutopilotService(ksp_connection)
+
+    output = service.remove_nodes()
 
     print(output)
 

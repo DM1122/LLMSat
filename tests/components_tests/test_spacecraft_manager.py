@@ -1,13 +1,7 @@
-from datetime import datetime
-
 import krpc
 import pytest
 
-from llmsat.components.spacecraft_manager import (
-    Part,
-    SpacecraftManager,
-    SpacecraftProperties,
-)
+from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.libs import utils
 
 
@@ -26,15 +20,15 @@ def ksp_connection():
 def test_get_spacecraft_properties(ksp_connection):
     service = SpacecraftManager(ksp_connection)
 
-    properties: SpacecraftProperties = service.get_spacecraft_properties()
+    properties = service.get_spacecraft_properties()
     print(properties)
 
 
 def test_get_parts_tree(ksp_connection):
     service = SpacecraftManager(ksp_connection)
 
-    parts_tree: Part = service.get_parts_tree()
-    print(parts_tree)
+    output = service.get_parts_tree()
+    print(output)
 
 
 def test_get_met(ksp_connection):

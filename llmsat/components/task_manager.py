@@ -35,7 +35,6 @@ class Task(BaseModel):
     status: TaskStatus = Field(default=TaskStatus.PENDING, description="Task status")
 
 
-
 @with_default_category("TaskManager")
 class TaskManager(CommandSet):
     _instance = None

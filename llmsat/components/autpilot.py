@@ -2,11 +2,10 @@
 import json
 from typing import List
 
-from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
-from pydantic import BaseModel, Field
+from cmd2 import CommandSet, with_argparser, with_default_category
 
 from llmsat.libs import utils
-from llmsat.libs.krpc_types import Node
+from llmsat.libs.krpc_types import Node, Orbit
 
 
 @with_default_category("AutopilotService")
@@ -84,7 +83,7 @@ class AutopilotService(CommandSet):
             f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
         )
 
-    def execute_maneuver_nodes(self) -> utils.Orbit:
+    def execute_maneuver_nodes(self) -> Orbit:
         """Execute all planned maneuver nodes"""
         executor = self.pilot.node_executor
         executor.autowarp = True
@@ -100,17 +99,33 @@ class AutopilotService(CommandSet):
 
         return self.get_orbit()
 
+    def do_get_nodes(self, _=None):
+        """Returns a list of all existing maneuver nodes, ordered by time from first to last."""
+
+        nodes = self.get_nodes()
+
+        self._cmd.poutput(nodes)
+
     def get_nodes(self) -> List[Node]:
-        """Get the list of planned maneuver nodes."""
-        pass
+        """Returns a list of all existing maneuver nodes, ordered by time from first to last."""
 
-    def get_orbit(self) -> utils.Orbit:
-        """Gets the current orbit"""
+        node_objs = self.vessel.control.nodes
+        nodes = [Node(node_obj) for node_obj in node_objs]
 
-        obj = self.vessel.orbit
-        orbit = utils.cast_krpc_orbit(obj)
+        return nodes
 
-        return orbit
+    def do_remove_nodes(self, _=None):
+        """Remove all maneuver nodes"""
+
+        node_count = len(self.get_nodes)
+
+        self.remove_nodes()
+
+        self._cmd.poutput(f"Removed {node_count} nodes")
+
+    def remove_nodes(self):
+        """Remove all maneuver nodes"""
+        self.vessel.control.remove_nodes()
 
     def do_launch(self, args):
         """Launch into orbit"""

@@ -5,7 +5,7 @@ import cmd2
 
 
 class BidirectionalCmd2App(cmd2.Cmd):
-    def __init__(self, host='localhost', port=65432):
+    def __init__(self, host="localhost", port=65432):
         super().__init__()
         self.prompt = f"App(port {port})> "
         self.host = host
@@ -52,11 +52,13 @@ class BidirectionalCmd2App(cmd2.Cmd):
             return
 
         self.remote_host, self.remote_port = remote_host, remote_port
-        self.poutput(f"Ready to connect to {self.remote_host} on port {self.remote_port}")
+        self.poutput(
+            f"Ready to connect to {self.remote_host} on port {self.remote_port}"
+        )
 
     def do_send(self, message):
         """Send a message to the connected instance."""
-        if not hasattr(self, 'remote_host') or not hasattr(self, 'remote_port'):
+        if not hasattr(self, "remote_host") or not hasattr(self, "remote_port"):
             self.poutput("Not connected to any instance. Use 'connect' command first.")
             return
 
@@ -66,8 +68,11 @@ class BidirectionalCmd2App(cmd2.Cmd):
                 s.sendall(message.encode())
                 self.poutput(f"Message sent: {message}")
             except ConnectionRefusedError:
-                self.poutput("Connection failed. Is the remote instance running and listening?")
+                self.poutput(
+                    "Connection failed. Is the remote instance running and listening?"
+                )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = BidirectionalCmd2App()
     app.cmdloop()

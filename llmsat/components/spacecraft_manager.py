@@ -7,6 +7,7 @@ import pandas as pd
 from cmd2 import CommandSet, with_default_category
 
 from llmsat.libs import utils
+from llmsat.libs.krpc_types import Part, PartType, SpacecraftProperties
 
 MISSION_BRIEF = Path("disk/mission.md")
 
@@ -15,12 +16,11 @@ MISSION_BRIEF = Path("disk/mission.md")
 class SpacecraftManager(CommandSet):
     """Functions for managing spacecraft systems."""
 
-    def __init__(self, krpc_connection, mission_brief_path: Path):
+    def __init__(self, krpc_connection):
         super().__init__()
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
         self.spacecraft_description = "An advanced satellite designed to conduct autonomous interplanetary exploration leveraging a Large Language Model-based agentic controller."
-        self.mission_brief_path = mission_brief_path
 
         self._assign_ids_to_parts()
 
@@ -101,7 +101,8 @@ class SpacecraftManager(CommandSet):
         self._cmd.poutput(ut.isoformat())
 
     def get_ut(self) -> datetime:
-        return utils.get_ut(self.connection)
+        """Get the current universal time"""
+        return utils.ksp_ut_to_datetime(self.connection.space_center.ut)
 
     def _assign_ids_to_parts(self):
         """Recursively assigns tags to the parts in a tree, starting from the root part."""

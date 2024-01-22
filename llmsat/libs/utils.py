@@ -1,15 +1,7 @@
 """Game-related utilities"""
 
-import argparse
-import functools
-import inspect
-import json
-import os
 import subprocess
-import sys
 from datetime import datetime, timedelta
-from functools import wraps
-from pathlib import Path
 
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
@@ -17,7 +9,7 @@ from pydantic import BaseModel, Field, FilePath
 
 epoch = datetime(
     year=1951, month=1, day=1
-)  # starting Earth epoch in KSP RSS (DO NOT MODIFY) Need to set
+)  # starting Earth epoch in KSP RSS (DO NOT MODIFY)
 
 
 class AppConfig(BaseModel):
@@ -46,14 +38,6 @@ def load_checkpoint(name: str, space_center):
         )
 
 
-def load_json(filename):
-    """Load a given JSON file"""
-
-    with open(filename, "r") as file:
-        data = json.load(file)
-    return data
-
-
 class MET:  # TODO: rename
     def __init__(self, seconds):
         """Mission elapsed time object.
@@ -80,9 +64,9 @@ class MET:  # TODO: rename
         return f"T+ {years:01}Y, {days:03}D, {hours:02}:{minutes:02}:{seconds:02}"
 
 
-def get_ut(connection) -> datetime:
-    """Get the current in-game universal time"""
-    return epoch + timedelta(seconds=connection.space_center.ut)
+def ksp_ut_to_datetime(ut: float) -> datetime:
+    """Translates a given KSP universal time to a datetime object with the correct epoch offset."""
+    return epoch + timedelta(seconds=ut)
 
 
 class CustomCmd2ArgumentParser(Cmd2ArgumentParser):

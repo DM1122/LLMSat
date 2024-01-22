@@ -1,11 +1,11 @@
 """Runs simulation loop"""
 
+import json
 import os
 from pathlib import Path
 
 import krpc
 import prompt
-import json
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI

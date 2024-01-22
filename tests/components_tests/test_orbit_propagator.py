@@ -1,7 +1,7 @@
 import krpc
 import pytest
 
-from llmsat.components.experiment_manager import ExperimentManager
+from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.libs import utils
 
 
@@ -17,15 +17,9 @@ def ksp_connection():
     connection.close()
 
 
-def test_get_experiments(ksp_connection):
-    service = ExperimentManager(ksp_connection)
+def test_get_orbit(ksp_connection):
+    service = OrbitPropagator(ksp_connection)
 
-    output = service.get_experiments()
-    print(output)
+    output = service.get_orbit()
 
-
-def test_run_experiment(ksp_connection):
-    service = ExperimentManager(ksp_connection)
-
-    output = service.run_experiment("Temperature Scan")
     print(output)
