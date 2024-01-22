@@ -1,4 +1,4 @@
-"""KRPC Types"""
+"""kRPC Types"""
 
 from datetime import datetime
 

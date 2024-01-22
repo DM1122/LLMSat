@@ -1,4 +1,4 @@
-"""Autopilot class."""
+"""Autopilot service for orbital maneuvering."""
 import json
 from typing import List
 
@@ -6,6 +6,7 @@ from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_ca
 from pydantic import BaseModel, Field
 
 from llmsat.libs import utils
+from llmsat.libs.krpc_types import Node
 
 
 @with_default_category("AutopilotService")
@@ -35,18 +36,18 @@ class AutopilotService(CommandSet):
         """Gets the cmd for use by argument parsers for poutput."""
         return AutopilotService()._cmd
 
-    plan_apoapsis_maneuver_parser = utils.CustomCmd2ArgumentParser(
+    apoapsis_parser = utils.CustomCmd2ArgumentParser(
         _get_cmd_instance,
         epilog=f"Returns:\nList[{Node.model_json_schema()['title']}]: {json.dumps(Node.model_json_schema()['properties'], indent=4)}",
     )
-    plan_apoapsis_maneuver_parser.add_argument(
-        "--new_apoapsis",
+    apoapsis_parser.add_argument(
+        "--new_apoapsis",  # TODO: find way to shorten this
         type=float,
         required=True,
         help="The new apoapsis altitude [km]",
     )
 
-    @with_argparser(plan_apoapsis_maneuver_parser)
+    @with_argparser(apoapsis_parser)
     def do_apoapsis(self, args):
         """Plan an apoapsis maneuver"""
 
@@ -64,9 +65,8 @@ class AutopilotService(CommandSet):
         planner.new_apoapsis = new_apoapsis * 1000
         # planner.time_selector.time_reference.computed
         node_objs = planner.make_nodes()
-        nodes = []
-        for node_obj in node_objs:
-            nodes.append()
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
 
         warning = planner.error_message
         if warning:
@@ -99,6 +99,10 @@ class AutopilotService(CommandSet):
         #             enabled.wait()
 
         return self.get_orbit()
+
+    def get_nodes(self) -> List[Node]:
+        """Get the list of planned maneuver nodes."""
+        pass
 
     def get_orbit(self) -> utils.Orbit:
         """Gets the current orbit"""

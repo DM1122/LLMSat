@@ -1,6 +1,7 @@
 # Mission Brief
-Conduct an altimetry scan of Enceladus' south pole.
+Take a temperature reading in orbit around Enceladus.
 
 ## Requirements
-- Shall take a complete altimetry scan of latitudes below -80deg
-- Shall send the altimetry data to mission control
+- Shall be in orbit around Enceladus
+- Shall be at an altitude below 100km
+- Shall communicate the temperature to mission control
