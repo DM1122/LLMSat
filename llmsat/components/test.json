@@ -1,0 +1,161 @@
+{
+    "$defs": {
+        "Orbit": {
+            "description": "Describes an orbit.\n\nURL: https://krpc.github.io/krpc/python/api/space-center/orbit.html",
+            "properties": {
+                "body": {
+                    "description": "The celestial body (e.g. planet or moon) around which the object is orbiting.",
+                    "title": "Body",
+                    "type": "string"
+                },
+                "apoapsis": {
+                    "description": "Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited.",
+                    "title": "Apoapsis",
+                    "type": "number"
+                },
+                "periapsis": {
+                    "description": "The periapsis of the orbit, in meters, from the center of mass of the body being orbited.",
+                    "title": "Periapsis",
+                    "type": "number"
+                },
+                "apoapsis_altitude": {
+                    "description": "The apoapsis of the orbit, in meters, above the sea level of the body being orbited.",
+                    "title": "Apoapsis Altitude",
+                    "type": "number"
+                },
+                "periapsis_altitude": {
+                    "description": "The periapsis of the orbit, in meters, above the sea level of the body being orbited.",
+                    "title": "Periapsis Altitude",
+                    "type": "number"
+                },
+                "semi_major_axis": {
+                    "description": "The semi-major axis of the orbit, in meters.",
+                    "title": "Semi Major Axis",
+                    "type": "number"
+                },
+                "semi_minor_axis": {
+                    "description": "The semi-minor axis of the orbit, in meters.",
+                    "title": "Semi Minor Axis",
+                    "type": "number"
+                },
+                "radius": {
+                    "description": "The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting.",
+                    "title": "Radius",
+                    "type": "number"
+                },
+                "period": {
+                    "description": "The orbital period, in seconds.",
+                    "title": "Period",
+                    "type": "number"
+                },
+                "time_to_apoapsis": {
+                    "description": "The time until the object reaches apoapsis, in seconds.",
+                    "title": "Time To Apoapsis",
+                    "type": "number"
+                },
+                "time_to_periapsis": {
+                    "description": "The time until the object reaches periapsis, in seconds.",
+                    "title": "Time To Periapsis",
+                    "type": "number"
+                },
+                "eccentricity": {
+                    "description": "The eccentricity of the orbit.",
+                    "title": "Eccentricity",
+                    "type": "number"
+                },
+                "inclination": {
+                    "description": "The inclination of the orbit, in radians.",
+                    "title": "Inclination",
+                    "type": "number"
+                },
+                "longitude_of_ascending_node": {
+                    "description": "The longitude of the ascending node, in radians.",
+                    "title": "Longitude Of Ascending Node",
+                    "type": "number"
+                },
+                "argument_of_periapsis": {
+                    "description": "The argument of periapsis, in radians.",
+                    "title": "Argument Of Periapsis",
+                    "type": "number"
+                },
+                "mean_anomaly_at_epoch": {
+                    "description": "The mean anomaly at epoch.",
+                    "title": "Mean Anomaly At Epoch",
+                    "type": "number"
+                },
+                "epoch": {
+                    "description": "The time since the epoch (the point at which the mean anomaly at epoch was measured, in seconds.",
+                    "title": "Epoch",
+                    "type": "number"
+                },
+                "mean_anomaly": {
+                    "description": "The mean anomaly",
+                    "title": "Mean Anomaly",
+                    "type": "number"
+                },
+                "eccentric_anomaly": {
+                    "description": "The eccentric anomaly",
+                    "title": "Eccentric Anomaly",
+                    "type": "number"
+                },
+                "true_anomaly": {
+                    "description": "The true anomaly.",
+                    "title": "True Anomaly",
+                    "type": "number"
+                },
+                "orbital_speed": {
+                    "description": "The current orbital speed in meters per second.",
+                    "title": "Orbital Speed",
+                    "type": "number"
+                },
+                "time_to_soi_change": {
+                    "description": "The time until the object changes sphere of influence, in seconds. Returns NaN if the object is not going to change sphere of influence.",
+                    "title": "Time To Soi Change",
+                    "type": "number"
+                },
+                "next_orbit": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Orbit"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "If the object is going to change sphere of influence in the future, returns the new orbit after the change. Otherwise returns None."
+                }
+            },
+            "required": [
+                "apoapsis",
+                "periapsis",
+                "apoapsis_altitude",
+                "periapsis_altitude",
+                "semi_major_axis",
+                "semi_minor_axis",
+                "radius",
+                "period",
+                "time_to_apoapsis",
+                "time_to_periapsis",
+                "eccentricity",
+                "inclination",
+                "longitude_of_ascending_node",
+                "argument_of_periapsis",
+                "mean_anomaly_at_epoch",
+                "epoch",
+                "mean_anomaly",
+                "eccentric_anomaly",
+                "true_anomaly",
+                "orbital_speed",
+                "time_to_soi_change",
+                "next_orbit"
+            ],
+            "title": "Orbit",
+            "type": "object"
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/$defs/Orbit"
+        }
+    ]
+}

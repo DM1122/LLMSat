@@ -41,7 +41,7 @@ class OrbitPropagator(CommandSet):
 
     get_orbit_parser = utils.CustomCmd2ArgumentParser(
         _get_cmd_instance,
-        epilog=f"Returns:\n{json.dumps(Orbit.model_json_schema()['$defs']['Orbit'], indent=4)}",  # need to turn this into utility function
+        epilog=f"Returns:\n{json.dumps(Orbit.model_json_schema(schema_generator=utils.CustomGenerateJsonSchema), indent=4)}",
     )
 
     @with_argparser(get_orbit_parser)

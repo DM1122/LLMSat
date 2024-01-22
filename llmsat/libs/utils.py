@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field, FilePath
+from pydantic.json_schema import GenerateJsonSchema
 
 epoch = datetime(
     year=1951, month=1, day=1
@@ -79,3 +80,22 @@ class CustomCmd2ArgumentParser(Cmd2ArgumentParser):
         if message:
             # Use cmd2's poutput instead of writing directly to sys.stderr or sys.stdout
             self.cmd_instance_method().poutput(message)
+
+
+class CustomGenerateJsonSchema(GenerateJsonSchema):
+    def generate(self, schema, mode="validation"):
+        json_schema = super().generate(schema, mode=mode)
+        reduced_schema = json_schema["$defs"]
+
+        del reduced_schema["required"]
+        del reduced_schema["title"]
+
+        for key in reduced_schema["properties"]:
+            del reduced_schema["properties"][key]["title"]
+
+        return reduced_schema
+
+
+# json_schema['$defs']['Orbit']
+#         json_schema['title'] = 'Customize title'
+#         json_schema['$schema'] = self.schema_dialect
