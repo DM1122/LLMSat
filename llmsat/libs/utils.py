@@ -92,7 +92,7 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
         del reduced_schema[primary_key]["title"]
 
         for property in reduced_schema[primary_key]["properties"]:
-            del reduced_schema[primary_key]["properties"][property]["title"]
+            reduced_schema[primary_key]["properties"][property].pop("title", None)
 
         return reduced_schema
 
