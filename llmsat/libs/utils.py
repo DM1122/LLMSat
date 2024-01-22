@@ -7,6 +7,7 @@ import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field, FilePath
 from pydantic.json_schema import GenerateJsonSchema
+import json
 
 epoch = datetime(
     year=1951, month=1, day=1
@@ -97,6 +98,18 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
         return reduced_schema
 
 
-# json_schema['$defs']['Orbit']
-#         json_schema['title'] = 'Customize title'
-#         json_schema['$schema'] = self.schema_dialect
+def format_return_obj_str(obj: BaseModel, is_list: bool = False):
+    """Formats a pydantic object as a return schema string for a cmd2 argument parser epilog."""
+
+    template = "Returns:\n"
+
+    obj_schema = json.dumps(
+        obj.model_json_schema(schema_generator=CustomGenerateJsonSchema), indent=4
+    )
+
+    if is_list:
+        output = template + f"List[{obj_schema}]"
+    else:
+        output = template + obj_schema
+
+    return output

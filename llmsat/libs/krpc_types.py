@@ -10,10 +10,7 @@ from llmsat.libs import utils
 
 
 class Orbit(BaseModel):
-    """Describes an orbit.
-
-    URL: https://krpc.github.io/krpc/python/api/space-center/orbit.html
-    """
+    """Describes an orbit."""
 
     body: str = Field(
         description="The celestial body (e.g. planet or moon) around which the object is orbiting."
@@ -100,10 +97,7 @@ class Orbit(BaseModel):
 
 
 class Node(BaseModel):
-    """A maneuver node
-
-    URL: https://krpc.github.io/krpc/python/api/space-center/node.html
-    """
+    """A maneuver node"""
 
     prograde: float = Field(
         description="The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second."
