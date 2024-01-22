@@ -3,8 +3,8 @@ from datetime import datetime
 import krpc
 import pytest
 
-from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
+from llmsat.libs import utils
 
 
 @pytest.fixture(scope="session")

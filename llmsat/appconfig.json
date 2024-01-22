@@ -1,0 +1,6 @@
+{
+    "model": "some-model",
+    "mission": "some-mission",
+    "load_checkpoint": true,
+    "checkpoint_name": "checkpoint"
+}

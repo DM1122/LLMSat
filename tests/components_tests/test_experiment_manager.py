@@ -3,12 +3,12 @@ from typing import List
 import krpc
 import pytest
 
-from llmsat.libs import utils
 from llmsat.components.experiment_manager import (
     DataProperties,
     Experiment,
     ExperimentManager,
 )
+from llmsat.libs import utils
 
 
 @pytest.fixture(scope="session")

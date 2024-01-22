@@ -13,11 +13,18 @@ from pathlib import Path
 
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 
 epoch = datetime(
     year=1951, month=1, day=1
 )  # starting Earth epoch in KSP RSS (DO NOT MODIFY) Need to set
+
+
+class AppConfig(BaseModel):
+    model: str
+    mission: str
+    load_checkpoint: bool
+    checkpoint_name: str
 
 
 def is_ksp_running():
@@ -28,10 +35,6 @@ def is_ksp_running():
         return "KSP" in output
     except:
         return False
-
-
-def launch_ksp(path: Path):
-    subprocess.Popen([path], cwd=os.path.dirname(path))
 
 
 def load_checkpoint(name: str, space_center):

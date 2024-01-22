@@ -1,6 +1,8 @@
 import socket
 import threading
+
 import cmd2
+
 
 class BidirectionalCmd2App(cmd2.Cmd):
     def __init__(self, host='localhost', port=65432):

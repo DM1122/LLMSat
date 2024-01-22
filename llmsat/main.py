@@ -1,49 +1,49 @@
 """Runs simulation loop"""
 
-from pathlib import Path
+import json
 
 import krpc
-import utils
-from decouple import config
-from langchain.agents import AgentType, initialize_agent
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import SystemMessage
 
-from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
-from llmsat.components.console import AgentCMDInterface, Console
+from llmsat.components.console import Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.task_manager import TaskManager
+from llmsat.libs import utils
 
-CHECKPOINT_NAME = "checkpoint"
-load_checkpoint = False
+CONFIG_PATH = "llmsat/config.json"
+
 
 if __name__ == "__main__":
-    if not llmsat.libs.utils.is_ksp_running():
-        ksp_path = Path(str(config("KSP_PATH")))
-        print(f"Launching KSP from '{ksp_path}'...")
-        llmsat.libs.utils.launch_ksp(path=ksp_path)
+    with open(CONFIG_PATH, "r") as file:
+        app_config_data = json.load(file)
+        app_config = utils.AppConfig(**app_config_data)
+
+    if not utils.is_ksp_running():
+        raise Exception("Please make sure KSP is running")
 
     input("Press any key once the KSP save is loaded to continue...")
 
     print("Connecting to KSP...")
-    connection = krpc.connect(name="Simulator")
+    connection = krpc.connect(name="Client")
 
-    if load_checkpoint:
-        print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-        llmsat.libs.utils.load_checkpoint(
-            name=CHECKPOINT_NAME, space_center=connection.space_center
+    if app_config.load_checkpoint:
+        print(f"Loading '{app_config.checkpoint_name}.sfs' checkpoint...")
+        utils.load_checkpoint(
+            name=app_config.checkpoint_name, space_center=connection.space_center
         )
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
     task_manager = TaskManager(connection)
-    alarm_manager = AlarmManager(connection, remove_alarms_on_init=load_checkpoint)
+    alarm_manager = AlarmManager(
+        connection, remove_alarms_on_init=app_config.load_checkpoint
+    )
     orbit_propagator = OrbitPropagator(connection)
+
     app = Console(
         command_sets=[
             spacecraft_manager,

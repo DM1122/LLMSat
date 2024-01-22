@@ -9,8 +9,6 @@ from pydantic import BaseModel
 from llmsat.libs import utils
 
 
-
-
 @with_default_category("ExperimentManager")
 class ExperimentManager(CommandSet):
     _instance = None

@@ -3,12 +3,12 @@ from datetime import datetime
 import krpc
 import pytest
 
-from llmsat.libs import utils
 from llmsat.components.spacecraft_manager import (
     Part,
     SpacecraftManager,
     SpacecraftProperties,
 )
+from llmsat.libs import utils
 
 
 @pytest.fixture(scope="session")

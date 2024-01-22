@@ -3,8 +3,8 @@ from typing import List
 import krpc
 import pytest
 
-from llmsat.libs import utils
 from llmsat.components.remote_sensing_manager import RemoteSensingManager
+from llmsat.libs import utils
 
 
 @pytest.fixture(scope="session")

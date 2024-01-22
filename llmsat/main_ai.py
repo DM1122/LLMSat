@@ -11,12 +11,12 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
 
-from llmsat.libs import utils
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.console import AgentCMDInterface, Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.libs import utils
 
 CHECKPOINT_NAME = "checkpoint"
 PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
