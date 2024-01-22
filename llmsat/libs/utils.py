@@ -22,7 +22,6 @@ epoch = datetime(
 
 class AppConfig(BaseModel):
     model: str
-    mission: str
     load_checkpoint: bool
     checkpoint_name: str
 

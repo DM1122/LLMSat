@@ -1,6 +1,5 @@
 {
-    "model":"gpt-4-1106-preview", 
-    "mission": "temperature_reading.md",
+    "model":"gpt-4-1106-preview",
     "load_checkpoint": false,
     "checkpoint_name": "checkpoint"
 }

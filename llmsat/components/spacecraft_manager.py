@@ -1,28 +1,26 @@
 """SpacecraftManager class."""
 
-from datetime import datetime, timedelta
-from enum import Enum
+from datetime import datetime
 from pathlib import Path
-from typing import List
 
 import pandas as pd
 from cmd2 import CommandSet, with_default_category
-from pydantic import BaseModel
 
 from llmsat.libs import utils
 
-MISSION_BRIEF = Path("llmsat/mission_brief.md")
+MISSION_BRIEF = Path("disk/mission.md")
 
 
 @with_default_category("SpacecraftManager")
 class SpacecraftManager(CommandSet):
     """Functions for managing spacecraft systems."""
 
-    def __init__(self, krpc_connection):
+    def __init__(self, krpc_connection, mission_brief_path: Path):
         super().__init__()
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
         self.spacecraft_description = "An advanced satellite designed to conduct autonomous interplanetary exploration leveraging a Large Language Model-based agentic controller."
+        self.mission_brief_path = mission_brief_path
 
         self._assign_ids_to_parts()
 
