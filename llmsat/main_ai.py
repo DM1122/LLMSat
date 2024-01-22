@@ -5,11 +5,10 @@ from pathlib import Path
 
 import krpc
 import prompt
-import utils
+import json
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from langchain.schema import SystemMessage
 
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
@@ -18,10 +17,7 @@ from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.libs import utils
 
-CHECKPOINT_NAME = "checkpoint"
-PROMPTS_FILE_PATH = Path("llmsat/prompts.json")
-LLM_NAME = "gpt-4-1106-preview"  # gpt-3.5-turbo-1106
-CHECKPOINT_NAME = "checkpoint"
+CONFIG_PATH = "llmsat/app_config.json"
 
 
 if __name__ == "__main__":
@@ -31,18 +27,23 @@ if __name__ == "__main__":
     os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
     os.environ["LANGCHAIN_PROJECT"] = "llmsat"
 
-    if not llmsat.libs.utils.is_ksp_running():
-        ksp_path = Path(str(config("KSP_PATH")))
-        print(f"Launching KSP from '{ksp_path}'...")
-        llmsat.libs.utils.launch_ksp(path=ksp_path)
+    with open(CONFIG_PATH, "r") as file:
+        app_config_data = json.load(file)
+        app_config = utils.AppConfig(**app_config_data)
+
+    if not utils.is_ksp_running():
+        raise Exception("Please make sure KSP is running")
 
     input("Press any key once the KSP save is loaded to continue...")
 
     print("Connecting to KSP...")
-    connection = krpc.connect(name="Simulator")
+    connection = krpc.connect(name="Client")
 
-    print(f"Loading '{CHECKPOINT_NAME}.sfs' checkpoint...")
-    llmsat.libs.utils.load_checkpoint(name=CHECKPOINT_NAME, space_center=connection.space_center)
+    if app_config.load_checkpoint:
+        print(f"Loading '{app_config.checkpoint_name}.sfs' checkpoint...")
+        utils.load_checkpoint(
+            name=app_config.checkpoint_name, space_center=connection.space_center
+        )
 
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
@@ -60,7 +61,7 @@ if __name__ == "__main__":
 
     # initialize agent
     KEY = str(config("OPENAI", cast=str))
-    llm = ChatOpenAI(openai_api_key=KEY, model=LLM_NAME)
+    llm = ChatOpenAI(openai_api_key=KEY, model=app_config.model)
 
     agent_interface = AgentCMDInterface(app)
 
@@ -76,10 +77,7 @@ if __name__ == "__main__":
             "suffix": prompt.SUFFIX,
         },
     )
-    result = agent.run(
-        app.get_output()
-        + "Mission objective from ground control: Determine your fuel quantities"
-    )
+    result = agent.run(app.get_output())
     print(result)
 
     input("Simulation complete. Press any key to quit...")

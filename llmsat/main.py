@@ -13,7 +13,7 @@ from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.task_manager import TaskManager
 from llmsat.libs import utils
 
-CONFIG_PATH = "llmsat/config.json"
+CONFIG_PATH = "llmsat/app_config.json"
 
 
 if __name__ == "__main__":
