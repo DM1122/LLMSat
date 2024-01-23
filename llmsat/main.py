@@ -49,6 +49,7 @@ if __name__ == "__main__":
             spacecraft_manager,
             autopilot_service,
             payload_manager,
+            task_manager,
             alarm_manager,
             orbit_propagator,
         ]
