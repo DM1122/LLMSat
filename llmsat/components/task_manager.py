@@ -5,10 +5,11 @@ import time
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Optional
 from string import Template
+from typing import Optional
+
 from cmd2 import CommandSet, with_argparser, with_default_category
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from llmsat.libs import utils
 

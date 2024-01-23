@@ -79,6 +79,7 @@ class Console(cmd2.Cmd):
         del cmd2.Cmd.do_quit
         del cmd2.Cmd.do_run_script
         del cmd2.Cmd.do_shell
+        del cmd2.Cmd.do_set
 
         self.remove_settable("allow_style")
         self.remove_settable("always_show_hint")
@@ -125,12 +126,21 @@ class Console(cmd2.Cmd):
 
         self.poutput(f"SatelliteOS")
         self.poutput(f"UT: {ut.isoformat()} | MET: {met}")
-        self.poutput("\n")
+        self.poutput("")
+
         spacecraft_manager.do_read_mission_brief()
+        self.poutput("")
+
         self.poutput("Task Plan:")
         tasks = task_manager.read_tasks()  # TODO: do_read_tasks() does not work
         self.poutput(json.dumps(tasks, indent=4, default=lambda o: o.dict()))
+        self.poutput("")
+
+        self.poutput("Spacecraft Properties:")
         spacecraft_manager.do_get_spacecraft_properties()
+        self.poutput("")
+
+        self.poutput("Resources:")
         spacecraft_manager.do_get_resources()
 
         self.do_help("-v")

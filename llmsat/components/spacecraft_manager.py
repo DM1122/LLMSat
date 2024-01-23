@@ -27,7 +27,7 @@ class SpacecraftManager(CommandSet):
         """Get information about the spacecraft"""
         output = self.get_spacecraft_properties()
 
-        self._cmd.poutput(f"Spacecraft properties:\n{output.model_dump_json(indent=4)}")
+        self._cmd.poutput(output.model_dump_json(indent=4))
 
     def get_spacecraft_properties(self) -> SpacecraftProperties:
         """Get information about the spacecraft"""
