@@ -20,7 +20,6 @@ class SpacecraftManager(CommandSet):
         super().__init__()
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
-        self.spacecraft_description = "An advanced satellite designed to conduct autonomous interplanetary exploration leveraging a Large Language Model-based agentic controller."
 
         self._assign_ids_to_parts()
 
@@ -32,16 +31,7 @@ class SpacecraftManager(CommandSet):
 
     def get_spacecraft_properties(self) -> SpacecraftProperties:
         """Get information about the spacecraft"""
-        properties = SpacecraftProperties(
-            name=self.vessel.name,
-            description=self.spacecraft_description,
-            type=str(self.vessel.type),
-            situation=str(self.vessel.situation),
-            met=self.vessel.met,
-            biome=self.vessel.biome,
-            mass=self.vessel.mass,
-            dry_mass=self.vessel.dry_mass,
-        )
+        properties = SpacecraftProperties(self.vessel)
 
         return properties
 
@@ -122,18 +112,16 @@ class SpacecraftManager(CommandSet):
         self._cmd.poutput(resources.to_string())
 
     def get_resources(self) -> pd.DataFrame:
-        resources = self.vessel.resources.all
-        data = []
+        resources = self.vessel.resources
 
-        for resource in resources:
+        data = []
+        for name in resources.names:
             resource_data = {
-                "name": resource.name,
-                "part": resource.part,
-                "amount": resource.amount,
-                "max": resource.max,
-                "density": resource.density,
-                "flow_mode": resource.flow_mode,
-                "enabled": resource.enabled,
+                "name": name,
+                "amount": resources.amount(name),
+                "max": resources.max(name),
+                # "density": resources.density(name),  # TODO: AttributeError: type object 'Resources' has no attribute '_client'
+                # "flow_mode": resources.flow_mode(name),
             }
             data.append(resource_data)
 

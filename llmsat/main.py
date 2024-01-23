@@ -50,7 +50,7 @@ if __name__ == "__main__":
             autopilot_service,
             payload_manager,
             task_manager,
-            alarm_manager,
+            # alarm_manager,
             orbit_propagator,
         ]
     )
