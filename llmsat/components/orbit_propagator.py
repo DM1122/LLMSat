@@ -63,3 +63,12 @@ class OrbitPropagator(CommandSet):
 
     def get_position_at_time(time: datetime):
         pass
+
+    def radius_at(ut, max_ut=None):
+        """The orbital radius at the given time, in meters.
+        
+        ut (float) The universal time to measure the radius at.
+        """
+
+        # self.vessel.orbit.radius_at(ut)
+

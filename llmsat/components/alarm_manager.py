@@ -9,6 +9,7 @@ from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_ca
 from pydantic import BaseModel, Field
 
 from llmsat.libs import utils
+import threading
 
 
 class Alarm(BaseModel):
@@ -17,6 +18,7 @@ class Alarm(BaseModel):
     name: str = Field(description="Name of the alarm")
     description: str = Field(description="Description of the alarm")
     time: datetime = Field(description="Universal time at which the alarm will trigger")
+    # triggered: bool = Field(description="Whether the alarm has been trigggered")
 
     def __init__(self, alarm_obj):
         super().__init__(
@@ -43,6 +45,16 @@ class AlarmManager(CommandSet):
         if remove_alarms_on_init:
             self._remove_all_alarms()
 
+        # Create a stream for the current game time
+        ut_stream = self.connection.add_stream(
+            getattr, self.connection.space_center, "ut"
+        )
+
+        # Start the alarm monitoring in a separate thread
+        thread = threading.Thread(target=self.monitor_alarms, args=(ut_stream,))
+        thread.daemon = True  # Daemon threads exit when the main program does
+        thread.start()
+
     def do_get_alarms(self, _):
         """Get all alarms"""
         alarms = self.get_alarms()
@@ -53,7 +65,12 @@ class AlarmManager(CommandSet):
 
         # Calculate remaining time for each alarm and store in a list of tuples
         alarms_with_remaining_time = [
-            (alarm, alarm.get_remaining_time(utils.get_ut_time(self.connection)))
+            (
+                alarm,
+                alarm.get_remaining_time(
+                    utils.ksp_ut_to_datetime(self.connection.space_center.ut)
+                ),
+            )
             for alarm in alarms.values()
         ]
 
@@ -159,3 +176,17 @@ class AlarmManager(CommandSet):
         alarm = Alarm(alarm_obj)
 
         return alarm
+
+    def monitor_alarms(self, ut_stream):
+        while True:
+            current_time = ut_stream()
+
+            alarms = self.get_alarms()
+
+            for alarm in alarms:
+                if alarms[alarm].get_remaining_time(current_time) <= 0 and 
+
+            for alarm in alarm_manager.alarms:
+                if alarm.time - current_time <= 0 and alarm.time != -1:
+                    print_alarm_info(alarm)
+                    alarm.time = -1  # Mark as processed
