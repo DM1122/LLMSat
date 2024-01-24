@@ -2,7 +2,7 @@
 
 import subprocess
 from datetime import datetime, timedelta
-
+from string import Template
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field, FilePath
@@ -86,30 +86,31 @@ class CustomCmd2ArgumentParser(Cmd2ArgumentParser):
 class CustomGenerateJsonSchema(GenerateJsonSchema):
     def generate(self, schema, mode="validation"):
         json_schema = super().generate(schema, mode=mode)
+        print(json.dumps(json_schema, indent=4))
         reduced_schema = json_schema["$defs"]
 
         primary_key = list(reduced_schema.keys())[0]
-        del reduced_schema[primary_key]["required"]
+        reduced_schema[primary_key].pop("required", None)
         del reduced_schema[primary_key]["title"]
 
-        for property in reduced_schema[primary_key]["properties"]:
-            reduced_schema[primary_key]["properties"][property].pop("title", None)
+        if "properties" in reduced_schema[primary_key]:
+            for property in reduced_schema[primary_key]["properties"]:
+                reduced_schema[primary_key]["properties"][property].pop("title", None)
 
         return reduced_schema
 
 
-def format_return_obj_str(obj: BaseModel, is_list: bool = False):
-    """Formats a pydantic object as a return schema string for a cmd2 argument parser epilog."""
+def format_return_obj_str(obj: BaseModel, template: Template = None):
+    """Formats a pydantic object as a return schema string for a cmd2 argument parser epilog. Template must have $obj"""
 
-    template = "Returns:\n"
+    statement = "Returns:\n"
 
-    obj_schema = json.dumps(
-        obj.model_json_schema(schema_generator=CustomGenerateJsonSchema), indent=4
-    )
+    obj_schema = json.dumps(obj.model_json_schema(), indent=4)
 
-    if is_list:
-        output = template + f"List[{obj_schema}]"
+    if template:
+        output = statement + template.substitute(obj=obj_schema)
+
     else:
-        output = template + obj_schema
+        output = statement + obj_schema
 
     return output

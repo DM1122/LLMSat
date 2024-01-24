@@ -15,6 +15,7 @@ from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.task_manager import TaskManager
 from llmsat.libs import utils
 
 
@@ -62,7 +63,7 @@ class Console(cmd2.Cmd):
     """Spacecraft console app"""
 
     def __init__(self, quiet=False, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(include_py=True, *args, **kwargs)
 
         self.intro = "SatelliteOS"
         self.prompt = "> "
@@ -71,13 +72,14 @@ class Console(cmd2.Cmd):
         # delete built-in commands and settings
         del cmd2.Cmd.do_alias
         del cmd2.Cmd.do_macro
-        del cmd2.Cmd.do_run_pyscript
+        # del cmd2.Cmd.do_run_pyscript
         del cmd2.Cmd.do_shortcuts
         del cmd2.Cmd.do_edit
         del cmd2.Cmd.do_history
         del cmd2.Cmd.do_quit
         del cmd2.Cmd.do_run_script
         del cmd2.Cmd.do_shell
+        del cmd2.Cmd.do_set
 
         self.remove_settable("allow_style")
         self.remove_settable("always_show_hint")
@@ -118,14 +120,27 @@ class Console(cmd2.Cmd):
 
     def display_dashboard(self):
         spacecraft_manager = self.find_commandsets(SpacecraftManager)[0]
+        task_manager = self.find_commandsets(TaskManager)[0]
         ut = spacecraft_manager.get_ut()
         met = spacecraft_manager.get_met()
 
         self.poutput(f"SatelliteOS")
         self.poutput(f"UT: {ut.isoformat()} | MET: {met}")
-        self.poutput("\n")
+        self.poutput("")
+
         spacecraft_manager.do_read_mission_brief()
+        self.poutput("")
+
+        self.poutput("Task Plan:")
+        tasks = task_manager.read_tasks()  # TODO: do_read_tasks() does not work
+        self.poutput(json.dumps(tasks, indent=4, default=lambda o: o.dict()))
+        self.poutput("")
+
+        self.poutput("Spacecraft Properties:")
         spacecraft_manager.do_get_spacecraft_properties()
+        self.poutput("")
+
+        self.poutput("Resources:")
         spacecraft_manager.do_get_resources()
 
         self.do_help("-v")
@@ -135,8 +150,3 @@ class Console(cmd2.Cmd):
         output = "\n".join(self.output_buffer)
         self.output_buffer.clear()
         return output
-
-
-# if __name__ == "__main__":
-#     app = Console()
-#     app.cmdloop()

@@ -6,6 +6,7 @@ import krpc
 
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
+from llmsat.components.comms_service import CommunicationService
 from llmsat.components.console import Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.orbit_propagator import OrbitPropagator
@@ -38,6 +39,7 @@ if __name__ == "__main__":
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
+    communication_service = CommunicationService(connection)
     task_manager = TaskManager(connection)
     alarm_manager = AlarmManager(
         connection, remove_alarms_on_init=app_config.load_checkpoint
@@ -49,7 +51,9 @@ if __name__ == "__main__":
             spacecraft_manager,
             autopilot_service,
             payload_manager,
-            alarm_manager,
+            task_manager,
+            communication_service,
+            # alarm_manager,
             orbit_propagator,
         ]
     )

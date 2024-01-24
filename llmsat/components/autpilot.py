@@ -127,38 +127,38 @@ class AutopilotService(CommandSet):
         """Remove all maneuver nodes"""
         self.vessel.control.remove_nodes()
 
-    def do_launch(self, args):
-        """Launch into orbit"""
+    # def do_launch(self, args):
+    #     """Launch into orbit"""
 
-        self.launch()
+    #     self.launch()
 
-        self._cmd.poutput()
+    #     self._cmd.poutput()
 
-    def launch(self):
-        """Launch into orbit"""
-        pilot_ascent = self.pilot.ascent_autopilot
+    # def launch(self):
+    #     """Launch into orbit"""
+    #     pilot_ascent = self.pilot.ascent_autopilot
 
-        pilot_ascent.desired_orbit_altitude = 100000
-        pilot_ascent.desired_inclination = 6
-        pilot_ascent.autostage = True
-        pilot_ascent.enabled = True
+    #     pilot_ascent.desired_orbit_altitude = 100000
+    #     pilot_ascent.desired_inclination = 6
+    #     pilot_ascent.autostage = True
+    #     pilot_ascent.enabled = True
 
-    def do_land(self, _=None):
-        """Land"""
+    # def do_land(self, _=None):
+    #     """Land"""
 
-        output = self.land()
+    #     output = self.land()
 
-        self._cmd.poutput(output)
+    #     self._cmd.poutput(output)
 
-    def land(self):
-        """land"""
-        pilot_landing = self.pilot.landing_autopilot
+    # def land(self):
+    #     """land"""
+    #     pilot_landing = self.pilot.landing_autopilot
 
-        pilot_landing.deploy_gears = True
-        pilot_landing.rcs_adjustment = True
-        pilot_landing.touchdown_speed = 0.6  # m/s
-        pilot_landing.land_at_position_target()
+    #     pilot_landing.deploy_gears = True
+    #     pilot_landing.rcs_adjustment = True
+    #     pilot_landing.touchdown_speed = 0.6  # m/s
+    #     pilot_landing.land_at_position_target()
 
-        # pilot_landing.enabled = True
+    #     # pilot_landing.enabled = True
 
-        return pilot_landing.status
+    #     return pilot_landing.status

@@ -12,9 +12,12 @@ from langchain.chat_models import ChatOpenAI
 
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
-from llmsat.components.console import AgentCMDInterface, Console
+from llmsat.components.comms_service import CommunicationService
+from llmsat.components.console import Console, AgentCMDInterface
 from llmsat.components.experiment_manager import ExperimentManager
+from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.components.spacecraft_manager import SpacecraftManager
+from llmsat.components.task_manager import TaskManager
 from llmsat.libs import utils
 
 CONFIG_PATH = "llmsat/app_config.json"
@@ -48,15 +51,23 @@ if __name__ == "__main__":
     spacecraft_manager = SpacecraftManager(connection)
     autopilot_service = AutopilotService(connection)
     payload_manager = ExperimentManager(connection)
-    alarm_manager = AlarmManager(connection)
+    communication_service = CommunicationService(connection)
+    task_manager = TaskManager(connection)
+    alarm_manager = AlarmManager(
+        connection, remove_alarms_on_init=app_config.load_checkpoint
+    )
+    orbit_propagator = OrbitPropagator(connection)
+
     app = Console(
-        quiet=True,
         command_sets=[
             spacecraft_manager,
             autopilot_service,
             payload_manager,
-            alarm_manager,
-        ],
+            task_manager,
+            communication_service,
+            # alarm_manager,
+            orbit_propagator,
+        ]
     )
 
     # initialize agent

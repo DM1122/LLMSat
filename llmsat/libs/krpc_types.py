@@ -2,8 +2,8 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import List
-from typing import Optional
+from typing import List, Optional
+
 from pydantic import BaseModel, Field
 
 from llmsat.libs import utils
@@ -194,14 +194,34 @@ class PartType(Enum):
 class SpacecraftProperties(BaseModel):
     """Basic properties of the spacecraft"""
 
-    name: str
-    description: str
-    type: str
-    situation: str
-    met: float
-    biome: str
-    mass: float
-    dry_mass: float
+    name: str = Field(description="The name of the vessel.")
+    situation: str = Field(description="The situation the vessel is in.")
+    mass: float = Field(
+        description="The total mass of the vessel, including resources, in kg."
+    )
+    dry_mass: float = Field(
+        description="The total mass of the vessel, excluding resources, in kg."
+    )
+    available_thrust: float = Field(
+        description="Gets the total available thrust that can be produced by the vessel’s active engines, in Newtons."
+    )
+    specific_impulse: float = Field(
+        description="The combined specific impulse of all active engines, in seconds."
+    )
+    moment_of_inertia: tuple[float, float, float] = Field(
+        description="The moment of inertia of the vessel around its center of mass in kgm^2."
+    )
+
+    def __init__(self, vessel):
+        super().__init__(
+            name=vessel.name,
+            situation=vessel.situation.name,
+            mass=vessel.mass,
+            dry_mass=vessel.dry_mass,
+            available_thrust=vessel.available_thrust,
+            specific_impulse=vessel.specific_impulse,
+            moment_of_inertia=vessel.moment_of_inertia,
+        )
 
 
 class Part(BaseModel):

@@ -5,14 +5,15 @@ import time
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
+from string import Template
 from typing import Optional
 
 from cmd2 import CommandSet, with_argparser, with_default_category
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from llmsat.libs import utils
 
-TASK_FILE = Path("llmsat/tasks_file.json")
+TASK_FILE = Path("disk/tasks_file.json")
 
 
 class TaskStatus(Enum):
@@ -21,9 +22,16 @@ class TaskStatus(Enum):
     COMPLETE = "complete"
 
 
-class Task(BaseModel):
+class TaskPriority(Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+class Task(BaseModel, use_enum_values=True):
     """A task"""
 
+    id: int = Field(description="Task unique ID")
     name: str = Field(description="Task statement")
     description: Optional[str] = Field(description="Detailed description")
     start: Optional[datetime] = Field(
@@ -32,6 +40,7 @@ class Task(BaseModel):
     end: Optional[datetime] = Field(
         description="Time by which the task should be completed"
     )
+    # dependencies: Optional[list[int]] = Field(description="IDs of tasks this task depends on")
     status: TaskStatus = Field(default=TaskStatus.PENDING, description="Task status")
 
 
@@ -53,6 +62,7 @@ class TaskManager(CommandSet):
 
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
+        self._reset_tasks()
 
         TaskManager._initialized = True
 
@@ -61,60 +71,130 @@ class TaskManager(CommandSet):
         """Gets the cmd for use by argument parsers for poutput."""
         return TaskManager()._cmd
 
-    def do_add_task(self, statement):
-        """Add a new task"""
-        output = self.add_task()
-        self._cmd.poutput(output)
+    add_task_parser = utils.CustomCmd2ArgumentParser(_get_cmd_instance)
+    add_task_parser.add_argument(
+        "-name",
+        type=str,
+        required=True,
+        help="Task name",
+    )
+    add_task_parser.add_argument(
+        "-desc",
+        type=str,
+        required=False,
+        help="Task description",
+    )
+    add_task_parser.add_argument(
+        "-start",
+        type=str,
+        required=False,
+        help="Task start universal time YYYY-MM-DDTHH:MM:SS",
+    )
+    add_task_parser.add_argument(
+        "-end",
+        type=str,
+        required=False,
+        help="Task end universal time YYYY-MM-DDTHH:MM:SS",
+    )
 
-    def add_task(self, name, description=None, start=None, end=None):
+    @with_argparser(add_task_parser)
+    def do_add_task(self, args):
         """Add a new task"""
-        task = Task(name=name, description=description, start=start, end=end)
+        date_format = "%Y-%m-%dT%H:%M:%S"
+
+        start = datetime.strptime(args.start, date_format) if args.end else None
+        end = datetime.strptime(args.end, date_format) if args.end else None
+        output = self.add_task(
+            name=args.name,
+            description=args.desc,
+            start=start,
+            end=end,
+        )
+        self._cmd.poutput(f"Task {output.id}:'{output.name}' created")
+
+    def add_task(
+        self,
+        name: str,
+        description: str = None,
+        start: datetime = None,
+        end: datetime = None,
+    ) -> Task:
+        """Add a new task"""
 
         tasks = self.read_tasks()
-        task_id = max(tasks.keys(), default=0) + 1
-        tasks[task_id] = task.model_dump(mode="json")
+        id = max(tasks.keys(), default=0) + 1
+        task = Task(id=id, name=name, description=description, start=start, end=end)
+        tasks[id] = task
         self._write_tasks(tasks)
 
-        print(f"Created task: '{name}'")
+        return task
 
+    read_tasks_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        epilog=utils.format_return_obj_str(Task, Template("dict[int,$obj]")),
+    )
+
+    @with_argparser(read_tasks_parser)
     def do_read_tasks(self, _=None):
-        """Reads tasks from database"""
+        """Read existing tasks"""
         output = self.read_tasks()
-        self._cmd.poutput(output)
 
-    def read_tasks(self) -> dict[int, dict]:
+        self._cmd.poutput(json.dumps(output, indent=4, default=lambda o: o.dict()))
+
+    def read_tasks(self) -> dict[int, Task]:
         """Reads task from database"""
         with open(TASK_FILE, "r") as file:
-            return json.load(file)
+            data = json.load(file)
 
-    def do_complete_task(self, statement):
-        """Set a task's status to completed"""
-        output = self.complete_task()
-        self._cmd.poutput(output)
+        tasks = {int(k): Task(**v) for k, v in data.items()}
 
-    def complete_task(self):
-        """Set a task's status to completed"""
-        pass
+        return tasks
 
-    def do_edit_task(self, statement):
-        """Edit an existing task"""
-        output = self.edit_task()
-        self._cmd.poutput(output)
+    set_task_status_parser = utils.CustomCmd2ArgumentParser(_get_cmd_instance)
+    set_task_status_parser.add_argument(
+        "-id",
+        type=int,
+        required=True,
+        help="Task ID",
+    )
+    set_task_status_parser.add_argument(
+        "-status",
+        type=str,
+        required=True,
+        help="New status",
+    )
 
-    def edit_task(self):
-        """Edit an existing task"""
-        pass
+    @with_argparser(set_task_status_parser)
+    def do_set_task_status(self, args):
+        """Set a task's status"""
 
-    def do_delete_task(self, statement):
-        """Delete a task"""
-        output = self.delete_task()
-        self._cmd.poutput(output)
+        try:
+            status = TaskStatus(args.status)
+        except ValueError as e:
+            raise ValueError(
+                f"'{args.status}' is not a valid TaskStatus. Must be one of: {[status.value for status in TaskStatus]}"
+            )
 
-    def delete_task(self):
-        """Delete a task"""
-        pass
+        output = self.set_task_status(id=args.id, status=status)
 
-    def _write_tasks(self, tasks):
+        self._cmd.poutput(f"Set task {output.id} status to: {output.status.value}")
+
+    def set_task_status(self, id: int, status: TaskStatus) -> Task:
+        """Set a task's status"""
+        tasks = self.read_tasks()
+        tasks[id].status = status
+
+        self._write_tasks(tasks)
+
+        return tasks[id]
+
+    def _write_tasks(self, tasks: dict[int, Task]):
         """Write tasks object to file"""
+        tasks_serial = {k: v.model_dump(mode="json") for k, v in tasks.items()}
         with open(TASK_FILE, "w") as file:
-            json.dump(tasks, file, indent=4)
+            json.dump(tasks_serial, file, indent=4)
+
+    def _reset_tasks(self):
+        """Resets the task file to an empty JSON file."""
+        with open(TASK_FILE, "w") as file:
+            json.dump({}, file, indent=4)
