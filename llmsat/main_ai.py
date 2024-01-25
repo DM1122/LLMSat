@@ -8,8 +8,7 @@ import krpc
 import prompt
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
-from langchain.chat_models import ChatOpenAI
-
+from langchain_community.chat_models import ChatOllama, ChatOpenAI
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.comms_service import CommunicationService

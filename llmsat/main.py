@@ -53,7 +53,7 @@ if __name__ == "__main__":
             payload_manager,
             task_manager,
             communication_service,
-            # alarm_manager,
+            alarm_manager,
             orbit_propagator,
         ]
     )

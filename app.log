@@ -276,3 +276,4 @@ set                   Set a settable parameter or show current settings of param
 2024-01-23 00:12:54 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 2024-01-23 00:13:04 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 2024-01-23 00:13:23 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-01-23 17:45:10 - Got multiple action responses: [{'action': 'read_mission_brief', 'action_input': {}}, {'action': 'get_orbit', 'action_input': {}}, {'action': 'apoapsis', 'action_input': {'tool_names': ['calculate'], 'action_input': {'target': {'body': 'Enceladus'}, 'parameter': 'apoapsis', 'values': [100]}}}, {'action': 'Final Answer', 'action_input': "The apoapsis of Enceladus at an altitude of 100 km will be the output of the 'calculate' tool."}]

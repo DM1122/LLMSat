@@ -1,12 +1,11 @@
-"""SpacecraftManager class."""
+"""AlarmManager class."""
 
 import json
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Dict, List
-
+from typing import Dict, List, Any
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 from llmsat.libs import utils
 import threading
@@ -15,26 +14,45 @@ import threading
 class Alarm(BaseModel):
     """An alarm"""
 
+    id: str = Field(description="The unique identifier for the alarm")
     name: str = Field(description="Name of the alarm")
     description: str = Field(description="Description of the alarm")
     time: datetime = Field(description="Universal time at which the alarm will trigger")
-    # triggered: bool = Field(description="Whether the alarm has been trigggered")
+    # margin: float = Field(
+    #     description="The number of seconds before the event that the alarm will fire"
+    # )
+    obj: Any
 
     def __init__(self, alarm_obj):
         super().__init__(
+            id=alarm_obj.id,
             name=alarm_obj.name,
             description=alarm_obj.notes,
-            time=utils.epoch + timedelta(seconds=alarm_obj.time),
+            time=utils.ksp_ut_to_datetime(alarm_obj.time),
+            # margin=alarm_obj.margin,
+            obj=alarm_obj,
         ),
 
-    def get_remaining_time(self, current_time: datetime) -> timedelta:
+    def get_remaining_time(
+        self, current_time: datetime
+    ) -> timedelta:  # alarm_obj.remaining is broken
         """Returns the timedelta between the trigger time and the current time."""
         return self.time - current_time
+
+    @field_serializer("time")
+    def serialize_dt(self, time: datetime, _info):
+        return time.isoformat()
+
+    def update_name(self, value):
+        self.name = value
+        self.obj.name = value
 
 
 @with_default_category("AlarmManager")
 class AlarmManager(CommandSet):
     """Functions for setting alarms."""
+
+    TRIGGERED_STR = "(TRIGGERED)"
 
     def __init__(self, krpc_connection, remove_alarms_on_init=True):
         super().__init__()
@@ -60,10 +78,10 @@ class AlarmManager(CommandSet):
         alarms = self.get_alarms()
 
         if not alarms:
-            self._cmd.poutput("No alarms have been set")
+            self._cmd.poutput("No alarms set")
             return
 
-        # Calculate remaining time for each alarm and store in a list of tuples
+        # calculate remaining time for each alarm and store in a list of tuples
         alarms_with_remaining_time = [
             (
                 alarm,
@@ -77,15 +95,12 @@ class AlarmManager(CommandSet):
         # Sort the alarms in ascending order by remaining time
         alarms_sorted = sorted(alarms_with_remaining_time, key=lambda x: x[1])
 
-        # Format the sorted alarms into a dictionary of dictionaries
-        alarms_formatted = {
-            alarm.name: {
-                "time": alarm.time.isoformat(),
-                "remaining": str(remaining),
-                "description": alarm.description,
-            }
-            for alarm, remaining in alarms_sorted
-        }
+        alarms_formatted: dict[str, dict[str, str]] = {}
+        for alarm, remaining_time in alarms_sorted:
+            alarms_formatted[alarm.id] = alarm.model_dump(
+                mode="json", exclude=["id", "obj"]
+            )
+            alarms_formatted[alarm.id]["remaining"] = str(remaining_time)
 
         self._cmd.poutput(json.dumps(alarms_formatted, indent=4))
 
@@ -93,15 +108,12 @@ class AlarmManager(CommandSet):
         """Get all alarms"""
 
         alarm_objs = self.kac.alarms
-        alarms = {}
+        alarms: Dict[str, Alarm] = {}
         for alarm_obj in alarm_objs:
             alarm = Alarm(alarm_obj)
-            alarms[alarm.name] = alarm
+            alarms[alarm.id] = alarm
 
         return alarms
-
-    def do_delete_alarm(self):
-        pass
 
     def _remove_all_alarms(self):
         """Kerbal Alarm Clock alarms do not get removed when returning to an earlier quick save,
@@ -177,16 +189,24 @@ class AlarmManager(CommandSet):
 
         return alarm
 
+    def _on_alarm_trigger(self, alarm: Alarm):
+        """Handle a triggered alarm"""
+
+        self._cmd.poutput(f"Alarm triggered:\n{alarm.model_dump_json(indent=4)}")
+
     def monitor_alarms(self, ut_stream):
+        """Async monitoring of alarms"""
         while True:
+            self._cmd.poutput("Hey!")
             current_time = ut_stream()
 
             alarms = self.get_alarms()
 
-            for alarm in alarms:
-                if alarms[alarm].get_remaining_time(current_time) <= 0 and 
-
-            for alarm in alarm_manager.alarms:
-                if alarm.time - current_time <= 0 and alarm.time != -1:
-                    print_alarm_info(alarm)
-                    alarm.time = -1  # Mark as processed
+            for id, alarm in alarms.items():
+                if (
+                    alarm.get_remaining_time(current_time) <= 0
+                    and AlarmManager.TRIGGERED_STR not in alarm.name
+                ):
+                    # alarm has triggered
+                    alarm.update_name(alarm.name + f" {AlarmManager.TRIGGERED_STR}")
+                    self._on_alarm_trigger(alarm)
