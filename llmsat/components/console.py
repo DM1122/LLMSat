@@ -103,11 +103,15 @@ class Console(cmd2.Cmd):
         self.output_buffer = []
 
     def poutput(self, message, *args, **kwargs):
-        # logging.info(f"Output: {message}")
         self.output_buffer.append(message)
 
         if not self.quiet:
             super().poutput(message, *args, **kwargs)
+
+    def async_alert(self, message, *args, **kwargs):
+        self.output_buffer.append(message)
+
+        super().async_alert(message, *args, **kwargs)
 
     def perror(self, message, *args, **kwargs):
         self.output_buffer.append(message)

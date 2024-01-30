@@ -1,13 +1,14 @@
 """Game-related utilities"""
 
+import json
 import subprocess
 from datetime import datetime, timedelta
 from string import Template
+
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field, FilePath
 from pydantic.json_schema import GenerateJsonSchema
-import json
 
 epoch = datetime(
     year=1951, month=1, day=1

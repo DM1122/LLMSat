@@ -1,14 +1,16 @@
 """AlarmManager class."""
 
 import json
+import threading
+import time
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
 from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field, field_serializer
 
 from llmsat.libs import utils
-import threading
 
 
 class Alarm(BaseModel):
@@ -32,6 +34,9 @@ class Alarm(BaseModel):
             # margin=alarm_obj.margin,
             obj=alarm_obj,
         ),
+
+    # class Config:
+    #     exclude = ["obj"]
 
     def get_remaining_time(
         self, current_time: datetime
@@ -63,15 +68,12 @@ class AlarmManager(CommandSet):
         if remove_alarms_on_init:
             self._remove_all_alarms()
 
-        # Create a stream for the current game time
-        ut_stream = self.connection.add_stream(
+        self.ut_stream = self.connection.add_stream(
             getattr, self.connection.space_center, "ut"
         )
-
         # Start the alarm monitoring in a separate thread
-        thread = threading.Thread(target=self.monitor_alarms, args=(ut_stream,))
-        thread.daemon = True  # Daemon threads exit when the main program does
-        thread.start()
+        self.alarm_thread = threading.Thread(target=self.monitor_alarms, daemon=True)
+        self.alarm_thread.start()
 
     def do_get_alarms(self, _):
         """Get all alarms"""
@@ -192,21 +194,24 @@ class AlarmManager(CommandSet):
     def _on_alarm_trigger(self, alarm: Alarm):
         """Handle a triggered alarm"""
 
-        self._cmd.poutput(f"Alarm triggered:\n{alarm.model_dump_json(indent=4)}")
+        self._cmd.async_alert(
+            f"{utils.ksp_ut_to_datetime(self.connection.space_center.ut)}::AlarmManager:: Alarm triggered:\n{alarm.model_dump_json(exclude=['obj'],indent=4)}"
+        )
 
-    def monitor_alarms(self, ut_stream):
+    def monitor_alarms(self):
         """Async monitoring of alarms"""
+        time.sleep(
+            1
+        )  # need to make sure no alarms are raised before cmd2 is fully initialized
         while True:
-            self._cmd.poutput("Hey!")
-            current_time = ut_stream()
+            current_time = utils.ksp_ut_to_datetime(self.ut_stream())
 
             alarms = self.get_alarms()
-
-            for id, alarm in alarms.items():
+            for alarm in alarms.values():
                 if (
-                    alarm.get_remaining_time(current_time) <= 0
+                    alarm.get_remaining_time(current_time) <= timedelta(0)
                     and AlarmManager.TRIGGERED_STR not in alarm.name
                 ):
                     # alarm has triggered
-                    alarm.update_name(alarm.name + f" {AlarmManager.TRIGGERED_STR}")
                     self._on_alarm_trigger(alarm)
+                    alarm.update_name(alarm.name + f" {AlarmManager.TRIGGERED_STR}")
