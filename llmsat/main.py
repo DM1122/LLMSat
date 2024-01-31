@@ -7,7 +7,7 @@ import krpc
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.comms_service import CommunicationService
-from llmsat.components.console import Console
+from llmsat.console import Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.components.spacecraft_manager import SpacecraftManager

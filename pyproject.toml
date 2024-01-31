@@ -23,6 +23,7 @@ ipykernel = "^6.28.0"
 plotly = "^5.18.0"
 nbformat = "^5.9.2"
 langchain = "^0.1.0"
+langchain-openai = "^0.0.5"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -13,7 +13,7 @@ from langchain_community.chat_models import ChatOllama, ChatOpenAI
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
 from llmsat.components.comms_service import CommunicationService
-from llmsat.components.console import AgentCMDInterface, Console
+from llmsat.console import AgentCMDInterface, Console
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.components.spacecraft_manager import SpacecraftManager
@@ -24,11 +24,8 @@ CONFIG_PATH = "llmsat/app_config.json"
 
 
 if __name__ == "__main__":
-    # setup langsmith
-    os.environ["LANGCHAIN_TRACING_V2"] = "true"
-    os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-    os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
-    os.environ["LANGCHAIN_PROJECT"] = "llmsat"
+    langchain_key = config("LANGCHAIN_API_KEY")
+    KEY = str(config("OPENAI", cast=str))
 
     with open(CONFIG_PATH, "r") as file:
         app_config_data = json.load(file)
@@ -69,27 +66,6 @@ if __name__ == "__main__":
             orbit_propagator,
         ]
     )
-
-    # initialize agent
-    KEY = str(config("OPENAI", cast=str))
-    llm = ChatOpenAI(openai_api_key=KEY, model=app_config.model)
-
-    agent_interface = AgentCMDInterface(app)
-
-    tools = [agent_interface.run]
-    agent = initialize_agent(
-        tools=tools,
-        llm=llm,
-        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=True,
-        agent_kwargs={
-            "prefix": prompt.PREFIX,
-            "format_instructions": prompt.FORMAT_INSTRUCTIONS,
-            "suffix": prompt.SUFFIX,
-        },
-    )
-    result = agent.run(app.get_output())
-    print(result)
 
     input("Simulation complete. Press any key to quit...")
 

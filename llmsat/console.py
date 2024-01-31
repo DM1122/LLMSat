@@ -1,11 +1,15 @@
 """Spacecraft Console App"""
+import asyncio
 import json
 import logging
+import threading
 import time
 from pathlib import Path
 
 import cmd2
 import krpc
+import zmq
+import zmq.asyncio
 from decouple import config
 from langchain.tools import tool
 from langchain.tools.base import ToolException
@@ -16,53 +20,17 @@ from llmsat.components.autpilot import AutopilotService
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.task_manager import TaskManager
+from llmsat.components.comms_service import CommunicationService
+from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.libs import utils
 
-
-class AgentCMDInterface:
-    """Tool interface between LLM and cmd2 app"""
-
-    _instance = None
-    _initialized = False
-
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(AgentCMDInterface, cls).__new__(cls)
-        return cls._instance
-
-    def __init__(self, app=None):
-        if AgentCMDInterface._initialized:
-            return
-        self.app = app
-        self.app.preloop()
-        AgentCMDInterface._initialized = True
-
-    @staticmethod
-    def _get_instance():
-        instance = AgentCMDInterface()
-        if instance.app is None:
-            raise ValueError(
-                "AgentCMDInterface must be initialized with a cmd2 app before calling its methods."
-            )
-        return AgentCMDInterface()
-
-    @staticmethod
-    @tool()
-    def run(input: str) -> str:
-        """Write a command to the console"""
-        app = AgentCMDInterface._get_instance().app
-
-        app.onecmd_plus_hooks(input)
-
-        output = app.get_output()
-
-        return output
+CONFIG_PATH = Path("llmsat/app_config.json")
 
 
 class Console(cmd2.Cmd):
     """Spacecraft console app"""
 
-    def __init__(self, quiet=False, *args, **kwargs):
+    def __init__(self, port: int, quiet=False, *args, **kwargs):
         super().__init__(include_py=True, *args, **kwargs)
 
         self.intro = "SatelliteOS"
@@ -101,6 +69,28 @@ class Console(cmd2.Cmd):
         )
 
         self.output_buffer = []
+
+        # Set up zmq context and REP socket
+        self.context = zmq.Context()
+        self.controller_connection = self.context.socket(zmq.PAIR)
+        self.controller_connection.bind(f"tcp://*:{port}")
+
+        # Start the message receiving thread
+        self.receive_thread = threading.Thread(target=self.receive_message, daemon=True)
+        self.receive_thread.start()
+
+    def receive_message(self):
+        """Receive and execute command messages from the controller."""
+        while True:
+            message = self.controller_connection.recv_string()
+            print(f"{self.prompt}{message}")
+            self.onecmd_plus_hooks(message)
+            output = self.get_output()
+            self.send_message(output)
+
+    def send_message(self, message: str):
+        """Send message to the controller."""
+        self.controller_connection.send_string(message)
 
     def poutput(self, message, *args, **kwargs):
         self.output_buffer.append(message)
@@ -150,7 +140,56 @@ class Console(cmd2.Cmd):
         self.do_help("-v")
 
     def get_output(self):
-        # Retrieve all output and clear the buffer
+        """Retrieve all output and clear the buffer"""
         output = "\n".join(self.output_buffer)
         self.output_buffer.clear()
         return output
+
+
+if __name__ == "__main__":
+    with open(CONFIG_PATH, "r") as file:
+        app_config_data = json.load(file)
+        app_config = utils.AppConfig(**app_config_data)
+
+    if not utils.is_ksp_running():
+        raise Exception("Please make sure KSP is running")
+
+    input("Press any key once the KSP save is loaded to continue...")
+
+    print("Connecting to KSP...")
+    ksp_connection = krpc.connect(name="Client")
+
+    if app_config.load_checkpoint:
+        print(f"Loading '{app_config.checkpoint_name}.sfs' checkpoint...")
+        utils.load_checkpoint(
+            name=app_config.checkpoint_name, space_center=ksp_connection.space_center
+        )
+
+    spacecraft_manager = SpacecraftManager(ksp_connection)
+    autopilot_service = AutopilotService(ksp_connection)
+    payload_manager = ExperimentManager(ksp_connection)
+    communication_service = CommunicationService(ksp_connection)
+    task_manager = TaskManager(ksp_connection)
+    alarm_manager = AlarmManager(
+        ksp_connection, remove_alarms_on_init=app_config.load_checkpoint
+    )
+    orbit_propagator = OrbitPropagator(ksp_connection)
+
+    app = Console(
+        port=app_config.port,
+        command_sets=[
+            spacecraft_manager,
+            autopilot_service,
+            payload_manager,
+            task_manager,
+            communication_service,
+            alarm_manager,
+            orbit_propagator,
+        ],
+    )
+
+    app.cmdloop()
+
+    input("Simulation complete. Press any key to quit...")
+
+    ksp_connection.close()

@@ -19,6 +19,7 @@ class AppConfig(BaseModel):
     model: str
     load_checkpoint: bool
     checkpoint_name: str
+    port: int
 
 
 def is_ksp_running():
@@ -49,7 +50,6 @@ class MET:  # TODO: rename
             seconds: seconds since the mission began
         """
         self.seconds = int(seconds)
-        print(self.seconds)
 
     def __str__(self):
         # Constants for time calculations

@@ -1,5 +1,6 @@
 {
     "model":"gpt-4-1106-preview",
     "load_checkpoint": false,
-    "checkpoint_name": "checkpoint"
+    "checkpoint_name": "checkpoint",
+    "port": 5556
 }
