@@ -1,24 +1,28 @@
 """Agent Manager"""
-import asyncio
 import json
 import os
 from pathlib import Path
-
+import threading
 import prompt
 import zmq
-import zmq.asyncio
 from decouple import config
 from langchain.agents import AgentType, initialize_agent
 from langchain.agents.agent import AgentExecutor
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
+import queue
+import time
+
 from llmsat.libs import utils
 
 CONFIG_PATH = Path("llmsat/app_config.json")
 
 
 class AgentManager:
-    """Manage state and execution of agent."""
+    """Manage state and execution of agent.
+
+    The agent interfaces with the console app server.
+    """
 
     _instance = None
     _initialized = False
@@ -58,45 +62,79 @@ class AgentManager:
         )
 
         # setup connection
-        context = zmq.asyncio.Context()
+        self.message_queue = queue.Queue()
+        self.connected = False
+        context = zmq.Context()
         self.connection = context.socket(zmq.PAIR)
         self.connection.connect(f"tcp://localhost:{port}")
-        asyncio.create_task(self.receive_messages())
+        receive_thread = threading.Thread(
+            name="agent-receive-message", target=self.receive_message, daemon=True
+        )
+        receive_thread.start()
+
+        print("Connecting to console session")
+        connect_message = utils.Message(type=utils.MessageType.CONNECT)
+        self.send_message(connect_message)
+        self.connected = True
 
         print("Agent manager initialized")
+        self.main_loop()
 
     @staticmethod
     def _get_instance():
         """Get the current instance of the class"""
-        return AgentManager(None, None, None)
+        return AgentManager(None, None, None, None)
 
     @staticmethod
     @tool()
     def run(input: str):
         """Write a command to the console"""
         manager = AgentManager._get_instance()
-        manager.connection.send_message(input)
+        message = utils.Message(type=utils.MessageType.COMMAND, data=input)
+        manager.send_message(message)
 
-        response = manager.connection.recv_string()
+        response = manager.message_queue.get(block=True)
 
         return response
 
-    def send_message(self, message: str) -> str:
+    def send_message(self, message: utils.Message):
         """Send a message to the server"""
+        self.connection.send_pyobj(message)
 
-        self.connection.send_message(message)
-        response = self.connection.recv_string()
-        return response
-
-    async def receive_messages(self):
-        """Receive messages from the app asynchronously."""
+    def receive_message(self):
+        """Receive messages from the console asynchronously and add them to the queue."""
         while True:
-            print("Checking messages")
-            message = await self.connection.recv_string()
-            print(f"Received from app: {message}")
+            message = self.connection.recv_string()
+            self.message_queue.put(message)
+
+    def main_loop(self):
+        while True:
+            if not self.connected:  # not the first connection
+                alert = self.message_queue.get(block=True)
+                print("Connecting to console session")
+                connect_message = utils.Message(type=utils.MessageType.CONNECT)
+                self.send_message(connect_message)
+                self.connected = True
+
+                response = self.message_queue.get(block=True)
+                result = self.agent.run(response + "\n" + alert)
+                print(result)
+
+                disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
+                self.send_message(disconnect_message)
+                self.connected = False
+
+            else:  # first connection
+                response = self.message_queue.get(block=True)
+                result = self.agent.run(response)
+                print(result)
+
+                disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
+                self.send_message(disconnect_message)
+                self.connected = False
 
 
-async def main():
+if __name__ == "__main__":
     LANGCHAIN_KEY = config("LANGCHAIN_API_KEY")
     OPENAI_KEY = str(config("OPENAI", cast=str))
 
@@ -110,18 +148,3 @@ async def main():
         model=app_config.model,
         port=app_config.port,
     )
-    await asyncio.Future()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-    # LANGCHAIN_KEY = config("LANGCHAIN_API_KEY")
-    # OPENAI_KEY = str(config("OPENAI", cast=str))
-
-    # with open(CONFIG_PATH, "r") as file:
-    #     app_config_data = json.load(file)
-    #     app_config = utils.AppConfig(**app_config_data)
-
-    # AgentManager(
-    #     openai_key=OPENAI_KEY, langchain_key=LANGCHAIN_KEY, model=app_config.model
-    # )

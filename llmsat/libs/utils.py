@@ -4,11 +4,13 @@ import json
 import subprocess
 from datetime import datetime, timedelta
 from string import Template
-
+from enum import Enum
 import cmd2
 from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
 from pydantic import BaseModel, Field, FilePath
 from pydantic.json_schema import GenerateJsonSchema
+from typing import Optional
+
 
 epoch = datetime(
     year=1951, month=1, day=1
@@ -115,3 +117,14 @@ def format_return_obj_str(obj: BaseModel, template: Template = None):
         output = statement + obj_schema
 
     return output
+
+
+class MessageType(Enum):
+    CONNECT = "connect"
+    DISCONNECT = "disconnect"
+    COMMAND = "command"
+
+
+class Message(BaseModel):
+    type: MessageType
+    data: Optional[str] = None

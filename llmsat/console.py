@@ -5,6 +5,7 @@ import logging
 import threading
 import time
 from pathlib import Path
+from typing import Any
 
 import cmd2
 import krpc
@@ -17,11 +18,11 @@ from pydantic import BaseModel
 
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
+from llmsat.components.comms_service import CommunicationService
 from llmsat.components.experiment_manager import ExperimentManager
+from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.components.spacecraft_manager import SpacecraftManager
 from llmsat.components.task_manager import TaskManager
-from llmsat.components.comms_service import CommunicationService
-from llmsat.components.orbit_propagator import OrbitPropagator
 from llmsat.libs import utils
 
 CONFIG_PATH = Path("llmsat/app_config.json")
@@ -40,7 +41,7 @@ class Console(cmd2.Cmd):
         # delete built-in commands and settings
         del cmd2.Cmd.do_alias
         del cmd2.Cmd.do_macro
-        # del cmd2.Cmd.do_run_pyscript
+        del cmd2.Cmd.do_run_pyscript
         del cmd2.Cmd.do_shortcuts
         del cmd2.Cmd.do_edit
         del cmd2.Cmd.do_history
@@ -70,23 +71,43 @@ class Console(cmd2.Cmd):
 
         self.output_buffer = []
 
-        # Set up zmq context and REP socket
+        # start server for controller
+        self.controller_connected = False
         self.context = zmq.Context()
         self.controller_connection = self.context.socket(zmq.PAIR)
         self.controller_connection.bind(f"tcp://*:{port}")
-
-        # Start the message receiving thread
-        self.receive_thread = threading.Thread(target=self.receive_message, daemon=True)
-        self.receive_thread.start()
+        receive_thread = threading.Thread(
+            name="console-receive-message", target=self.receive_message, daemon=True
+        )
+        receive_thread.start()
 
     def receive_message(self):
         """Receive and execute command messages from the controller."""
         while True:
-            message = self.controller_connection.recv_string()
-            print(f"{self.prompt}{message}")
-            self.onecmd_plus_hooks(message)
-            output = self.get_output()
-            self.send_message(output)
+            message: utils.Message = self.controller_connection.recv_pyobj()
+            if message.type == utils.MessageType.COMMAND:
+                self.on_controller_command(message.data)
+            elif message.type == utils.MessageType.CONNECT:
+                self.on_controller_connect()
+            elif message.type == utils.MessageType.DISCONNECT:
+                self.on_controller_disconnect()
+
+    def on_controller_command(self, message):
+        print(f"{self.prompt}{message}")
+        self.onecmd_plus_hooks(message)
+        output = self.get_output()
+        self.send_message(output)
+
+    def on_controller_connect(self):
+        self.controller_connected = True
+        print("Controller connected")
+        self.get_output()  # clear buffer
+        self.display_dashboard()
+        self.send_message(self.get_output())
+
+    def on_controller_disconnect(self):
+        self.controller_connected = False
+        print("Controller disconnected")
 
     def send_message(self, message: str):
         """Send message to the controller."""
@@ -94,12 +115,12 @@ class Console(cmd2.Cmd):
 
     def poutput(self, message, *args, **kwargs):
         self.output_buffer.append(message)
-
         if not self.quiet:
             super().poutput(message, *args, **kwargs)
 
     def async_alert(self, message, *args, **kwargs):
-        self.output_buffer.append(message)
+        # self.output_buffer.append(message)
+        self.send_message(message)
 
         super().async_alert(message, *args, **kwargs)
 

@@ -1,7 +1,2 @@
 # Mission Brief
-Take a temperature reading in orbit around Enceladus.
-
-## Requirements
-- Shall be in orbit around Enceladus
-- Shall be at an altitude below 100km
-- Shall communicate the temperature to mission control
+This is a test. Please create an alarm to trigger 10min from now, and then disconnect from the terminal.
