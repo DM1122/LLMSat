@@ -24,10 +24,10 @@ plotly = "^5.18.0"
 langchain = "^0.1.0"
 langchain-openai = "^0.0.5"
 nbformat = "^5.9.2"
-ruff = "^0.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
+ruff = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core"]
