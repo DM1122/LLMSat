@@ -1,4 +1,3 @@
-
 import krpc
 import pytest
 

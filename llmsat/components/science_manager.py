@@ -1,6 +1,3 @@
-
-
-
 class ScienceManager:
     def __init__(self) -> None:
         pass

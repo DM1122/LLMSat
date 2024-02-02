@@ -25,14 +25,16 @@ class Alarm(BaseModel):
     obj: Any
 
     def __init__(self, alarm_obj):
-        super().__init__(
-            id=alarm_obj.id,
-            name=alarm_obj.name,
-            description=alarm_obj.notes,
-            time=utils.ksp_ut_to_datetime(alarm_obj.time),
-            # margin=alarm_obj.margin,
-            obj=alarm_obj,
-        ),
+        (
+            super().__init__(
+                id=alarm_obj.id,
+                name=alarm_obj.name,
+                description=alarm_obj.notes,
+                time=utils.ksp_ut_to_datetime(alarm_obj.time),
+                # margin=alarm_obj.margin,
+                obj=alarm_obj,
+            ),
+        )
 
     # class Config:
     #     exclude = ["obj"]

@@ -4,7 +4,6 @@
 from cmd2 import CommandSet, with_default_category
 
 
-
 @with_default_category("RemoteSensingManager")
 class RemoteSensingManager(CommandSet):
     _instance = None
