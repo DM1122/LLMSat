@@ -1,17 +1,13 @@
 """CommunicationService class."""
 
 import json
-from datetime import datetime, timedelta
-from enum import Enum
+from datetime import datetime
 from pathlib import Path
-from typing import List
 
-import pandas as pd
 from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel
 
 from llmsat.libs import utils
-from llmsat.libs.krpc_types import Orbit
 
 COMM_LOG_PATH = Path("disk/comm_log.json")
 

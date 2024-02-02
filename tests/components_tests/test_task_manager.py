@@ -1,4 +1,3 @@
-from typing import List
 
 import krpc
 import pytest

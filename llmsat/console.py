@@ -1,21 +1,14 @@
 """Spacecraft Console App"""
 
-import asyncio
 import json
 import logging
 import threading
-import time
 from pathlib import Path
-from typing import Any
 
 import cmd2
 import krpc
 import zmq
 import zmq.asyncio
-from decouple import config
-from langchain.tools import tool
-from langchain.tools.base import ToolException
-from pydantic import BaseModel
 
 from llmsat.components.alarm_manager import AlarmManager
 from llmsat.components.autpilot import AutopilotService
@@ -140,7 +133,7 @@ class Console(cmd2.Cmd):
         ut = spacecraft_manager.get_ut()
         met = spacecraft_manager.get_met()
 
-        self.poutput(f"SatelliteOS")
+        self.poutput("SatelliteOS")
         self.poutput(f"UT: {ut.isoformat()} | MET: {met}")
         self.poutput("")
 

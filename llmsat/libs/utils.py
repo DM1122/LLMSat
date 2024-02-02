@@ -7,9 +7,8 @@ from enum import Enum
 from string import Template
 from typing import Optional
 
-import cmd2
-from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
-from pydantic import BaseModel, Field, FilePath
+from cmd2 import Cmd2ArgumentParser
+from pydantic import BaseModel
 from pydantic.json_schema import GenerateJsonSchema
 
 epoch = datetime(
@@ -38,7 +37,7 @@ def load_checkpoint(name: str, space_center):
     """Load the given game save state"""
     try:
         space_center.load(name)
-    except ValueError as e:
+    except ValueError:
         raise ValueError(
             f"No checkpoint named '{name}.sfs' was found. Please create one"
         )

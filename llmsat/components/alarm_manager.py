@@ -4,10 +4,9 @@ import json
 import threading
 import time
 from datetime import datetime, timedelta
-from enum import Enum
-from typing import Any, Dict, List
+from typing import Any, Dict
 
-from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
+from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field, field_serializer
 
 from llmsat.libs import utils
