@@ -1,4 +1,5 @@
 """Spacecraft Console App"""
+
 import asyncio
 import json
 import logging

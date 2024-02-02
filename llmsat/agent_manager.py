@@ -1,8 +1,12 @@
 """Agent Manager"""
+
 import json
 import os
-from pathlib import Path
+import queue
 import threading
+import time
+from pathlib import Path
+
 import prompt
 import zmq
 from decouple import config
@@ -10,8 +14,6 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.agents.agent import AgentExecutor
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
-import queue
-import time
 
 from llmsat.libs import utils
 

@@ -1,4 +1,5 @@
 """Payload manager class."""
+
 import argparse
 import json
 import time

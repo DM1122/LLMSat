@@ -1,4 +1,5 @@
 """Remote sensing manager class."""
+
 import argparse
 import json
 import time
