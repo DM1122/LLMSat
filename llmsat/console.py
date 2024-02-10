@@ -107,10 +107,11 @@ class Console(cmd2.Cmd):
         """Send message to the controller."""
         self.controller_connection.send_string(message)
 
-    def poutput(self, message, *args, **kwargs):
+    def poutput(self, message="", *args, **kwargs):
         self.output_buffer.append(message)
         if not self.quiet:
             super().poutput(message, *args, **kwargs)
+
 
     def async_alert(self, message, *args, **kwargs):
         # self.output_buffer.append(message)
