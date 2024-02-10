@@ -21,17 +21,30 @@ wexpect = "^4.0.0"
 pandas = "^2.1.3"
 ipykernel = "^6.28.0"
 plotly = "^5.18.0"
-nbformat = "^5.9.2"
 langchain = "^0.1.0"
+langchain-openai = "^0.0.5"
+nbformat = "^5.9.2"
 
 
 [tool.poetry.group.dev.dependencies]
-isort = "^5.12.0"
-black = "^23.10.1"
+ruff = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-profile = "black"
+[tool.ruff]
+line-length = 88
+indent-width = 4
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

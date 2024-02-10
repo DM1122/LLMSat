@@ -7,7 +7,7 @@ import pandas as pd
 from cmd2 import CommandSet, with_default_category
 
 from llmsat.libs import utils
-from llmsat.libs.krpc_types import Part, PartType, SpacecraftProperties
+from llmsat.libs.krpc_types import AttachmentMode, Part, PartType, SpacecraftProperties
 
 MISSION_BRIEF = Path("disk/mission.md")
 

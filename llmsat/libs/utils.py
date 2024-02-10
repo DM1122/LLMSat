@@ -3,11 +3,12 @@
 import json
 import subprocess
 from datetime import datetime, timedelta
+from enum import Enum
 from string import Template
+from typing import Optional
 
-import cmd2
-from cmd2 import Cmd2ArgumentParser, ansi, with_argparser
-from pydantic import BaseModel, Field, FilePath
+from cmd2 import Cmd2ArgumentParser
+from pydantic import BaseModel
 from pydantic.json_schema import GenerateJsonSchema
 
 epoch = datetime(
@@ -19,6 +20,7 @@ class AppConfig(BaseModel):
     model: str
     load_checkpoint: bool
     checkpoint_name: str
+    port: int
 
 
 def is_ksp_running():
@@ -35,7 +37,7 @@ def load_checkpoint(name: str, space_center):
     """Load the given game save state"""
     try:
         space_center.load(name)
-    except ValueError as e:
+    except ValueError:
         raise ValueError(
             f"No checkpoint named '{name}.sfs' was found. Please create one"
         )
@@ -49,7 +51,6 @@ class MET:  # TODO: rename
             seconds: seconds since the mission began
         """
         self.seconds = int(seconds)
-        print(self.seconds)
 
     def __str__(self):
         # Constants for time calculations
@@ -115,3 +116,14 @@ def format_return_obj_str(obj: BaseModel, template: Template = None):
         output = statement + obj_schema
 
     return output
+
+
+class MessageType(Enum):
+    CONNECT = "connect"
+    DISCONNECT = "disconnect"
+    COMMAND = "command"
+
+
+class Message(BaseModel):
+    type: MessageType
+    data: Optional[str] = None

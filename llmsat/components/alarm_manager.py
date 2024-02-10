@@ -4,10 +4,9 @@ import json
 import threading
 import time
 from datetime import datetime, timedelta
-from enum import Enum
-from typing import Any, Dict, List
+from typing import Any, Dict
 
-from cmd2 import Cmd2ArgumentParser, CommandSet, with_argparser, with_default_category
+from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field, field_serializer
 
 from llmsat.libs import utils
@@ -26,14 +25,16 @@ class Alarm(BaseModel):
     obj: Any
 
     def __init__(self, alarm_obj):
-        super().__init__(
-            id=alarm_obj.id,
-            name=alarm_obj.name,
-            description=alarm_obj.notes,
-            time=utils.ksp_ut_to_datetime(alarm_obj.time),
-            # margin=alarm_obj.margin,
-            obj=alarm_obj,
-        ),
+        (
+            super().__init__(
+                id=alarm_obj.id,
+                name=alarm_obj.name,
+                description=alarm_obj.notes,
+                time=utils.ksp_ut_to_datetime(alarm_obj.time),
+                # margin=alarm_obj.margin,
+                obj=alarm_obj,
+            ),
+        )
 
     # class Config:
     #     exclude = ["obj"]
@@ -59,7 +60,17 @@ class AlarmManager(CommandSet):
 
     TRIGGERED_STR = "(TRIGGERED)"
 
+    _instance = None
+    _initialized = False
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(AlarmManager, cls).__new__(cls)
+        return cls._instance
+
     def __init__(self, krpc_connection, remove_alarms_on_init=True):
+        if AlarmManager._initialized:
+            return
         super().__init__()
         self.connection = krpc_connection
         self.vessel = self.connection.space_center.active_vessel
@@ -74,6 +85,13 @@ class AlarmManager(CommandSet):
         # Start the alarm monitoring in a separate thread
         self.alarm_thread = threading.Thread(target=self.monitor_alarms, daemon=True)
         self.alarm_thread.start()
+
+        AlarmManager._initialized = True
+
+    @staticmethod
+    def _get_cmd_instance():
+        """Gets the cmd for use by argument parsers for poutput."""
+        return AlarmManager(None, None)._cmd
 
     def do_get_alarms(self, _):
         """Get all alarms"""
@@ -125,8 +143,9 @@ class AlarmManager(CommandSet):
         for alarm_obj in alarm_objs:
             alarm_obj.remove()
 
-    add_alarm_parser = Cmd2ArgumentParser(
-        epilog=f"Returns:\n{Alarm.model_json_schema()['title']}: {json.dumps(Alarm.model_json_schema()['properties'], indent=4)}"
+    add_alarm_parser = utils.CustomCmd2ArgumentParser(
+        cmd_instance_method=_get_cmd_instance,
+        epilog=f"Returns:\n{Alarm.model_json_schema()['title']}: {json.dumps(Alarm.model_json_schema()['properties'], indent=4)}",
     )
     add_alarm_parser.add_argument(
         "-name",
@@ -165,7 +184,9 @@ class AlarmManager(CommandSet):
             self._cmd.perror(e)
             return
 
-        self._cmd.poutput(f"New alarm created:\n{new_alarm.model_dump_json(indent=4)}")
+        self._cmd.poutput(
+            f"New alarm created:\n{new_alarm.model_dump_json(indent=4, exclude=['obj'])}"
+        )
 
     def add_alarm(self, name, time: datetime, description) -> Alarm:
         """Create a new alarm to trigger at a given universal time"""
@@ -182,9 +203,7 @@ class AlarmManager(CommandSet):
             ut=ut,
         )
         alarm_obj.notes = description if description is not None else ""
-        alarm_obj.action = (
-            self.kac.AlarmAction.message_only
-        )  # TODO: might need custom logic to pass message to console app
+        alarm_obj.action = self.kac.AlarmAction.kill_warp
         alarm_obj.vessel = self.vessel
 
         alarm = Alarm(alarm_obj)

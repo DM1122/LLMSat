@@ -1,7 +1,6 @@
 """Remote sensing manager class."""
-import argparse
+
 import json
-import time
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
@@ -9,7 +8,7 @@ from string import Template
 from typing import Optional
 
 from cmd2 import CommandSet, with_argparser, with_default_category
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 from llmsat.libs import utils
 
@@ -170,7 +169,7 @@ class TaskManager(CommandSet):
 
         try:
             status = TaskStatus(args.status)
-        except ValueError as e:
+        except ValueError:
             raise ValueError(
                 f"'{args.status}' is not a valid TaskStatus. Must be one of: {[status.value for status in TaskStatus]}"
             )

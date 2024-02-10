@@ -1,5 +1,7 @@
 """Autopilot service for orbital maneuvering."""
+
 import json
+from string import Template
 from typing import List
 
 from cmd2 import CommandSet, with_argparser, with_default_category
@@ -35,35 +37,181 @@ class AutopilotService(CommandSet):
         """Gets the cmd for use by argument parsers for poutput."""
         return AutopilotService()._cmd
 
-    apoapsis_parser = utils.CustomCmd2ArgumentParser(
+    operation_apoapsis_parser = utils.CustomCmd2ArgumentParser(
         _get_cmd_instance,
-        epilog=f"Returns:\nList[{Node.model_json_schema()['title']}]: {json.dumps(Node.model_json_schema()['properties'], indent=4)}",
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
     )
-    apoapsis_parser.add_argument(
-        "--new_apoapsis",  # TODO: find way to shorten this
+    operation_apoapsis_parser.add_argument(
+        "--new_apoapsis",
         type=float,
         required=True,
-        help="The new apoapsis altitude [km]",
+        help="The new apoapsis altitude [m]",
     )
 
-    @with_argparser(apoapsis_parser)
-    def do_apoapsis(self, args):
-        """Plan an apoapsis maneuver"""
+    @with_argparser(operation_apoapsis_parser)
+    def do_operation_apoapsis(self, args):
+        """Create a maneuver to set a new apoapsis"""
 
-        nodes = self.apoapsis(args.new_apoapsis)
+        try:
+            nodes = self.operation_apoapsis(args.new_apoapsis)
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
 
         self._cmd.poutput("The following nodes were generated:")
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
-    def apoapsis(self, new_apoapsis: float) -> List[Node]:
-        """Plan an apoapsis maneuver"""
+    def operation_apoapsis(self, new_apoapsis: float) -> List[Node]:
+        """Create a maneuver to set a new apoapsis"""
 
         planner = self.pilot.maneuver_planner.operation_apoapsis
 
-        planner.new_apoapsis = new_apoapsis * 1000
-        # planner.time_selector.time_reference.computed
-        node_objs = planner.make_nodes()
+        planner.new_apoapsis = new_apoapsis
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
+
+        warning = planner.error_message
+        if warning:
+            self._cmd.poutput(warning)
+
+        return nodes
+
+    operation_periapsis_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    )
+    operation_periapsis_parser.add_argument(
+        "--new_periapsis",
+        type=float,
+        required=True,
+        help="The new apoapsis altitude [m]",
+    )
+
+    @with_argparser(operation_periapsis_parser)
+    def do_operation_periapsis(self, args):
+        """Create a maneuver to set a new periapsis"""
+
+        try:
+            nodes = self.operation_periapsis(args.new_periapsis)
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
+
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def operation_periapsis(self, new_periapsis: float) -> List[Node]:
+        """Create a maneuver to set a new periapsis"""
+
+        planner = self.pilot.maneuver_planner.operation_periapsis
+
+        planner.new_periapsis = new_periapsis
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
+
+        warning = planner.error_message
+        if warning:
+            self._cmd.poutput(warning)
+
+        return nodes
+
+    operation_inclination_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    )
+    operation_inclination_parser.add_argument(
+        "--new_inclination",
+        type=float,
+        required=True,
+        help="The new inclination [deg]",
+    )
+
+    @with_argparser(operation_inclination_parser)
+    def do_operation_inclination(self, args):
+        """Create a maneuver to change inclination"""
+
+        try:
+            nodes = self.operation_inclination(args.new_inclination)
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
+
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def operation_inclination(self, new_inclination: float) -> List[Node]:
+        """Create a maneuver to change inclination"""
+
+        planner = self.pilot.maneuver_planner.operation_inclination
+
+        planner.new_inclination = new_inclination
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
+
+        warning = planner.error_message
+        if warning:
+            self._cmd.poutput(warning)
+
+        return nodes
+
+    operation_circularize_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    )
+
+    @with_argparser(operation_circularize_parser)
+    def do_operation_circularize(self, args):
+        """Creates a manevuer to match your apoapsis to periapsis"""
+
+        try:
+            nodes = self.operation_circularize()
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
+
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def operation_circularize(self) -> List[Node]:
+        """Create a maneuver to change circularize"""
+
+        planner = self.pilot.maneuver_planner.operation_circularize
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
 
         nodes = [Node(node_obj) for node_obj in node_objs]
 
@@ -79,9 +227,9 @@ class AutopilotService(CommandSet):
         self._cmd.poutput("Executing planned maneuver nodes")
         new_orbit = self.execute_maneuver_nodes()
 
-        self._cmd.poutput(
-            f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
-        )
+        # self._cmd.poutput(
+        #     f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
+        # )
 
     def execute_maneuver_nodes(self) -> Orbit:
         """Execute all planned maneuver nodes"""
@@ -97,7 +245,7 @@ class AutopilotService(CommandSet):
         #         while enabled():
         #             enabled.wait()
 
-        return self.get_orbit()
+        # return self.get_orbit()
 
     def do_get_nodes(self, _=None):
         """Returns a list of all existing maneuver nodes, ordered by time from first to last."""
