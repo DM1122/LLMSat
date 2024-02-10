@@ -181,6 +181,46 @@ class AutopilotService(CommandSet):
 
         return nodes
 
+    operation_circularize_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    )
+
+    @with_argparser(operation_circularize_parser)
+    def do_operation_circularize(self, args):
+        """Creates a manevuer to match your apoapsis to periapsis"""
+
+        try:
+            nodes = self.operation_circularize()
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
+
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def operation_circularize(self) -> List[Node]:
+        """Create a maneuver to change circularize"""
+
+        planner = self.pilot.maneuver_planner.operation_circularize
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
+
+        warning = planner.error_message
+        if warning:
+            self._cmd.poutput(warning)
+
+        return nodes
+
     def do_execute_maneuver_nodes(self, args):
         """Execute all planned maneuver nodes"""
 
