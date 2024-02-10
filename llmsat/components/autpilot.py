@@ -133,6 +133,54 @@ class AutopilotService(CommandSet):
 
         return nodes
 
+    operation_inclination_parser = utils.CustomCmd2ArgumentParser(
+        _get_cmd_instance,
+        # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    )
+    operation_inclination_parser.add_argument(
+        "--new_inclination",
+        type=float,
+        required=True,
+        help="The new inclination [deg]",
+    )
+
+    @with_argparser(operation_inclination_parser)
+    def do_operation_inclination(self, args):
+        """Create a maneuver to change inclination"""
+
+        try:
+            nodes = self.operation_inclination(args.new_inclination)
+        except ValueError as e:
+            self._cmd.perror(f"Error: {e}")
+            return
+
+        self._cmd.poutput("The following nodes were generated:")
+        for node in nodes:
+            self._cmd.poutput(node.model_dump_json(indent=4))
+
+    def operation_inclination(self, new_inclination: float) -> List[Node]:
+        """Create a maneuver to change inclination"""
+
+        planner = self.pilot.maneuver_planner.operation_inclination
+
+        planner.new_inclination = new_inclination
+
+        try:
+            node_objs = planner.make_nodes()
+        except Exception as e:  # catch OperationException
+            line = str(e).split("\n", 1)[
+                0
+            ]  # Split the message at the first newline and take the first part
+            raise ValueError(line)
+
+        nodes = [Node(node_obj) for node_obj in node_objs]
+
+        warning = planner.error_message
+        if warning:
+            self._cmd.poutput(warning)
+
+        return nodes
+
     def do_execute_maneuver_nodes(self, args):
         """Execute all planned maneuver nodes"""
 
