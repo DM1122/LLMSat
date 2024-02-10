@@ -2,10 +2,11 @@
 
 from datetime import datetime
 from enum import Enum
+import json
 from typing import List, Optional
-
-from pydantic import BaseModel, Field
-
+from astropy import units as unit
+from pydantic import BaseModel, Field, validator
+from astropy.units import Quantity
 from llmsat.libs import utils
 
 
@@ -69,6 +70,10 @@ class Orbit(BaseModel):
     )
 
     def __init__(self, orbit_obj):
+        next_orbit = None
+        if orbit_obj.next_orbit:
+            next_orbit = Orbit(orbit_obj.next_orbit)
+
         super().__init__(
             body=orbit_obj.body.name,
             apoapsis=orbit_obj.apoapsis,
@@ -92,7 +97,7 @@ class Orbit(BaseModel):
             true_anomaly=orbit_obj.true_anomaly,
             orbital_speed=orbit_obj.orbital_speed,
             time_to_soi_change=orbit_obj.time_to_soi_change,
-            next_orbit=orbit_obj.next_orbit,
+            next_orbit=next_orbit,
         )
 
 

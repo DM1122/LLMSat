@@ -112,7 +112,6 @@ class Console(cmd2.Cmd):
         if not self.quiet:
             super().poutput(message, *args, **kwargs)
 
-
     def async_alert(self, message, *args, **kwargs):
         # self.output_buffer.append(message)
         self.send_message(message)
