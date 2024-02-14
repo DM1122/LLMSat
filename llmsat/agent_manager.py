@@ -129,7 +129,7 @@ class AgentManager:
                 if kind == "on_chat_model_stream":
                     content = event["data"]["chunk"].content
                     if content:
-                        print(content, end="")
+                        pass  # print(content, end="")
 
                 # TODO: if an message is recieved in the queue it is an alert message, so interrupt the stream and pass the alert to the LLM agent so it can handle it
                 # https://www.reddit.com/r/LangChain/comments/13q1p5c/how_do_you_stop_streaming_when_using_chatgpt_api/

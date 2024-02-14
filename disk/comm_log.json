@@ -1,1 +1,8 @@
-[]
+[
+    {
+        "timestamp": "1951-01-03T13:57:53.593866",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature data collected over Enceladus. Data amount: 8.0 units."
+    }
+]

@@ -6,9 +6,11 @@ from tkinter import OFF
 from typing import List
 from enum import Enum
 from cmd2 import CommandSet, with_argparser, with_default_category
-
+from llmsat.components.alarm_manager import AlarmManager
+import threading
 from llmsat.libs import utils
 from llmsat.libs.krpc_types import Node, Orbit
+import time
 
 
 class AutopilotStatus(Enum):
@@ -38,6 +40,9 @@ class AutopilotService(CommandSet):
         self.vessel = self.connection.space_center.active_vessel
 
         AutopilotService._initialized = True
+
+        # threads
+        self.autopilot_monitoring_thread = None
 
     @staticmethod
     def _get_cmd_instance():
@@ -231,17 +236,34 @@ class AutopilotService(CommandSet):
     def do_execute_maneuver_nodes(self, args):
         """Execute all planned maneuver nodes"""
 
-        self._cmd.poutput("Executing planned maneuver nodes")
-        self.execute_maneuver_nodes()
-
         num_nodes = len(self.get_nodes())
-        self._cmd.poutput(f"Executing {num_nodes} maneuver nodes.")
+        self._cmd.poutput(f"Executing {num_nodes} maneuver node(s).")
+        self.execute_maneuver_nodes()
 
     def execute_maneuver_nodes(self):
         """Execute all planned maneuver nodes"""
         executor = self.pilot.node_executor
         executor.autowarp = True
+
         executor.execute_all_nodes()
+        self.start_autopilot_monitoring_thread()
+
+    def start_autopilot_monitoring_thread(self):
+        """Start the autopilot monitoring thread"""
+        if self.autopilot_monitoring_thread is not None:
+            self.autopilot_monitoring_thread.join()  # Ensure previous thread is finished
+
+        self.autopilot_monitoring_thread = threading.Thread(
+            target=self.monitor_autopilot_status
+        )
+        self.autopilot_monitoring_thread.start()
+
+    def monitor_autopilot_status(self):
+        """Check until autopilot disengages, then return a message"""
+        while self.check_autopilot_status() is not AutopilotStatus.OFF:
+            time.sleep(1)
+
+        self._cmd.async_alert(f"Autopilot has completed execution of all nodes")
 
     def do_check_autopilot_status(self, _):
         """Check the status of the autopilot."""
