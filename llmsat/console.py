@@ -11,7 +11,7 @@ import zmq
 import zmq.asyncio
 
 from llmsat.components.alarm_manager import AlarmManager
-from llmsat.components.autpilot import AutopilotService
+from llmsat.components.autopilot import AutopilotService
 from llmsat.components.comms_service import CommunicationService
 from llmsat.components.experiment_manager import ExperimentManager
 from llmsat.components.orbit_propagator import OrbitPropagator
@@ -107,7 +107,11 @@ class Console(cmd2.Cmd):
         """Send message to the controller."""
         self.controller_connection.send_string(message)
 
-    def poutput(self, message="", *args, **kwargs):
+    def poutput(self, message="", timestamp=False, *args, **kwargs):
+        if timestamp:
+            spacecraft_manager = self.find_commandsets(SpacecraftManager)[0]
+            ut = spacecraft_manager.get_ut()
+            message = f"{ut.isoformat()} | {message}"
         self.output_buffer.append(message)
         if not self.quiet:
             super().poutput(message, *args, **kwargs)

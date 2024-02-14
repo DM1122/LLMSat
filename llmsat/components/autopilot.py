@@ -2,12 +2,19 @@
 
 import json
 from string import Template
+from tkinter import OFF
 from typing import List
-
+from enum import Enum
 from cmd2 import CommandSet, with_argparser, with_default_category
 
 from llmsat.libs import utils
 from llmsat.libs.krpc_types import Node, Orbit
+
+
+class AutopilotStatus(Enum):
+    IDLE = "IDLE"
+    ACTIVE = "ACTIVE"
+    OFF = "OFF"
 
 
 @with_default_category("AutopilotService")
@@ -225,27 +232,43 @@ class AutopilotService(CommandSet):
         """Execute all planned maneuver nodes"""
 
         self._cmd.poutput("Executing planned maneuver nodes")
-        new_orbit = self.execute_maneuver_nodes()
+        self.execute_maneuver_nodes()
 
-        # self._cmd.poutput(
-        #     f"Maneuver(s) executed successfully! New orbit:\n{new_orbit.model_dump_json(indent=4)}"
-        # )
+        num_nodes = len(self.get_nodes())
+        self._cmd.poutput(f"Executing {num_nodes} maneuver nodes.")
 
-    def execute_maneuver_nodes(self) -> Orbit:
+    def execute_maneuver_nodes(self):
         """Execute all planned maneuver nodes"""
         executor = self.pilot.node_executor
         executor.autowarp = True
         executor.execute_all_nodes()
 
-        # with self.connection.stream(getattr, executor, "enabled") as enabled:
-        #     enabled.rate = (
-        #         1  # we don't need a high throughput rate, 1 second is more than enough
-        #     )
-        #     with enabled.condition:
-        #         while enabled():
-        #             enabled.wait()
+    def do_check_autopilot_status(self, _):
+        """Check the status of the autopilot."""
 
-        # return self.get_orbit()
+        status = self.check_autopilot_status()
+
+        if status is not AutopilotStatus.OFF:
+            nodes = self.get_nodes()
+            summary = f"Autopilot Status: {status.value}\nCurrent Node ({len(nodes)-1} remaining): {nodes[0].model_dump_json(indent=4)}"
+
+        else:
+            summary = f"Autopilot Status: {status.value}"
+
+        self._cmd.poutput(summary, timestamp=True)
+
+    def check_autopilot_status(self) -> AutopilotStatus:
+        """Check the status of the autopilot."""
+
+        if self.pilot.node_executor.enabled:
+            if self.vessel.thrust > 0:
+                status = AutopilotStatus.ACTIVE
+            else:
+                status = AutopilotStatus.IDLE
+        else:
+            status = AutopilotStatus.OFF
+
+        return status
 
     def do_get_nodes(self, _=None):
         """Returns a list of all existing maneuver nodes, ordered by time from first to last."""

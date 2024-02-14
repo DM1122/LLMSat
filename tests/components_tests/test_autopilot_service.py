@@ -3,7 +3,7 @@ from typing import List
 import krpc
 import pytest
 
-from llmsat.components.autpilot import AutopilotService, Node
+from llmsat.components.autopilot import AutopilotService, Node
 from llmsat.libs import utils
 
 
