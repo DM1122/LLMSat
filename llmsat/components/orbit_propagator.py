@@ -44,7 +44,7 @@ class OrbitPropagator(CommandSet):
         """The current orbit of the vessel."""
         orbit = self.get_orbit()
 
-        self._cmd.poutput(orbit.model_dump_json(indent=4))
+        self._cmd.poutput(orbit.model_dump_json(indent=4), timestamp=True)
 
     def get_orbit(self) -> Orbit:
         """The current orbit of the vessel."""

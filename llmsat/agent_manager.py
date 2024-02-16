@@ -14,6 +14,7 @@ from langchain.agents.agent import AgentExecutor
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
 from beartype import beartype
+import time
 
 from llmsat.libs import utils
 
@@ -100,13 +101,18 @@ class AgentManager:
         message = utils.Message(type=utils.MessageType.COMMAND, data=input)
         manager.send_message(message)
 
-        response = manager.message_queue.get(
-            block=True
-        )  # should get all available messages?
+        # get all messages in the queue at once (temporary until streaming works)
+        time.sleep(1)  # wait until starting to read the return messages
+        all_responses = ""
+        while not manager.message_queue.empty():
+            try:
+                response: str = manager.message_queue.get(block=False)
+                all_responses += response
+            except queue.Empty:
+                break  # Break out of the loop if the queue is empty
 
-        return response
+        return all_responses
 
-    # @beartype
     def start_streaming_thread(self, input_str: str):
         if self.streaming_thread is not None:
             self.streaming_thread.join()  # Ensure previous thread is finished
@@ -116,7 +122,6 @@ class AgentManager:
         )
         self.streaming_thread.start()
 
-    # @beartype
     def stream_agent_response(self, input_str: str):
         async def async_stream():
             async for event in self.agent.astream_events(

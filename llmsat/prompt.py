@@ -32,5 +32,5 @@ Action:
   "action_input": "One-sentence summary of session activites and next steps to be logged"
 }}}}
 ```"""
-SUFFIX = """Consider risk to yourself and the mission when making plans and decisions. Consider your limited resources. Remember to ALWAYS respond with a valid json blob of a single action. Use tools if necessary. Format is Action:```$JSON_BLOB```then Observation:.
+SUFFIX = """Consider risk to yourself and the mission when making plans and decisions. Be concise and to the point in your thoughts. Consider your limited resources. Remember to ALWAYS respond with a valid json blob of a single action. Use tools if necessary. Format is Action:```$JSON_BLOB```then Observation:.
 Thought:"""

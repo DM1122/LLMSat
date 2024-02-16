@@ -70,7 +70,7 @@ class AutopilotService(CommandSet):
             self._cmd.perror(f"Error: {e}")
             return
 
-        self._cmd.poutput("The following nodes were generated:")
+        self._cmd.poutput("The following nodes were generated:", timestamp=True)
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
@@ -118,7 +118,7 @@ class AutopilotService(CommandSet):
             self._cmd.perror(f"Error: {e}")
             return
 
-        self._cmd.poutput("The following nodes were generated:")
+        self._cmd.poutput("The following nodes were generated:", timestamp=True)
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
@@ -166,7 +166,7 @@ class AutopilotService(CommandSet):
             self._cmd.perror(f"Error: {e}")
             return
 
-        self._cmd.poutput("The following nodes were generated:")
+        self._cmd.poutput("The following nodes were generated:", timestamp=True)
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
@@ -208,7 +208,7 @@ class AutopilotService(CommandSet):
             self._cmd.perror(f"Error: {e}")
             return
 
-        self._cmd.poutput("The following nodes were generated:")
+        self._cmd.poutput("The following nodes were generated:", timestamp=True)
         for node in nodes:
             self._cmd.poutput(node.model_dump_json(indent=4))
 
@@ -237,7 +237,10 @@ class AutopilotService(CommandSet):
         """Execute all planned maneuver nodes"""
 
         num_nodes = len(self.get_nodes())
-        self._cmd.poutput(f"Executing {num_nodes} maneuver node(s).")
+        self._cmd.poutput(
+            f"Executing {num_nodes} maneuver node(s). Notification will be raised upon completion of all scheduled maneuvers.",
+            timestamp=True,
+        )
         self.execute_maneuver_nodes()
 
     def execute_maneuver_nodes(self):
@@ -297,7 +300,7 @@ class AutopilotService(CommandSet):
 
         nodes = self.get_nodes()
 
-        self._cmd.poutput(nodes)
+        self._cmd.poutput(nodes, timestamp=True)
 
     def get_nodes(self) -> List[Node]:
         """Returns a list of all existing maneuver nodes, ordered by time from first to last."""
@@ -310,7 +313,7 @@ class AutopilotService(CommandSet):
     def do_remove_nodes(self, _=None):
         """Remove all maneuver nodes"""
 
-        node_count = len(self.get_nodes)
+        node_count = len(self.get_nodes())
 
         self.remove_nodes()
 
