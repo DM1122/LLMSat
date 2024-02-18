@@ -136,6 +136,9 @@ class SpacecraftManager(CommandSet):
             text = file.read()
         return text
 
+    # def do_validate_mission(self):
+    #     """Validate the mission status against the requirements."""
+
     @staticmethod
     def _determine_part_type(krpc_part) -> PartType:
         """

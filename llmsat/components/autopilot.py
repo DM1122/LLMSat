@@ -1,15 +1,11 @@
 """Autopilot service for orbital maneuvering."""
 
-import json
-from string import Template
-from tkinter import OFF
 from typing import List
 from enum import Enum
 from cmd2 import CommandSet, with_argparser, with_default_category
-from llmsat.components.alarm_manager import AlarmManager
 import threading
 from llmsat.libs import utils
-from llmsat.libs.krpc_types import Node, Orbit
+from llmsat.libs.krpc_types import Node
 import time
 
 
@@ -343,7 +339,7 @@ class AutopilotService(CommandSet):
             time.sleep(1)
 
         self._cmd.async_alert(
-            f"Autopilot has completed execution of all nodes", timestamp=True
+            "Autopilot has completed execution of all nodes", timestamp=True
         )
 
     def do_check_autopilot_status(self, _):

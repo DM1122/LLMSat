@@ -3,7 +3,6 @@
 from datetime import datetime, timedelta
 
 from cmd2 import CommandSet, with_argparser, with_default_category
-from sqlalchemy import DateTime
 
 from llmsat.libs import utils
 from llmsat.libs.krpc_types import Orbit
@@ -56,8 +55,8 @@ class OrbitPropagator(CommandSet):
 
         return orbit
 
-    def do_radius_at(ut_start, ut_end):
-        pass
+    # def do_radius_at(ut_start, ut_end):
+    #     pass
 
     @beartype
     def radius_at(self, date: datetime, date_end: datetime = None) -> pd.DataFrame:

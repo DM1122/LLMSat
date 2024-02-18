@@ -43,6 +43,7 @@ class Console(cmd2.Cmd):
         del cmd2.Cmd.do_run_script
         del cmd2.Cmd.do_shell
         del cmd2.Cmd.do_set
+        del cmd2.Cmd.do_py
 
         self.remove_settable("allow_style")
         self.remove_settable("always_show_hint")
