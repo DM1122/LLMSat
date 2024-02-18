@@ -48,12 +48,12 @@ class ExperimentManager(CommandSet):
     )
 
     @with_argparser(run_experiment_parser)
-    def do_run_experiment(self, args: argparse.Namespace):
+    def do_run_experiment(self, args):
         """Run a given experiment to acquire data."""
         try:
             data = self.run_experiment(args.name)
         except ValueError as e:
-            self._cmd.poutput(e)
+            self._cmd.perror(e)
             return
 
         self._cmd.poutput(data.model_dump_json(indent=4))

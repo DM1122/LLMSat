@@ -38,3 +38,30 @@ sequenceDiagram
     deactivate Console
 
 ```
+
+# Version 2
+```mermaid
+sequenceDiagram
+    participant AgentManager
+    participant Console
+
+    activate AgentManager
+    activate Console
+
+    AgentManager->>Console: Connect
+    Console-->>AgentManager:Dashboard
+    AgentManager->>AgentManager:Run Agent Executor
+    activate AgentManager
+    
+    loop Until agent terminates session
+        AgentManager->>Console:Command (Run/Sleep)
+        Console-->>AgentManager:Response (Reply/Alarm)
+    end
+
+    deactivate AgentManager
+    AgentManager->>Console:Disconnect
+    deactivate AgentManager
+
+    deactivate Console
+
+```

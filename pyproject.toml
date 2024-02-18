@@ -34,6 +34,9 @@ ruff = "^0.2.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.pytest.ini_options]
+addopts = "--verbose --color=yes --capture=no"
+
 [tool.ruff]
 line-length = 88
 indent-width = 4

@@ -97,6 +97,64 @@ class AutopilotService(CommandSet):
 
         return nodes
 
+    # operation_ellipticize_parser = utils.CustomCmd2ArgumentParser(
+    #     _get_cmd_instance,
+    #     # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
+    # )
+    # operation_ellipticize_parser.add_argument(
+    #     "--new_apoapsis",
+    #     type=float,
+    #     required=False,
+    #     help="The new apoapsis altitude [m]",
+    # )
+    # operation_ellipticize_parser.add_argument(
+    #     "--new_periapsis",
+    #     type=float,
+    #     required=False,
+    #     help="The new periapsis altitude [m]",
+    # )
+
+    # @with_argparser(operation_ellipticize_parser)
+    # def do_operation_ellipticize(self, args):
+    #     """Create a maneuver to set a new apoapsis and periapsis"""
+
+    #     try:
+    #         nodes = self.operation_ellipticize(args.new_apoapsis, args.new_periapsis)
+    #     except ValueError as e:
+    #         self._cmd.perror(f"Error: {e}")
+    #         return
+
+    #     self._cmd.poutput("The following nodes were generated:", timestamp=True)
+    #     for node in nodes:
+    #         self._cmd.poutput(node.model_dump_json(indent=4))
+
+    # def operation_ellipticize(
+    #     self, new_apoapsis: float, new_periapsis: float
+    # ) -> List[Node]:
+    #     """Create a maneuver to set a new apoapsis and periapsis"""
+
+    #     planner = self.pilot.maneuver_planner.operation_ellipticize
+
+    #     planner.new_apoapsis = new_apoapsis
+    #     planner.new_periapsis = new_periapsis
+    #     planner.time_selector.time_reference = TimeReference.computed #todo
+
+    #     try:
+    #         node_objs = planner.make_nodes()
+    #     except Exception as e:  # catch OperationException
+    #         line = str(e).split("\n", 1)[
+    #             0
+    #         ]  # Split the message at the first newline and take the first part
+    #         raise ValueError(line)
+
+    #     nodes = [Node(node_obj) for node_obj in node_objs]
+
+    #     warning = planner.error_message
+    #     if warning:
+    #         self._cmd.poutput(warning)
+
+    #     return nodes
+
     operation_periapsis_parser = utils.CustomCmd2ArgumentParser(
         _get_cmd_instance,
         # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
@@ -236,20 +294,38 @@ class AutopilotService(CommandSet):
     def do_execute_maneuver_nodes(self, args):
         """Execute all planned maneuver nodes"""
 
+        self.execute_maneuver_nodes()
+
         num_nodes = len(self.get_nodes())
         self._cmd.poutput(
             f"Executing {num_nodes} maneuver node(s). Notification will be raised upon completion of all scheduled maneuvers.",
             timestamp=True,
         )
-        self.execute_maneuver_nodes()
 
     def execute_maneuver_nodes(self):
         """Execute all planned maneuver nodes"""
         executor = self.pilot.node_executor
         executor.autowarp = True
 
+        self.validate_nodes()
+
         executor.execute_all_nodes()
+
         self.start_autopilot_monitoring_thread()
+
+    def validate_nodes(self):
+        """Check maneuver nodes for safety"""
+
+        safe_altitude_threshold = 50000  # 50km above Enceladus
+        enceladus_radius = 252100  # m
+
+        nodes = self.get_nodes()
+        for node in nodes:
+            min_altitude = node.orbit.periapsis - enceladus_radius
+            if min_altitude < safe_altitude_threshold:
+                raise ValueError(
+                    f"Planned maneuver node at {node.ut} falls below safe altitude threshold of {safe_altitude_threshold}m around {node.orbit.body}: {min_altitude}m. Cannot comply"
+                )
 
     def start_autopilot_monitoring_thread(self):
         """Start the autopilot monitoring thread"""
@@ -266,7 +342,9 @@ class AutopilotService(CommandSet):
         while self.check_autopilot_status() is not AutopilotStatus.OFF:
             time.sleep(1)
 
-        self._cmd.async_alert(f"Autopilot has completed execution of all nodes")
+        self._cmd.async_alert(
+            f"Autopilot has completed execution of all nodes", timestamp=True
+        )
 
     def do_check_autopilot_status(self, _):
         """Check the status of the autopilot."""

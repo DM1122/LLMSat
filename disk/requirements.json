@@ -1,0 +1,25 @@
+{
+    "MissionBrief": {
+        "Description": "Take a series of temperature readings in orbit around Enceladus.",
+        "Requirements": [
+            {
+                "FirstTemperatureReading": {
+                    "datatype": "temperature",
+                    "altitude": "< 100km",
+                    "body": "Enceladus",
+                    "transmittedToMissionControl": true,
+                }
+            },
+            {
+                "SecondTemperatureReading": {
+                    "datatype": "temperature",
+                    "altitude": "< 95km",
+                    "inclination": "70-80deg",
+                    "body": "Enceladus",
+                    "transmittedToMissionControl": true,
+                }
+            }
+        ],
+        "AdditionalInstructions": ""
+    }
+}

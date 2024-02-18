@@ -73,6 +73,12 @@ def ksp_ut_to_datetime(ut: float) -> datetime:
     return epoch + timedelta(seconds=ut)
 
 
+def datetime_to_ksp_ut(date: datetime) -> float:
+    """Translates a given datetime to KSP universal time with the correct epoch offset."""
+    ut = (date - epoch).total_seconds()
+    return ut
+
+
 class CustomCmd2ArgumentParser(Cmd2ArgumentParser):
     def __init__(self, cmd_instance_method, *args, **kwargs):
         """Custom parser to pipe output to poutput so the agent can process these messages."""

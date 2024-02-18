@@ -57,7 +57,7 @@ class AgentManager:
 
         # setup agent
         llm = ChatOpenAI(openai_api_key=openai_key, model=model, streaming=True)
-        tools = [self.run]
+        tools = [self.run, self.sleep]
         self.agent: AgentExecutor = initialize_agent(
             tools=tools,
             llm=llm,
@@ -95,23 +95,31 @@ class AgentManager:
 
     @staticmethod
     @tool()
-    def run(input: str):
+    def run(input: str) -> str:
         """Write a command to the console"""
         manager = AgentManager._get_instance()
         message = utils.Message(type=utils.MessageType.COMMAND, data=input)
         manager.send_message(message)
 
-        # get all messages in the queue at once (temporary until streaming works)
-        time.sleep(1)  # wait until starting to read the return messages
-        all_responses = ""
-        while not manager.message_queue.empty():
-            try:
-                response: str = manager.message_queue.get(block=False)
-                all_responses += response
-            except queue.Empty:
-                break  # Break out of the loop if the queue is empty
+        # get all messages in the queue at once (TODO: temporary until streaming works)
+        response: str = manager.message_queue.get(block=True, timeout=5)
+        # continue extracting messages from the queue if still not empty
+        # while not manager.message_queue.empty():
+        #     try:
+        #         response += manager.message_queue.get(block=False)
+        #     except queue.Empty:
+        #         break  # Break out of the loop if the queue is empty
 
-        return all_responses
+        return response
+
+    @staticmethod
+    @tool()
+    def sleep() -> str:
+        """Sleep until the next notification is received"""
+        manager = AgentManager._get_instance()
+        response = manager.message_queue.get(block=True)
+
+        return response
 
     def start_streaming_thread(self, input_str: str):
         if self.streaming_thread is not None:
@@ -152,32 +160,31 @@ class AgentManager:
             self.message_queue.put(message)
 
     def main_loop(self):
-        while True:
-            if not self.connected:  # not the first connection
-                alert = self.message_queue.get(block=True)
-                print("Connecting to console session")
-                connect_message = utils.Message(type=utils.MessageType.CONNECT)
-                self.send_message(connect_message)
-                self.connected = True
+        # while True:
+        #     if not self.connected:  # not the first connection
+        #         alert = self.message_queue.get(block=True)
+        #         print("Connecting to console session")
+        #         connect_message = utils.Message(type=utils.MessageType.CONNECT)
+        #         self.send_message(connect_message)
+        #         self.connected = True
 
-                response = self.message_queue.get(block=True)
-                result = self.start_streaming_thread(response + "\n" + alert)
-                print(result)
+        #         response = self.message_queue.get(block=True)
+        #         result = self.start_streaming_thread(response + "\n" + alert)
 
-                self.streaming_thread.join()
-                disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
-                self.send_message(disconnect_message)
-                self.connected = False
+        #         self.streaming_thread.join()
+        #         disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
+        #         self.send_message(disconnect_message)
+        #         self.connected = False
 
-            else:  # first connection
-                response = self.message_queue.get(block=True)
-                result = self.start_streaming_thread(response)
-                print(result)
-                self.streaming_thread.join()
+        #     else:  # first connection
+        response = self.message_queue.get(block=True)
+        result = self.start_streaming_thread(response)
+        print(result)
+        self.streaming_thread.join()
 
-                disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
-                self.send_message(disconnect_message)
-                self.connected = False
+        disconnect_message = utils.Message(type=utils.MessageType.DISCONNECT)
+        self.send_message(disconnect_message)
+        self.connected = False
 
 
 if __name__ == "__main__":

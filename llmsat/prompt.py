@@ -3,7 +3,7 @@ FORMAT_INSTRUCTIONS = """Use a json blob to specify a tool by providing an actio
 
 Valid "action" values: "Final Answer" or {tool_names}
 
-"Final Answer" will disconnect you from the current terminal session and put you into hibernation until a notification event is raised. 
+"Final Answer" will permanently disconnect you from the current terminal session. 
 
 Provide only ONE action per $JSON_BLOB, as shown:
 
@@ -29,7 +29,7 @@ Action:
 ```
 {{{{
   "action": "Final Answer",
-  "action_input": "One-sentence summary of session activites and next steps to be logged"
+  "action_input": "One-sentence summary of session activites"
 }}}}
 ```"""
 SUFFIX = """Consider risk to yourself and the mission when making plans and decisions. Be concise and to the point in your thoughts. Consider your limited resources. Remember to ALWAYS respond with a valid json blob of a single action. Use tools if necessary. Format is Action:```$JSON_BLOB```then Observation:.

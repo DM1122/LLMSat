@@ -116,14 +116,18 @@ class Console(cmd2.Cmd):
         if not self.quiet:
             super().poutput(message, *args, **kwargs)
 
-    def async_alert(self, message, *args, **kwargs):
+    def async_alert(self, message: str, timestamp=False, *args, **kwargs):
         # self.output_buffer.append(message)
+        if timestamp:
+            spacecraft_manager = self.find_commandsets(SpacecraftManager)[0]
+            ut = spacecraft_manager.get_ut()
+            message = f"{ut.isoformat()} | {message}"
         self.send_message(message)
 
         super().async_alert(message, *args, **kwargs)
 
-    def perror(self, message, *args, **kwargs):
-        self.output_buffer.append(message)
+    def perror(self, message: str, *args, **kwargs):
+        self.output_buffer.append(str(message))
         if not self.quiet:
             super().perror(message, *args, **kwargs)
 
