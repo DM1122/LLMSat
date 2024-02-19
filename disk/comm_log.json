@@ -4,5 +4,11 @@
         "fromm": "LLMSat-1",
         "to": "MissionControl",
         "message": "Temperature data collected over Enceladus. Data amount: 8.0 units."
+    },
+    {
+        "timestamp": "2045-01-03T22:38:09.303912",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Encountered limitations with safe altitude threshold for temperature readings around Enceladus. Attempted maneuver to lower periapsis to safe limit of 50,001 meters resulted in computational discrepancy. Awaiting further instructions."
     }
 ]

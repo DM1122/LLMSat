@@ -18,6 +18,7 @@ epoch = datetime(
 
 class AppConfig(BaseModel):
     model: str
+    temperature: float
     load_checkpoint: bool
     checkpoint_name: str
     port: int

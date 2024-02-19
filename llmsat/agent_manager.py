@@ -13,6 +13,8 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.agents.agent import AgentExecutor
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferWindowMemory
 
 from llmsat.libs import utils
 
@@ -34,7 +36,12 @@ class AgentManager:
         return cls._instance
 
     def __init__(
-        self, openai_key: str, langchain_key: str, model: str, port: int
+        self,
+        openai_key: str,
+        langchain_key: str,
+        model: str,
+        temperature: float,
+        port: int,
     ) -> None:
         # setup singleton to enable class methods as langchain tools
         if AgentManager._initialized:
@@ -54,7 +61,12 @@ class AgentManager:
         )
 
         # setup agent
-        llm = ChatOpenAI(openai_api_key=openai_key, model=model, streaming=True)
+        llm = ChatOpenAI(
+            openai_api_key=openai_key,
+            model=model,
+            temperature=temperature,
+            streaming=True,
+        )
         tools = [self.run, self.sleep]
         self.agent: AgentExecutor = initialize_agent(
             tools=tools,
@@ -197,5 +209,6 @@ if __name__ == "__main__":
         openai_key=OPENAI_KEY,
         langchain_key=LANGCHAIN_KEY,
         model=app_config.model,
+        temperature=app_config.temperature
         port=app_config.port,
     )
