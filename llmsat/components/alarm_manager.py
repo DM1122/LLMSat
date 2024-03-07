@@ -10,6 +10,7 @@ from cmd2 import CommandSet, with_argparser, with_default_category
 from pydantic import BaseModel, Field, field_serializer
 
 from llmsat.libs import utils
+from llmsat.libs.krpc_types import Orbit
 
 
 class Alarm(BaseModel):
@@ -201,6 +202,116 @@ class AlarmManager(CommandSet):
             type=self.kac.AlarmType.raw,
             name=name,
             ut=ut,
+        )
+        alarm_obj.notes = description if description is not None else ""
+        alarm_obj.action = self.kac.AlarmAction.kill_warp
+        alarm_obj.vessel = self.vessel
+
+        alarm = Alarm(alarm_obj)
+
+        return alarm
+
+    add_alarm_at_apoapsis_parser = utils.CustomCmd2ArgumentParser(
+        cmd_instance_method=_get_cmd_instance,
+        epilog=f"Returns:\n{Alarm.model_json_schema()['title']}: {json.dumps(Alarm.model_json_schema()['properties'], indent=4)}",
+    )
+    add_alarm_at_apoapsis_parser.add_argument(
+        "-name",
+        type=str,
+        required=True,
+        help="Name of the alarm",
+    )
+    add_alarm_at_apoapsis_parser.add_argument(
+        "-desc",
+        type=str,
+        required=False,
+        help="Description for the alarm",
+    )
+
+    @with_argparser(add_alarm_at_apoapsis_parser)
+    def do_add_alarm_at_apoapsis(self, args):
+        """Create a new alarm to trigger at apoapsis"""
+
+        try:
+            new_alarm = self.add_alarm_at_apoapsis(
+                name=args.name, description=args.desc
+            )
+        except ValueError as e:
+            self._cmd.perror(e)
+            return
+
+        self._cmd.poutput(
+            f"New alarm created:\n{new_alarm.model_dump_json(indent=4, exclude=['obj'])}"
+        )
+
+    def add_alarm_at_apoapsis(self, name: str, description: str) -> Alarm:
+        """Create a new alarm to trigger at apoapsis"""
+
+        alarms = self.get_alarms()
+        if name in alarms:
+            raise ValueError(f"An alarm with name '{name}' already exists")
+
+        orbit = Orbit(self.vessel.orbit)
+
+        alarm_obj = self.kac.create_alarm(
+            type=self.kac.AlarmType.apoapsis,
+            name=name,
+            ut=self.connection.space_center.ut + orbit.time_to_apoapsis,
+        )
+        alarm_obj.notes = description if description is not None else ""
+        alarm_obj.action = self.kac.AlarmAction.kill_warp
+        alarm_obj.vessel = self.vessel
+
+        alarm = Alarm(alarm_obj)
+
+        return alarm
+
+    add_alarm_at_apoapsis_periapsis = utils.CustomCmd2ArgumentParser(
+        cmd_instance_method=_get_cmd_instance,
+        epilog=f"Returns:\n{Alarm.model_json_schema()['title']}: {json.dumps(Alarm.model_json_schema()['properties'], indent=4)}",
+    )
+    add_alarm_at_apoapsis_periapsis.add_argument(
+        "-name",
+        type=str,
+        required=True,
+        help="Name of the alarm",
+    )
+    add_alarm_at_apoapsis_periapsis.add_argument(
+        "-desc",
+        type=str,
+        required=False,
+        help="Description for the alarm",
+    )
+
+    @with_argparser(add_alarm_at_apoapsis_periapsis)
+    def do_add_alarm_at_periapsis(self, args):
+        """Create a new alarm to trigger at periapsis"""
+
+        try:
+            new_alarm = self.add_alarm_at_periapsis(
+                name=args.name, description=args.desc
+            )
+        except ValueError as e:
+            self._cmd.perror(e)
+            return
+
+        self._cmd.poutput(
+            f"New alarm created:\n{new_alarm.model_dump_json(indent=4, exclude=['obj'])}"
+        )
+
+    def add_alarm_at_periapsis(self, name: str, description: str) -> Alarm:
+        """Create a new alarm to trigger at periapsis"""
+
+        alarms = self.get_alarms()
+        if name in alarms:
+            raise ValueError(f"An alarm with name '{name}' already exists")
+
+        orbit = Orbit(self.vessel.orbit)
+
+        alarm_obj = self.kac.create_alarm(
+            type=self.kac.AlarmType.periapsis,
+            name=name,
+            ut=self.connection.space_center.ut + orbit.time_to_periapsis,
         )
         alarm_obj.notes = description if description is not None else ""
         alarm_obj.action = self.kac.AlarmAction.kill_warp

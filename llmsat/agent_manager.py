@@ -15,6 +15,12 @@ from langchain.tools import tool
 from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.memory import ConversationBufferWindowMemory
+from langchain.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
 
 from llmsat.libs import utils
 
@@ -68,16 +74,25 @@ class AgentManager:
             streaming=True,
         )
         tools = [self.run, self.sleep]
+
+        memory = ConversationBufferWindowMemory(k=2, return_messages=True)
+        # history = MessagesPlaceholder(variable_name="history")
         self.agent: AgentExecutor = initialize_agent(
             tools=tools,
             llm=llm,
+            memory=memory,
             agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
             verbose=True,
             agent_kwargs={
                 "prefix": prompt.PREFIX,
                 "format_instructions": prompt.FORMAT_INSTRUCTIONS,
                 "suffix": prompt.SUFFIX,
+                # "max_execution_time": 9999,
+                # "history": [history],
+                # "memory_prompts": [history],
+                # "input_variables": ["input", "agent_scratchpad", "history"],
             },
+            max_iterations=None,
         )
 
         # setup connection to console
@@ -101,7 +116,7 @@ class AgentManager:
     @staticmethod
     def _get_instance():
         """Get the current instance of the class"""
-        return AgentManager(None, None, None, None)
+        return AgentManager(None, None, None, None, None)
 
     @staticmethod
     @tool()
@@ -205,10 +220,11 @@ if __name__ == "__main__":
         app_config_data = json.load(file)
         app_config = utils.AppConfig(**app_config_data)
 
+    print(app_config.port)
     agent_manager = AgentManager(
         openai_key=OPENAI_KEY,
         langchain_key=LANGCHAIN_KEY,
         model=app_config.model,
-        temperature=app_config.temperature
+        temperature=app_config.temperature,
         port=app_config.port,
     )

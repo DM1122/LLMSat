@@ -6,7 +6,7 @@ import time
 from cmd2 import CommandSet, with_argparser, with_default_category
 
 from llmsat.libs import utils
-from llmsat.libs.krpc_types import DataProperties, Experiment
+from llmsat.libs.krpc_types import DataPoint, Experiment, Orbit
 
 
 @with_default_category("ExperimentManager")
@@ -37,7 +37,7 @@ class ExperimentManager(CommandSet):
 
     run_experiment_parser = utils.CustomCmd2ArgumentParser(
         _get_cmd_instance,
-        epilog=f"Returns:\nList[{DataProperties.model_json_schema()['title']}]: {json.dumps(DataProperties.model_json_schema()['properties'], indent=4)}",
+        epilog=f"Returns:\nList[{DataPoint.model_json_schema()['title']}]: {json.dumps(DataPoint.model_json_schema()['properties'], indent=4)}",
     )
     run_experiment_parser.add_argument(
         "-name",
@@ -90,7 +90,7 @@ class ExperimentManager(CommandSet):
 
         return experiments
 
-    def run_experiment(self, name: str) -> DataProperties:
+    def run_experiment(self, name: str) -> DataPoint:
         """Run a given experiment"""
         exp_obj = self._get_experiment_obj(name=name)
         if exp_obj is None:
@@ -104,6 +104,15 @@ class ExperimentManager(CommandSet):
         data = exp_obj.data[0]  # TODO: handle multiple data
         subject = exp_obj.science_subject
 
-        result = DataProperties(description=subject.title, data_amount=data.data_amount)
+        orbit = Orbit(self.vessel.orbit)
+
+        result = DataPoint(
+            timestamp=utils.ksp_ut_to_datetime(
+                self.connection.space_center.ut
+            ).isoformat(),
+            value="127.0K",
+            altitude=orbit.current_altitude,
+            body=orbit.body,
+        )
 
         return result

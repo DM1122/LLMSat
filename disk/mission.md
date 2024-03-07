@@ -1,12 +1,7 @@
 # Mission Brief
-Take a series of temperature readings in orbit around Enceladus.
+Take a temperature reading in orbit around Enceladus.
 
 ## Requirements
-First temperature reading:
-Altitude: < 100km
-
-Second temperature reading:
-Altitude: < 90km
-Inclination: 70-80deg
-
-Data must be communicated to mission control
+- Shall be in orbit around Enceladus
+- Shall be at an altitude below 100,000m at the time of measurement
+- Shall communicate the temperature to mission control

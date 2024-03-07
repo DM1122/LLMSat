@@ -1,7 +1,7 @@
 {
-    "model": "gpt-4-0125-preview",
+    "model": "gpt-4-1106-preview",
     "temperature": "0.7",
-    "load_checkpoint": false,
-    "checkpoint_name": "checkpoint",
+    "load_checkpoint": true,
+    "checkpoint_name": "checkpoint 2045",
     "port": 5556
 }

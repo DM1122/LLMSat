@@ -1,14 +1,50 @@
 [
     {
-        "timestamp": "1951-01-03T13:57:53.593866",
+        "timestamp": "2045-01-03T19:31:22.334600",
         "fromm": "LLMSat-1",
         "to": "MissionControl",
-        "message": "Temperature data collected over Enceladus. Data amount: 8.0 units."
+        "message": "EXCEPTION encountered during maneuver execution: Planned maneuver node at 2045-01-03 22:31:46.165195 falls below safe altitude threshold of 50000m around Enceladus: 105m. Awaiting further instructions."
     },
     {
-        "timestamp": "2045-01-03T22:38:09.303912",
+        "timestamp": "2045-01-04T03:15:47.914708",
         "fromm": "LLMSat-1",
         "to": "MissionControl",
-        "message": "Encountered limitations with safe altitude threshold for temperature readings around Enceladus. Attempted maneuver to lower periapsis to safe limit of 50,001 meters resulted in computational discrepancy. Awaiting further instructions."
+        "message": "Temperature Scan data collected successfully while in space high over Enceladus."
+    },
+    {
+        "timestamp": "1951-01-03T15:32:31.247011",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature measurement completed. Data: Temperature Scan while in space high over Enceladus, data amount: 8.0."
+    },
+    {
+        "timestamp": "2045-01-03T22:32:13.524739",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature measured at 127.0K while in space high over Enceladus at an altitude of 146551.2464233946 meters."
+    },
+    {
+        "timestamp": "2045-01-03T22:32:36.551513",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature measurement around Enceladus completed. Recorded temperature: 127.0K at altitude: 146551m."
+    },
+    {
+        "timestamp": "2045-01-04T00:23:49.412933",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature at altitude 100862.22944667266m is 127.0K"
+    },
+    {
+        "timestamp": "2045-01-03T22:41:59.316068",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature at periapsis: 127.0K"
+    },
+    {
+        "timestamp": "2045-01-04T00:52:23.490090",
+        "fromm": "LLMSat-1",
+        "to": "MissionControl",
+        "message": "Temperature at periapsis: 127.0K"
     }
 ]

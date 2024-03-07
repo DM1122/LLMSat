@@ -5,6 +5,7 @@ from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, Field
 from llmsat.libs import utils
+import math
 
 
 class Orbit(BaseModel):
@@ -13,26 +14,29 @@ class Orbit(BaseModel):
     body: str = Field(
         description="The celestial body (e.g. planet or moon) around which the object is orbiting."
     )
-    apoapsis: float = Field(
-        description="Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited."
-    )
-    periapsis: float = Field(
-        description="The periapsis of the orbit, in meters, from the center of mass of the body being orbited."
-    )
+    # apoapsis: float = Field(
+    #     description="Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited."
+    # )
+    # periapsis: float = Field(
+    #     description="The periapsis of the orbit, in meters, from the center of mass of the body being orbited."
+    # )
     apoapsis_altitude: float = Field(
         description="The apoapsis of the orbit, in meters, above the sea level of the body being orbited."
     )
     periapsis_altitude: float = Field(
         description="The periapsis of the orbit, in meters, above the sea level of the body being orbited."
     )
-    semi_major_axis: float = Field(
-        description="The semi-major axis of the orbit, in meters."
-    )
-    semi_minor_axis: float = Field(
-        description="The semi-minor axis of the orbit, in meters."
-    )
-    radius: float = Field(
-        description="The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting."
+    # semi_major_axis: float = Field(
+    #     description="The semi-major axis of the orbit, in meters."
+    # )
+    # semi_minor_axis: float = Field(
+    #     description="The semi-minor axis of the orbit, in meters."
+    # )
+    # radius: float = Field(
+    #     description="The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting."
+    # )
+    current_altitude: float = Field(
+        description="The current altitude of the orbit, in meters from sea-level."
     )
     period: float = Field(description="The orbital period, in seconds.")
     time_to_apoapsis: float = Field(
@@ -41,21 +45,21 @@ class Orbit(BaseModel):
     time_to_periapsis: float = Field(
         description="The time until the object reaches periapsis, in seconds."
     )
-    eccentricity: float = Field(description="The eccentricity of the orbit.")
-    inclination: float = Field(description="The inclination of the orbit, in radians.")
+    # eccentricity: float = Field(description="The eccentricity of the orbit.")
+    inclination: float = Field(description="The inclination of the orbit, in degrees.")
     longitude_of_ascending_node: float = Field(
-        description="The longitude of the ascending node, in radians."
+        description="The longitude of the ascending node, in degrees."
     )
     argument_of_periapsis: float = Field(
-        description="The argument of periapsis, in radians."
+        description="The argument of periapsis, in degrees."
     )
-    mean_anomaly_at_epoch: float = Field(description="The mean anomaly at epoch.")
+    # mean_anomaly_at_epoch: float = Field(description="The mean anomaly at epoch.")
     epoch: float = Field(
         description="The time since the epoch (the point at which the mean anomaly at epoch was measured, in seconds."
     )
-    mean_anomaly: float = Field(description="The mean anomaly")
-    eccentric_anomaly: float = Field(description="The eccentric anomaly")
-    true_anomaly: float = Field(description="The true anomaly.")
+    # mean_anomaly: float = Field(description="The mean anomaly")
+    # eccentric_anomaly: float = Field(description="The eccentric anomaly")
+    # true_anomaly: float = Field(description="The true anomaly.")
     orbital_speed: float = Field(
         description="The current orbital speed in meters per second."
     )
@@ -73,25 +77,28 @@ class Orbit(BaseModel):
 
         super().__init__(
             body=orbit_obj.body.name,
-            apoapsis=orbit_obj.apoapsis,
-            periapsis=orbit_obj.periapsis,
+            # apoapsis=orbit_obj.apoapsis,
+            # periapsis=orbit_obj.periapsis,
+            # radius=orbit_obj.radius,
+            current_altitude=orbit_obj.radius - orbit_obj.body.equatorial_radius,
             apoapsis_altitude=orbit_obj.apoapsis_altitude,
             periapsis_altitude=orbit_obj.periapsis_altitude,
-            semi_major_axis=orbit_obj.semi_major_axis,
-            semi_minor_axis=orbit_obj.semi_minor_axis,
-            radius=orbit_obj.radius,
+            # semi_major_axis=orbit_obj.semi_major_axis,
+            # semi_minor_axis=orbit_obj.semi_minor_axis,
             period=orbit_obj.period,
             time_to_apoapsis=orbit_obj.time_to_apoapsis,
             time_to_periapsis=orbit_obj.time_to_periapsis,
-            eccentricity=orbit_obj.eccentricity,
-            inclination=orbit_obj.inclination,
-            longitude_of_ascending_node=orbit_obj.longitude_of_ascending_node,
-            argument_of_periapsis=orbit_obj.argument_of_periapsis,
-            mean_anomaly_at_epoch=orbit_obj.mean_anomaly_at_epoch,
+            # eccentricity=orbit_obj.eccentricity,
+            inclination=math.degrees(orbit_obj.inclination),
+            longitude_of_ascending_node=math.degrees(
+                orbit_obj.longitude_of_ascending_node
+            ),
+            argument_of_periapsis=math.degrees(orbit_obj.argument_of_periapsis),
+            # mean_anomaly_at_epoch=orbit_obj.mean_anomaly_at_epoch,
             epoch=orbit_obj.epoch,
-            mean_anomaly=orbit_obj.mean_anomaly,
-            eccentric_anomaly=orbit_obj.eccentric_anomaly,
-            true_anomaly=orbit_obj.true_anomaly,
+            # mean_anomaly=orbit_obj.mean_anomaly,
+            # eccentric_anomaly=orbit_obj.eccentric_anomaly,
+            # true_anomaly=orbit_obj.true_anomaly,
             orbital_speed=orbit_obj.orbital_speed,
             time_to_soi_change=orbit_obj.time_to_soi_change,
             next_orbit=next_orbit,
@@ -151,9 +158,11 @@ class Experiment(BaseModel):
     available: bool
 
 
-class DataProperties(BaseModel):
-    description: str
-    data_amount: float
+class DataPoint(BaseModel):
+    timestamp: str
+    value: str
+    altitude: float
+    body: str
 
 
 class AttachmentMode(Enum):

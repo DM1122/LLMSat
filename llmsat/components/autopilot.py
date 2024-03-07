@@ -252,19 +252,19 @@ class AutopilotService(CommandSet):
         # epilog=utils.format_return_obj_str(obj=Node, template=Template("List[$obj]")),
     )
 
-    @with_argparser(operation_circularize_parser)
-    def do_operation_circularize(self, args):
-        """Creates a manevuer to match your apoapsis to periapsis"""
+    # @with_argparser(operation_circularize_parser)
+    # def do_operation_circularize(self, args):
+    #     """Creates a manevuer to match your apoapsis to periapsis"""
 
-        try:
-            nodes = self.operation_circularize()
-        except ValueError as e:
-            self._cmd.perror(f"Error: {e}")
-            return
+    #     try:
+    #         nodes = self.operation_circularize()
+    #     except ValueError as e:
+    #         self._cmd.perror(f"Error: {e}")
+    #         return
 
-        self._cmd.poutput("The following nodes were generated:", timestamp=True)
-        for node in nodes:
-            self._cmd.poutput(node.model_dump_json(indent=4))
+    #     self._cmd.poutput("The following nodes were generated:", timestamp=True)
+    #     for node in nodes:
+    #         self._cmd.poutput(node.model_dump_json(indent=4))
 
     def operation_circularize(self) -> List[Node]:
         """Create a maneuver to change circularize"""
@@ -312,12 +312,11 @@ class AutopilotService(CommandSet):
     def validate_nodes(self):
         """Check maneuver nodes for safety"""
 
-        safe_altitude_threshold = 50000  # 50km above Enceladus
-        enceladus_radius = 252100  # m
+        safe_altitude_threshold = 50000  # 50km above surface of Enceladus
 
         nodes = self.get_nodes()
         for node in nodes:
-            min_altitude = node.orbit.periapsis - enceladus_radius
+            min_altitude = node.orbit.periapsis_altitude
             if min_altitude < safe_altitude_threshold:
                 raise ValueError(
                     f"Planned maneuver node at {node.ut} falls below safe altitude threshold of {safe_altitude_threshold}m around {node.orbit.body}: {min_altitude}m. Cannot comply"
